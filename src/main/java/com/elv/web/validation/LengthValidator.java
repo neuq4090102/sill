@@ -1,8 +1,7 @@
 package com.elv.web.validation;
 
-import com.elv.sill.api.model.ValidationResult;
-import com.elv.sill.api.util.RequestUtil;
 import com.elv.web.model.ValidationResult;
+import com.elv.web.util.RequestUtil;
 
 /**
  * 长度验证

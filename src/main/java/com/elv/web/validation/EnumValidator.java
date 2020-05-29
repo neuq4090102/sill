@@ -1,8 +1,9 @@
 package com.elv.web.validation;
 
-import com.elv.sill.api.model.ValidationResult;
-import com.elv.sill.api.util.RequestUtil;
-import com.elv.sill.framework.util.BeanUtil;
+
+import com.elv.core.util.BeanUtil;
+import com.elv.web.model.ValidationResult;
+import com.elv.web.util.RequestUtil;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;

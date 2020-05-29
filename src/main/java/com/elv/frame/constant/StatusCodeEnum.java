@@ -1,6 +1,6 @@
 package com.elv.frame.constant;
 
-import com.elv.sill.framework.common.IStatusCodeEnum;
+import com.elv.frame.common.IStatusCodeEnum;
 
 /**
  * @author lxh

@@ -1,8 +1,9 @@
 package com.elv.web.validation;
 
-import com.elv.sill.api.model.ValidationResult;
-import com.elv.sill.api.util.RequestUtil;
-import com.elv.sill.framework.util.JsonUtil;
+
+import com.elv.core.util.JsonUtil;
+import com.elv.web.model.ValidationResult;
+import com.elv.web.util.RequestUtil;
 
 import java.util.regex.Pattern;
 

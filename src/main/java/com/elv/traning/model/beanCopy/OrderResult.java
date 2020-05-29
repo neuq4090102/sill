@@ -1,6 +1,6 @@
 package com.elv.traning.model.beanCopy;
 
-import com.elv.sill.framework.annotation.desensitization.Blur;
+import com.elv.frame.annotation.desensitization.Blur;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 

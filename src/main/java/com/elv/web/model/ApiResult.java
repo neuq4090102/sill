@@ -1,10 +1,11 @@
 package com.elv.web.model;
 
-import com.elv.sill.framework.common.IStatusCodeEnum;
-import com.elv.sill.framework.constant.FrameworkErrorEnum;
-import com.elv.sill.framework.constant.StatusCodeEnum;
-import com.elv.sill.framework.model.PagingServiceResult;
-import com.elv.sill.framework.model.ServiceResult;
+
+import com.elv.frame.common.IStatusCodeEnum;
+import com.elv.frame.constant.FrameworkErrorEnum;
+import com.elv.frame.constant.StatusCodeEnum;
+import com.elv.frame.model.PagingServiceResult;
+import com.elv.frame.model.ServiceResult;
 
 import java.io.Serializable;
 import java.time.Instant;

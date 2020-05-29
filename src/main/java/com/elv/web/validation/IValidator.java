@@ -1,6 +1,6 @@
 package com.elv.web.validation;
 
-import com.elv.sill.api.model.ValidationResult;
+import com.elv.web.model.ValidationResult;
 
 /**
  * @author lxh

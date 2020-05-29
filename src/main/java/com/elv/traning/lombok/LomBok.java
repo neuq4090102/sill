@@ -1,6 +1,6 @@
 package com.elv.traning.lombok;
 
-import com.elv.sill.framework.constant.BooleanEnum;
+import com.elv.frame.constant.BooleanEnum;
 import com.elv.traning.model.lombok.LomBokEntity;
 
 /**

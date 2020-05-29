@@ -1,8 +1,8 @@
 package com.elv.web.validation;
 
-import com.elv.sill.api.model.ValidationResult;
-import com.elv.sill.api.util.RequestUtil;
-import com.elv.sill.framework.util.Utils;
+import com.elv.core.util.Utils;
+import com.elv.web.model.ValidationResult;
+import com.elv.web.util.RequestUtil;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.ArrayList;
