@@ -6,6 +6,7 @@
 
   <groupId>com.elv</groupId>
   <artifactId>sill</artifactId>
+  <packaging>jar</packaging>
   <version>1.0-SNAPSHOT</version>
 
   <name>sill</name>
