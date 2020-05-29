@@ -1,0 +1,15 @@
+Spring 配置说明
+
+
+
+
+
+
+
+
+spring-task:
+    task:scheduler/@pool-size：调度线程池的大小，调度线程在被调度任务完成前不会空闲
+    task:scheduled/@cron：cron表达式，注意，若上次任务未完成，即使到了下一次调度时间，任务也不会重复调度
+    task:executor/@pool-size：可以指定执行线程池的初始大小、最大大小
+    task:executor/@queue-capacity：等待执行的任务队列的容量
+    task:executor/@rejection-policy：当等待队列爆了时的策略，分为丢弃、由任务执行器直接运行等方式

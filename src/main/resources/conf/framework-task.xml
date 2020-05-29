@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:task="http://www.springframework.org/schema/task"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+		http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+		http://www.springframework.org/schema/context 
+		http://www.springframework.org/schema/context/spring-context-4.0.xsd
+		http://www.springframework.org/schema/task
+		http://www.springframework.org/schema/task/spring-task.xsd">
+
+    <!-- 此配置文件未启用-->
+    <context:component-scan base-package="com.elv.capsule.task"/>
+
+    <bean id="asyncHandler" class="org.springframework.aop.interceptor.SimpleAsyncUncaughtExceptionHandler"/>
+
+    <!-- 调度线程池配置，默认线程池pool-size=1 -->
+    <task:scheduler id="tptScheduler" pool-size="5"/>
+
+    <!-- 执行线程池配置 -->
+    <task:executor id="tptExecutor" pool-size="10-25" keep-alive="120" queue-capacity="5000"/>
+
+    <task:annotation-driven executor="tptExecutor" exception-handler="asyncHandler"/>
+
+</beans>

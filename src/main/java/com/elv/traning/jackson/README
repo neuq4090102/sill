@@ -1,0 +1,21 @@
+参考网址：https://github.com/FasterXML/jackson-annotations
+
+注解:参考网址：https://github.com/FasterXML/jackson-annotations/wiki/Jackson-Annotations
+
+    @JsonProperty
+        属性加此注解表示起别名
+
+        eg:
+        @JsonProperty("firstName")
+        public String _first_name;
+
+
+    @JsonIgnore
+        实体类的属性加上此注解就会在转成json时忽略该属性
+
+    @JsonFormat
+        可以将属性值在转成json时格式化
+
+        eg:
+        @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
+        private Date updateTime;

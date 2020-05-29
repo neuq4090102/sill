@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:task="http://www.springframework.org/schema/task"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+		http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+		http://www.springframework.org/schema/task
+		http://www.springframework.org/schema/task/spring-task.xsd">
+
+    <!-- 调度线程池配置，默认线程池pool-size=1 -->
+    <task:scheduler id="tptScheduler" pool-size="5"/>
+    <!-- 执行线程池配置 -->
+    <task:executor id="tptExecutor" pool-size="20-50" queue-capacity="200" rejection-policy="CALLER_RUNS"/>
+
+    <!--定时发邮件邮件业务-->
+    <bean id="filterEmailJob" class="com.elv.capsule.task.job.FilterEmailJob"/>
+    <bean id="sendEmailJob" class="com.elv.capsule.task.job.SendEmailJob"/>
+
+    <!-- 调度策略配置 -->
+    <task:scheduled-tasks scheduler="tptScheduler">
+        <!--<task:scheduled ref="filterEmailJob" method="run" initial-delay="3000" fixed-delay="1000000"/>
+        <task:scheduled ref="sendEmailJob" method="run" initial-delay="3000" fixed-delay="60000000"/>-->
+
+        <task:scheduled ref="filterEmailJob" method="run" initial-delay="3000" fixed-delay="10000"/>
+        <task:scheduled ref="sendEmailJob" method="run" initial-delay="3000" fixed-delay="60000"/>
+       <!-- <task:scheduled ref="sendEmailJob" method="run" cron="0/5 * *  * * ?"/>-->
+    </task:scheduled-tasks>
+
+</beans>

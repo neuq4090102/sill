@@ -1,0 +1,63 @@
+#lombok
+
+建议
+    此插件是仁者见仁智者见智，不强求统一，尊重个人并鼓励个性
+    团队人数较少或者能达成共识的团队建议使用，团队人数较多的情况下，不建议使用
+
+maven依赖
+    <dependency>
+        <groupId>org.projectlombok</groupId>
+        <artifactId>lombok</artifactId>
+        <version>${lombok.version}</version>
+        <scope>provided</scope>
+    </dependency>
+
+注解
+    a.构造器注解
+        @NoArgsConstructor
+            生成无参构造器
+        @RequiredArgsConstructor
+            生成包含final和@NonNull注解的成员变量的构造器
+        @AllArgsConstructor
+            生成全参构造器
+
+    b.存取器注解
+        @Getter and @Setter
+            1.作用类上，生成所有成员变量的getter/setter方法；
+            2.作用于成员变量上，生成该成员变量的getter/setter方法
+    c.校验注解
+        @NonNull
+            1.主要作用于成员变量和参数中，标识不能为空，否则抛出空指针异常
+
+    d.重写注解
+         @ToString
+            1.作用于类，覆盖默认的toString()方法，
+            2.可以通过of属性限定显示某些字段，通过exclude属性排除某些字段。
+
+         @EqualsAndHashCode
+            1.作用于类，覆盖默认的equals和hashCode
+    e.综合注解
+        @Data
+            1.作用于类上
+            2.表示@ToString @EqualsAndHashCode @Getter @Setter @RequiredArgsConstructor注解集合
+
+    f.参数构造注解
+        @Builder
+            1.作用于类上，将类转变为建造者模式
+            2.要和@AllArgsConstructor一起使用，否则报错（实际参数列表和像是参数列表长度不同）
+            3.涉及到继承（extends）会有诸多问题
+    g.其他注解
+        @Log
+            1.作用于类上，生成日志变量。针对不同的日志实现产品，有不同的注解：
+
+        @Cleanup
+            1.自动关闭资源，针对实现了java.io.Closeable接口的对象有效
+
+        @Synchronized
+            1.作用于方法级别，可以替换synchronize关键字或lock锁
+
+        @SneakyThrows
+            1.可以对受检异常进行捕捉并抛出
+
+
+

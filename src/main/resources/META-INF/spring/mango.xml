@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+		http://www.springframework.org/schema/beans/spring-beans-4.0.xsd">
+
+	<!-- 配置扫描使用@DB注解修饰的DAO类 -->
+	<bean class="org.jfaster.mango.plugin.spring.MangoDaoScanner">
+		<property name="packages">
+			<list>
+				<!-- 扫描包名 -->
+				<value>com.elv.**.dao</value>
+			</list>
+		</property>
+	</bean>
+
+	<!-- 配置mango对象 -->
+	<bean id="mango" class="org.jfaster.mango.operator.Mango" factory-method="newInstance">
+		<constructor-arg>
+			<list>
+				<ref bean="capsule_dsf" />
+			</list>
+		</constructor-arg>
+	</bean>
+
+	<!-- 简单数据源工厂 -->
+	<bean id="capsule_dsf" class="org.jfaster.mango.datasource.SimpleDataSourceFactory">
+		<property name="name" value="capsule"/>
+		<property name="dataSource" ref="capsule_ds"/>
+	</bean>
+
+	<bean id="capsule_ds" parent="baseDataSouce">
+		<property name="jdbcUrl" value="${capsule.url}" />
+		<property name="username" value="${capsule.user}" />
+		<property name="password" value="${capsule.pwd}" />
+	</bean>
+
+	<bean id="baseDataSouce" class="com.zaxxer.hikari.HikariDataSource" abstract="true">
+        <property name="connectionTimeout" value="${jdbc.dataSource.connectionTimeout}" />
+        <property name="idleTimeout" value="${jdbc.dataSource.idleTimeout}" />
+        <property name="maxLifetime" value="${jdbc.dataSource.maxLifetime}" />
+        <property name="minimumIdle" value="${jdbc.dataSource.minimumIdle}" />
+        <property name="maximumPoolSize" value="${jdbc.dataSource.maximumPoolSize}" />
+        <property name="driverClassName" value="${jdbc.dataSource.driverClassName}" />
+    </bean>
+
+
+</beans>

@@ -1,0 +1,203 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.elv.easyCode.dao.TCapsuleLetterDao">
+
+    <resultMap type="com.elv.easyCode.entity.TCapsuleLetter" id="TCapsuleLetterMap">
+        <result property="id" column="id" jdbcType="INTEGER"/>
+        <result property="title" column="title" jdbcType="VARCHAR"/>
+        <result property="type" column="type" jdbcType="INTEGER"/>
+        <result property="content" column="content" jdbcType="VARCHAR"/>
+        <result property="sender" column="sender" jdbcType="VARCHAR"/>
+        <result property="sendTime" column="send_time" jdbcType="VARCHAR"/>
+        <result property="receiver" column="receiver" jdbcType="VARCHAR"/>
+        <result property="receiverEmail" column="receiver_email" jdbcType="VARCHAR"/>
+        <result property="receiverOtherEmail" column="receiver_other_email" jdbcType="VARCHAR"/>
+        <result property="postmark" column="postmark" jdbcType="VARCHAR"/>
+        <result property="publicFlag" column="public_flag" jdbcType="INTEGER"/>
+        <result property="status" column="status" jdbcType="INTEGER"/>
+        <result property="creatorId" column="creator_id" jdbcType="INTEGER"/>
+        <result property="creatorName" column="creator_name" jdbcType="VARCHAR"/>
+        <result property="auditStatus" column="audit_status" jdbcType="INTEGER"/>
+        <result property="auditorId" column="auditor_id" jdbcType="INTEGER"/>
+        <result property="auditorName" column="auditor_name" jdbcType="VARCHAR"/>
+        <result property="auditTime" column="audit_time" jdbcType="VARCHAR"/>
+        <result property="auditOpinion" column="audit_opinion" jdbcType="VARCHAR"/>
+        <result property="perfectFlag" column="perfect_flag" jdbcType="INTEGER"/>
+        <result property="createTime" column="create_time" jdbcType="VARCHAR"/>
+        <result property="createDate" column="create_date" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <!--查询单个-->
+    <select id="queryById" resultMap="TCapsuleLetterMap">
+        select
+          id, title, type, content, sender, send_time, receiver, receiver_email, receiver_other_email, postmark, public_flag, status, creator_id, creator_name, audit_status, auditor_id, auditor_name, audit_time, audit_opinion, perfect_flag, create_time, create_date
+        from capsule_dev.t_capsule_letter
+        where id = #{id}
+    </select>
+
+    <!--查询指定行数据-->
+    <select id="queryAllByLimit" resultMap="TCapsuleLetterMap">
+        select
+          id, title, type, content, sender, send_time, receiver, receiver_email, receiver_other_email, postmark, public_flag, status, creator_id, creator_name, audit_status, auditor_id, auditor_name, audit_time, audit_opinion, perfect_flag, create_time, create_date
+        from capsule_dev.t_capsule_letter
+        limit #{offset}, #{limit}
+    </select>
+
+    <!--通过实体作为筛选条件查询-->
+    <select id="queryAll" resultMap="TCapsuleLetterMap">
+        select
+          id, title, type, content, sender, send_time, receiver, receiver_email, receiver_other_email, postmark, public_flag, status, creator_id, creator_name, audit_status, auditor_id, auditor_name, audit_time, audit_opinion, perfect_flag, create_time, create_date
+        from capsule_dev.t_capsule_letter
+        <where>
+            <if test="id != null">
+                and id = #{id}
+            </if>
+            <if test="title != null and title != ''">
+                and title = #{title}
+            </if>
+            <if test="type != null">
+                and type = #{type}
+            </if>
+            <if test="content != null and content != ''">
+                and content = #{content}
+            </if>
+            <if test="sender != null and sender != ''">
+                and sender = #{sender}
+            </if>
+            <if test="sendTime != null and sendTime != ''">
+                and send_time = #{sendTime}
+            </if>
+            <if test="receiver != null and receiver != ''">
+                and receiver = #{receiver}
+            </if>
+            <if test="receiverEmail != null and receiverEmail != ''">
+                and receiver_email = #{receiverEmail}
+            </if>
+            <if test="receiverOtherEmail != null and receiverOtherEmail != ''">
+                and receiver_other_email = #{receiverOtherEmail}
+            </if>
+            <if test="postmark != null and postmark != ''">
+                and postmark = #{postmark}
+            </if>
+            <if test="publicFlag != null">
+                and public_flag = #{publicFlag}
+            </if>
+            <if test="status != null">
+                and status = #{status}
+            </if>
+            <if test="creatorId != null">
+                and creator_id = #{creatorId}
+            </if>
+            <if test="creatorName != null and creatorName != ''">
+                and creator_name = #{creatorName}
+            </if>
+            <if test="auditStatus != null">
+                and audit_status = #{auditStatus}
+            </if>
+            <if test="auditorId != null">
+                and auditor_id = #{auditorId}
+            </if>
+            <if test="auditorName != null and auditorName != ''">
+                and auditor_name = #{auditorName}
+            </if>
+            <if test="auditTime != null and auditTime != ''">
+                and audit_time = #{auditTime}
+            </if>
+            <if test="auditOpinion != null and auditOpinion != ''">
+                and audit_opinion = #{auditOpinion}
+            </if>
+            <if test="perfectFlag != null">
+                and perfect_flag = #{perfectFlag}
+            </if>
+            <if test="createTime != null and createTime != ''">
+                and create_time = #{createTime}
+            </if>
+            <if test="createDate != null and createDate != ''">
+                and create_date = #{createDate}
+            </if>
+        </where>
+    </select>
+
+    <!--新增所有列-->
+    <insert id="insert" keyProperty="id" useGeneratedKeys="true">
+        insert into capsule_dev.t_capsule_letter(title, type, content, sender, send_time, receiver, receiver_email, receiver_other_email, postmark, public_flag, status, creator_id, creator_name, audit_status, auditor_id, auditor_name, audit_time, audit_opinion, perfect_flag, create_time, create_date)
+        values (#{title}, #{type}, #{content}, #{sender}, #{sendTime}, #{receiver}, #{receiverEmail}, #{receiverOtherEmail}, #{postmark}, #{publicFlag}, #{status}, #{creatorId}, #{creatorName}, #{auditStatus}, #{auditorId}, #{auditorName}, #{auditTime}, #{auditOpinion}, #{perfectFlag}, #{createTime}, #{createDate})
+    </insert>
+
+    <!--通过主键修改数据-->
+    <update id="update">
+        update capsule_dev.t_capsule_letter
+        <set>
+            <if test="title != null and title != ''">
+                title = #{title},
+            </if>
+            <if test="type != null">
+                type = #{type},
+            </if>
+            <if test="content != null and content != ''">
+                content = #{content},
+            </if>
+            <if test="sender != null and sender != ''">
+                sender = #{sender},
+            </if>
+            <if test="sendTime != null and sendTime != ''">
+                send_time = #{sendTime},
+            </if>
+            <if test="receiver != null and receiver != ''">
+                receiver = #{receiver},
+            </if>
+            <if test="receiverEmail != null and receiverEmail != ''">
+                receiver_email = #{receiverEmail},
+            </if>
+            <if test="receiverOtherEmail != null and receiverOtherEmail != ''">
+                receiver_other_email = #{receiverOtherEmail},
+            </if>
+            <if test="postmark != null and postmark != ''">
+                postmark = #{postmark},
+            </if>
+            <if test="publicFlag != null">
+                public_flag = #{publicFlag},
+            </if>
+            <if test="status != null">
+                status = #{status},
+            </if>
+            <if test="creatorId != null">
+                creator_id = #{creatorId},
+            </if>
+            <if test="creatorName != null and creatorName != ''">
+                creator_name = #{creatorName},
+            </if>
+            <if test="auditStatus != null">
+                audit_status = #{auditStatus},
+            </if>
+            <if test="auditorId != null">
+                auditor_id = #{auditorId},
+            </if>
+            <if test="auditorName != null and auditorName != ''">
+                auditor_name = #{auditorName},
+            </if>
+            <if test="auditTime != null and auditTime != ''">
+                audit_time = #{auditTime},
+            </if>
+            <if test="auditOpinion != null and auditOpinion != ''">
+                audit_opinion = #{auditOpinion},
+            </if>
+            <if test="perfectFlag != null">
+                perfect_flag = #{perfectFlag},
+            </if>
+            <if test="createTime != null and createTime != ''">
+                create_time = #{createTime},
+            </if>
+            <if test="createDate != null and createDate != ''">
+                create_date = #{createDate},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <!--通过主键删除-->
+    <delete id="deleteById">
+        delete from capsule_dev.t_capsule_letter where id = #{id}
+    </delete>
+
+</mapper>

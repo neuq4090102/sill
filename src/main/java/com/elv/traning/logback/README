@@ -1,0 +1,200 @@
+参考URL:http://www.logback.cn/
+
+logback模块：
+    logback-core(核心，也是基础)
+    logback-classic(实现了Slf4j的API)
+    logback-access(与Servlet容器进行整合,提供了http访问日志的功能)
+
+lockback架构：
+    Logger(日志对象)
+        a.等级LEVEL(TRACE < DEBUG < INFO < WARN < ERROR)
+            TRACE
+            DEBUG
+            INFO
+            WARN
+            ERROR
+    Appender(日志输出的目的地)
+        a.additivity = false 表示appender不再具有叠加性
+
+    Layout(自定义日志的输出格式)
+        "%-4relative [%thread] %-5level %logger{32} - %msg%n"
+        第一个参数表示程序启动以来的耗时，单位为毫秒;
+        第二个参数表示当前的线程号;
+        第三个参数表示当前日志的级别;
+        第四个参数是logger的名字;
+        “-” 之后是具体的日志信息.
+logback配置：
+    logback初始化步骤：
+        1.classpath:logback-test.xml
+        2.classpath:logback.groovy
+        3.classpath:logback.xml
+        4.META-INFO/services/ch.qos.logback.classic.spi.Configurator
+        5.通过BasicConfigurator为自己进行配置
+
+    基本结构为：
+        <configuration>
+            <appender> 0~多个
+
+            </appender>
+
+            <logger />  0~多个
+
+            <root> 最多只能存在一个
+                <appender-ref />  0~多个
+            </root>
+        </configuration>
+
+    debug配置：
+        <configuration debug="true">
+            ...
+        </configuration>
+
+        debug="true", 表示强制输出状态信息， 完全等同于配置一个OnConsoleStatusListener，如下：
+
+        <configuration>
+            <statusListener class="ch.qos.logback.core.status.OnConsoleStatusListener" />
+            ...
+        </configuration>
+
+    appender配置:
+        1.需要两个强制的属性 name 与 class，name 属性用来指定 appender 的名字，class 属性需要指定类的全限定名用于实例化
+            <appender name="" class= "">
+                ...
+            </appender>
+
+        2.encoder
+            1.encoder 将日志事件转换为字节数组，同时将字节数组写入到一个 OutputStream 中
+            2.如果不指定class，默认使用ch.qos.logback.classic.encoder.PatternLayoutEncoder，最好指定
+
+        3.重复使用appender，日志会重复
+            <configuration>
+                <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+                    <encoder>
+                        <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
+                    </encoder>
+                </appender>
+
+                <logger name="chapters.configuration">
+                    <appender-ref ref="STDOUT" />
+                </logger>
+
+                <root level="debug">
+                    <appender-ref ref="STDOUT" />
+                </root>
+            </configuration>
+            可以设置logger的additivity = false，日志将不再重复
+
+        4.日志事件附加到控制台
+            <configuration>
+                <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender" >
+                    <!-- encoder 默认使用 ch.qos.logback.classic.encoder.PatternLayoutEncoder -->
+                    <encoder>
+                        <pattern>%-4relative [%thread] %-5level %logger{35} - %msg %n</pattern>
+                    </encoder>
+                </appender>
+
+                <root level="DEBUG">
+                    <appender-ref ref="STDOUT" />
+                </root>
+            </configuration>
+
+        5.日志事件输出到文件中
+            <configuration>
+                <!-- 通过 "bySecond" 将时间格式化成 "yyyyMMdd'T'HHmmss" 的形式插入到 logger 的上下文中这个值对后续的配置也适用 -->
+                <timestamp key="bySecond" datePattern="yyyyMMdd'T'HHmmss" />
+
+                <appender name="FILE" class="ch.qos.logback.core.FileAppender">
+                    <!-- 利用之前创建的 timestamp 来创建唯一的文件 -->
+                    <file>log-${bySecond}.txt</file>
+                    <!-- 将 immediateFlush 设置为 false 可以获得更高的日志吞吐量 -->
+                    <immediateFlush>true</immediateFlush>
+                    <!-- 默认为 ch.qos.logback.classic.encoder.PatternLayoutEncoder -->
+                    <encoder>
+                        <pattern>%-4relative [%thread] %-5level %logger{35} - %msg%n</pattern>
+                    </encoder>
+                </appender>
+
+                <root level="DEBUG">
+                    <appender-ref ref="FILE" />
+                </root>
+            </configuration>
+
+        6.轮转日志文件的功能
+            <configuration>
+                <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+                    <file>logFile.log</file>
+                    <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+                        <!-- 按天轮转 -->
+                        <fileNamePattern>logFile.%d{yyyy-MM-dd}.log</fileNamePattern>
+                        <!-- 保存 30 天的历史记录，最大大小为 30GB -->
+                        <maxHistory>30</maxHistory>
+                        <totalSizeCap>30GB</totalSizeCap>
+                    </rollingPolicy>
+
+                    <encoder>
+                        <pattern>%-4relative [%thread] %-5level %logger{35} - %msg%n</pattern>
+                    </encoder>
+                </appender>
+
+                <root level="DEBUG">
+                    <appender-ref ref="FILE" />
+                </root>
+            </configuration>
+        7.日志时间输出到邮件（忽略）
+
+    context设置:
+        <configuration>
+            <contextName>myAppName</contextName> 只能设置一次
+            <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+                <encoder>
+                    <pattern>%d %contextName [%t] %level %logger{36} - %msg%n</pattern>
+                </encoder>
+            </appender>
+
+            <root level="debug">
+                <appender-ref ref="STDOUT" />
+            </root>
+        </configuration>
+
+    变量设置：
+        1.作用域：本地（local scope）、上下文（context scope）、系统（system scope）。默认为本地作用域。
+        可以通过 <property>、<define>、<insertFromJNDI> 元素的 scope 属性来设置变量的作用范围。
+        scope 属性可能的值为：local，context，system。如果没有指定，则默认为 local。
+
+        2.配置
+        <configuration>
+            <property resource="resource1.properties" /> 引用 classpath 下的资源文件，见下面的引入文件
+            <property name="USER_NAME" value="/data/logs" />
+
+            <appender name="FILE" class="ch.qos.logback.core.FileAppender">
+                <file>${USER_NAME}/myApp.log</file>
+                <encoder>
+                    <pattern>%msg%n</pattern>
+                </encoder>
+            </appender>
+
+            <root level="debug">
+                <appender-ref ref="FILE" />
+            </root>
+        </configuration>
+
+    引入文件：
+        <configuration>
+            <include file="src/main/resources/includedConfig.xml" /> 通过 file 属性引入外部文件
+
+            <include resource="includedConfig.xml"/> 通过 resource 属性来引入位于 classpath 路径下的资源文件
+
+            <include url="http://some.host.com/includedConfig.xml"/> 通过 url 属性来引入外部文件
+
+            <include optional="true" ..../> 引入的外部配置文件是可选的，可以设置 optional=true
+
+            <root level="DEBUG">
+                <appender-ref ref="includedConsole" />
+            </root>
+        </configuration>
+
+
+
+
+
+
