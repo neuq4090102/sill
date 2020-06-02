@@ -7,7 +7,7 @@ import lombok.Data;
  * @date 2020-04-16
  */
 @Data
-public class OrderRoomEntity {
+public class OrderRoomEntity extends BasicEntity {
     private String orderRoomNo;
     private boolean halfDay;
 }

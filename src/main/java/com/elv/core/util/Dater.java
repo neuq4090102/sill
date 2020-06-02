@@ -24,7 +24,7 @@ public class Dater {
 
     private ZonedDateTime zonedDateTime;
 
-    private Dater() { //工具类中尽量屏蔽构造方法（私有化）
+    private Dater() { // 工具类中尽量屏蔽构造方法（私有化）
         zonedDateTime = ZonedDateTime.now();
     }
 

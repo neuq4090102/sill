@@ -1,10 +1,12 @@
 package com.elv.traning.beanCopy;
 
+import com.elv.core.util.BeanUtil;
 import com.elv.core.util.JsonUtil;
 import com.elv.core.util.Utils;
 import com.elv.frame.annotation.desensitization.Blur;
 import com.elv.traning.model.beanCopy.OrderEntity;
 import com.elv.traning.model.beanCopy.OrderResult;
+import com.elv.traning.model.beanCopy.OrderRoomResult;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
@@ -40,6 +42,9 @@ public class BeanCopy {
         List<OrderResult> orderResults = convert(orderEntities, OrderResult.class, true);
 
         System.out.println(JsonUtil.toJson(orderResults));
+
+        List<OrderResult> converts = BeanUtil.converts(orderEntities, OrderResult.class);
+        System.out.println(JsonUtil.toJson(converts));
 
     }
 

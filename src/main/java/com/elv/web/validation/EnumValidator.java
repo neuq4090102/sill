@@ -1,6 +1,5 @@
 package com.elv.web.validation;
 
-
 import com.elv.core.util.BeanUtil;
 import com.elv.web.model.ValidationResult;
 import com.elv.web.util.RequestUtil;
@@ -56,7 +55,6 @@ public class EnumValidator implements IValidator {
         Class<Enum> enumClass = (Class<Enum>) this.getEnumClass();
 
         Optional<Field> targetField = BeanUtil.getFields(enumClass, false).stream().peek(field -> {
-            //            System.out.println("--->>>" + JsonUtil.toJson(field));
         }).filter(field -> !field.isEnumConstant() && field.getName().equals(this.getEnumKey())).findFirst();
         if (!targetField.isPresent()) {
             // 未查到枚举类有对应的属性名称
@@ -65,7 +63,7 @@ public class EnumValidator implements IValidator {
         }
 
         try {
-            Method method = BeanUtil.getterMap(enumClass).get(this.getEnumKey());
+            Method method = BeanUtil.getGetterMap(enumClass).get(this.getEnumKey());
             if (method == null) {
                 return new ValidationResult(this.getParam(),
                         this.getEnumClass().getSimpleName() + " not found getter of " + this.getEnumKey() + ".");

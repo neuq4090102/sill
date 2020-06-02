@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <configuration debug="false">
-    <contextName>capsule-web</contextName>
-    <property name="log_path" value="/opt/logs/${contextName}}"/>
+    <property name="project" value="sill"/>
+    <property name="log_path" value="/opt/logs/${project}"/>
 
     <!--控制台日志 -->
     <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
@@ -13,10 +13,9 @@
 
     <!--文件日志 -->
     <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <file>logFile.log</file>
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
             <!-- 按天轮转 -->
-            <fileNamePattern>${log_path}/logFile.log.%d{yyyy-MM-dd}</fileNamePattern>
+            <fileNamePattern>${log_path}/${project}.log.%d{yyyy-MM-dd}</fileNamePattern>
             <!-- 保存7天的历史记录，最大大小为 100MB -->
             <maxHistory>7</maxHistory>
             <totalSizeCap>50MB</totalSizeCap>

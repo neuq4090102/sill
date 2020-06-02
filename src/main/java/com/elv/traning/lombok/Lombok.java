@@ -7,7 +7,7 @@ import com.elv.traning.model.lombok.LomBokEntity;
  * @author lxh
  * @date 2020-04-16
  */
-public class LomBok {
+public class Lombok {
 
     public static void main(String[] args) {
 

@@ -99,7 +99,6 @@ public class JsonUtil {
             return true;
         } else if (json.startsWith("[") && json.endsWith("]")) {
             return true;
-
         }
         return false;
     }

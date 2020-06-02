@@ -1,6 +1,26 @@
-.idea
+### elv template
+
+# self
+.gitignore
+
+# OS-MAC
+.DS_Store
+
+# OS-Windows
+
+# IntelliJ project files
+.idea/
 *.iml
 out
 gen
-.idea/*
-target/*
+
+# Eclipse project files
+.settings/
+.project
+.classpath
+
+# project
+# src/test/java/
+target/
+
+# other

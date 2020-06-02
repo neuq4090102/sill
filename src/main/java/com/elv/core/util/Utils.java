@@ -18,6 +18,12 @@ public class Utils {
     private static final Pattern mailPattern = Pattern
             .compile("^[a-zA-Z0-9_\\-\\.]+@[a-zA-Z0-9\\-]+(\\.[a-zA-Z0-9\\-]+){0,2}\\.((com)|(cn)|(net))$");
 
+    /**
+     * 是否都是数字
+     *
+     * @param str
+     * @return
+     */
     public static boolean isNum(String str) {
         if (StringUtils.isEmpty(str)) {
             return false;
@@ -25,6 +31,12 @@ public class Utils {
         return numPattern.matcher(str.trim()).matches();
     }
 
+    /**
+     * 是否是邮箱
+     *
+     * @param email
+     * @return
+     */
     public static boolean isEmail(String email) {
         if (StringUtils.isEmpty(email)) {
             return false;
