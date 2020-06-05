@@ -6,11 +6,12 @@ package com.elv.core.constant;
  */
 public enum BooleanEnum {
 
-    YES(1), NO(2);
+    YES(1), //
+    NO(2);
 
     private final int value; // 枚举的属性字段必须是私有且不可变(无set方法)
 
-    private BooleanEnum(int value) {
+    BooleanEnum(int value) {
         this.value = value;
     }
 

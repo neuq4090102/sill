@@ -1,10 +1,11 @@
 package com.elv.core.util;
 
-import com.elv.traning.model.beanCopy.OrderEntity;
-import org.testng.annotations.Test;
-
 import java.lang.reflect.Field;
 import java.util.List;
+
+import org.testng.annotations.Test;
+
+import com.elv.traning.model.beanCopy.OrderEntity;
 
 /**
  * @author lxh

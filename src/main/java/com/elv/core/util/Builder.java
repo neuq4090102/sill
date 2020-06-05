@@ -42,11 +42,6 @@ public class Builder<T> {
         void accept(T t, P1 p1, P2 p2, P3 p3);
     }
 
-    @FunctionalInterface
-    public interface Consumer4<T, P1, P2, P3, P4> {
-        void accept(T t, P1 p1, P2 p2, P3 p3, P4 p4);
-    }
-
     public <P1> Builder<T> with(Consumer1<T, P1> consumer, P1 p1) {
         Consumer<T> tmpConsumer = instance -> consumer.accept(instance, p1);
         consumers.add(tmpConsumer);
@@ -61,12 +56,6 @@ public class Builder<T> {
 
     public <P1, P2, P3> Builder<T> with(Consumer3<T, P1, P2, P3> consumer, P1 p1, P2 p2, P3 p3) {
         Consumer<T> tmpConsumer = instance -> consumer.accept(instance, p1, p2, p3);
-        consumers.add(tmpConsumer);
-        return this;
-    }
-
-    public <P1, P2, P3, P4> Builder<T> with(Consumer4<T, P1, P2, P3, P4> consumer, P1 p1, P2 p2, P3 p3, P4 p4) {
-        Consumer<T> tmpConsumer = instance -> consumer.accept(instance, p1, p2, p3, p4);
         consumers.add(tmpConsumer);
         return this;
     }

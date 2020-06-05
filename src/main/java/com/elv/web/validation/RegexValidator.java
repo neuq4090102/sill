@@ -1,11 +1,10 @@
 package com.elv.web.validation;
 
+import java.util.regex.Pattern;
 
 import com.elv.core.util.JsonUtil;
 import com.elv.web.model.ValidationResult;
 import com.elv.web.util.RequestUtil;
-
-import java.util.regex.Pattern;
 
 /**
  * @author lxh

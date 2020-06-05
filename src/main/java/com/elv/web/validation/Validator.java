@@ -1,13 +1,14 @@
 package com.elv.web.validation;
 
-import com.elv.core.util.Utils;
-import com.elv.web.model.ValidationResult;
-import com.elv.web.util.RequestUtil;
-import org.apache.commons.lang3.StringUtils;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+
+import org.apache.commons.lang3.StringUtils;
+
+import com.elv.core.util.Utils;
+import com.elv.web.model.ValidationResult;
+import com.elv.web.util.RequestUtil;
 
 /**
  * @author lxh

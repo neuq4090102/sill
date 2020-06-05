@@ -1,16 +1,15 @@
 package com.elv.web.model;
 
-
-import com.elv.frame.itf.IStatusCodeEnum;
-import com.elv.frame.constant.FrameworkErrorEnum;
-import com.elv.frame.constant.StatusCodeEnum;
-import com.elv.frame.model.PagingServiceResult;
-import com.elv.frame.model.ServiceResult;
-
 import java.io.Serializable;
 import java.time.Instant;
 import java.util.HashMap;
 import java.util.Map;
+
+import com.elv.frame.constant.FrameworkErrorEnum;
+import com.elv.frame.constant.StatusCodeEnum;
+import com.elv.frame.itf.IStatusCodeEnum;
+import com.elv.frame.model.PagingServiceResult;
+import com.elv.frame.model.ServiceResult;
 
 /**
  * @author lxh

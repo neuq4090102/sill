@@ -1,14 +1,14 @@
 package com.elv.web.validation;
 
-import com.elv.core.util.BeanUtil;
-import com.elv.web.model.ValidationResult;
-import com.elv.web.util.RequestUtil;
-
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+
+import com.elv.core.util.BeanUtil;
+import com.elv.web.model.ValidationResult;
+import com.elv.web.util.RequestUtil;
 
 /**
  * 枚举验证

@@ -1,19 +1,18 @@
 package com.elv.core.util;
 
-import com.elv.traning.model.beanCopy.OrderEntity;
-
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
+import com.elv.traning.model.beanCopy.OrderEntity;
+
 /**
  * @author lxh
  * @date 2020-06-01
  */
 public class DefaultUtil {
-
 
     // TODO
     public static <T> void init(T object) {

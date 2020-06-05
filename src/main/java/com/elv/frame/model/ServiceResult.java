@@ -1,12 +1,11 @@
 package com.elv.frame.model;
 
-
-import com.elv.frame.itf.IStatusCodeEnum;
-import com.elv.frame.constant.StatusCodeEnum;
-
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
+
+import com.elv.frame.constant.StatusCodeEnum;
+import com.elv.frame.itf.IStatusCodeEnum;
 
 /**
  * @author lxh
