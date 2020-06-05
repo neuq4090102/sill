@@ -13,9 +13,13 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+
         <spring.version>4.3.11.RELEASE</spring.version>
+
         <testng.version>7.1.0</testng.version>
         <junit.version>4.12</junit.version>
+        <mockito.version>3.1.0</mockito.version>
+
         <slf4j.version>1.7.20</slf4j.version>
         <logback.version>1.2.3</logback.version>
 
@@ -97,17 +101,24 @@
             <version>${spring.version}</version>
         </dependency>
 
-        <!-- junit -->
+        <!--testNG-->
         <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <version>${junit.version}</version>
-            <scope>test</scope>
-        </dependency>
-        <!--<dependency>
             <groupId>org.testng</groupId>
             <artifactId>testng</artifactId>
             <version>${testng.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <!--mockito-->
+        <dependency>
+            <groupId>org.mockito</groupId>
+            <artifactId>mockito-core</artifactId>
+            <version>${mockito.version}</version>
+        </dependency>
+        <!-- junit -->
+        <!--<dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>${junit.version}</version>
             <scope>test</scope>
         </dependency>-->
 

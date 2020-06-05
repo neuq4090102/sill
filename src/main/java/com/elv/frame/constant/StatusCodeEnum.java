@@ -14,7 +14,7 @@ public enum StatusCodeEnum implements IStatusCodeEnum {
     private final int code;
     private final String msg;
 
-    private StatusCodeEnum(int code, String msg) {
+    StatusCodeEnum(int code, String msg) {
         this.code = code;
         this.msg = msg;
     }

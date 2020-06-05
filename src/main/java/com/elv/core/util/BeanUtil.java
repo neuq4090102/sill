@@ -137,33 +137,33 @@ public class BeanUtil {
     /**
      * 获取类所有属性（含继承属性）
      *
-     * @param clazz
+     * @param beanClass
      * @return
      */
-    public static List<Field> getAllFields(Class<?> clazz) {
-        return getFields(clazz, true);
+    public static List<Field> getAllFields(Class<?> beanClass) {
+        return getFields(beanClass, true);
     }
 
     /**
      * 获取类属性
      *
-     * @param clazz
+     * @param beanClass
      * @param withExtends 是否含继承属性
      * @return
      */
-    public static List<Field> getFields(Class<?> clazz, boolean withExtends) {
+    public static List<Field> getFields(Class<?> beanClass, boolean withExtends) {
         List<Field> fields = new ArrayList<>();
 
         while (withExtends) {
-            if (clazz == null || clazz == Object.class) {
+            if (beanClass == null || beanClass == Object.class) {
                 break;
             }
-            fields.addAll(Arrays.asList(clazz.getDeclaredFields()));
+            fields.addAll(Arrays.asList(beanClass.getDeclaredFields()));
 
             if (!withExtends) {
                 break;
             }
-            clazz = clazz.getSuperclass();
+            beanClass = beanClass.getSuperclass();
         }
 
         return fields;
@@ -172,26 +172,26 @@ public class BeanUtil {
     /**
      * 获取类属性的取值方法
      *
-     * @param clazz
+     * @param beanClass
      * @return
      * @throws IntrospectionException
      */
-    public static Map<String, Method> getGetterMap(Class<?> clazz) {
+    public static Map<String, Method> getGetterMap(Class<?> beanClass) {
 
         Map<String, Method> resultMap = new HashMap<>();
-        if (clazz == null) {
+        if (beanClass == null) {
             return resultMap;
         }
 
         try {
-            BeanInfo beanInfo = Introspector.getBeanInfo(clazz, Object.class);
+            BeanInfo beanInfo = Introspector.getBeanInfo(beanClass, Object.class);
 
             for (PropertyDescriptor propertyDescriptor : beanInfo.getPropertyDescriptors()) {
                 resultMap.put(propertyDescriptor.getName(), propertyDescriptor.getReadMethod());
             }
         } catch (Throwable t) {
             // 不能解析类信息
-            throw new RuntimeException("BeanUtil can't parse class info:+" + clazz.getName());
+            throw new RuntimeException("BeanUtil can't parse class info:+" + beanClass.getName());
         }
 
         return resultMap;
@@ -200,25 +200,25 @@ public class BeanUtil {
     /**
      * 获取类属性的赋值方法
      *
-     * @param clazz
+     * @param beanClass
      * @return
      * @throws IntrospectionException
      */
-    public static Map<String, Method> getSetterMap(Class<?> clazz) {
+    public static Map<String, Method> getSetterMap(Class<?> beanClass) {
 
         Map<String, Method> resultMap = new HashMap<>();
-        if (clazz == null) {
+        if (beanClass == null) {
             return resultMap;
         }
 
         try {
-            BeanInfo beanInfo = Introspector.getBeanInfo(clazz, Object.class);
+            BeanInfo beanInfo = Introspector.getBeanInfo(beanClass, Object.class);
             for (PropertyDescriptor propertyDescriptor : beanInfo.getPropertyDescriptors()) {
                 resultMap.put(propertyDescriptor.getName(), propertyDescriptor.getWriteMethod());
             }
         } catch (Throwable t) {
             // 不能解析类信息
-            throw new RuntimeException("BeanUtil can't parse class info:+" + clazz.getName());
+            throw new RuntimeException("BeanUtil can't parse class info:+" + beanClass.getName());
         }
 
         return resultMap;

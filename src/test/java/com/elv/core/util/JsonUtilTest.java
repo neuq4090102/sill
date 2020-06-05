@@ -1,10 +1,8 @@
 package com.elv.core.util;
 
-import com.elv.traning.model.beanCopy.OrderRoomEntity;
 import org.mockito.Mockito;
+import org.testng.Assert;
 import org.testng.annotations.Test;
-
-import static org.testng.Assert.*;
 
 /**
  * @author lxh
@@ -14,7 +12,10 @@ public class JsonUtilTest {
 
     @Test
     public void testToJson() {
-        assertNotNull(JsonUtil.toJson("abc"));
+        Dater dater = Mockito.mock(Dater.class); // mock
+        Mockito.when(dater.getDateStr()).thenReturn("2020-06-02"); // stub
+        System.out.println(dater.getDateStr()); // verify
+        Assert.assertEquals("2020-06-02", dater.getDateStr()); // test
     }
 
     @Test
