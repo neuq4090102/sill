@@ -1,7 +1,7 @@
 package com.elv.web.model;
 
 
-import com.elv.frame.common.IStatusCodeEnum;
+import com.elv.frame.itf.IStatusCodeEnum;
 import com.elv.frame.constant.FrameworkErrorEnum;
 import com.elv.frame.constant.StatusCodeEnum;
 import com.elv.frame.model.PagingServiceResult;

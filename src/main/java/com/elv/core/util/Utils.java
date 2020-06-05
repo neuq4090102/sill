@@ -1,6 +1,6 @@
 package com.elv.core.util;
 
-import com.elv.frame.model.Blur;
+import com.elv.core.model.Blur;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.HashSet;

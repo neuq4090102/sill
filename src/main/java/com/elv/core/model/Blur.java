@@ -1,4 +1,4 @@
-package com.elv.frame.model;
+package com.elv.core.model;
 
 /**
  * 脱敏参数控制

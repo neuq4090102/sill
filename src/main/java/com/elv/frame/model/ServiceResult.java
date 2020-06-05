@@ -1,7 +1,7 @@
 package com.elv.frame.model;
 
 
-import com.elv.frame.common.IStatusCodeEnum;
+import com.elv.frame.itf.IStatusCodeEnum;
 import com.elv.frame.constant.StatusCodeEnum;
 
 import java.io.Serializable;

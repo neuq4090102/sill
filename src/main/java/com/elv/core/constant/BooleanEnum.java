@@ -1,4 +1,4 @@
-package com.elv.frame.constant;
+package com.elv.core.constant;
 
 /**
  * @author lxh

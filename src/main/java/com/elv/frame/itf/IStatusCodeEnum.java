@@ -1,4 +1,4 @@
-package com.elv.frame.common;
+package com.elv.frame.itf;
 
 /**
  * 状态码接口

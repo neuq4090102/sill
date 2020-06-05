@@ -3,10 +3,9 @@ package com.elv.traning.beanCopy;
 import com.elv.core.util.BeanUtil;
 import com.elv.core.util.JsonUtil;
 import com.elv.core.util.Utils;
-import com.elv.frame.annotation.desensitization.Blur;
+import com.elv.core.annotation.desensitization.Blur;
 import com.elv.traning.model.beanCopy.OrderEntity;
 import com.elv.traning.model.beanCopy.OrderResult;
-import com.elv.traning.model.beanCopy.OrderRoomResult;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
@@ -161,7 +160,7 @@ public class BeanCopy {
 
     private static String desensitize(Object invoke, Blur blur) {
         return Utils.blur(invoke,
-                com.elv.frame.model.Blur.builder().fromIdx(blur.fromIdx()).toIdx(blur.toIdx()).stepSize(blur.setpSize())
+                com.elv.core.model.Blur.builder().fromIdx(blur.fromIdx()).toIdx(blur.toIdx()).stepSize(blur.setpSize())
                         .ratio(blur.ratio()).mask(blur.mask()).build());
     }
 

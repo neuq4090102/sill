@@ -1,6 +1,6 @@
 package com.elv.core.util;
 
-import com.elv.frame.annotation.desensitization.Blur;
+import com.elv.core.annotation.desensitization.Blur;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
@@ -269,7 +269,7 @@ public class BeanUtil {
 
     private static String desensitize(Object invoke, Blur blur) {
         return Utils.blur(invoke,
-                com.elv.frame.model.Blur.builder().fromIdx(blur.fromIdx()).toIdx(blur.toIdx()).stepSize(blur.setpSize())
+                com.elv.core.model.Blur.builder().fromIdx(blur.fromIdx()).toIdx(blur.toIdx()).stepSize(blur.setpSize())
                         .ratio(blur.ratio()).mask(blur.mask()).build());
     }
 

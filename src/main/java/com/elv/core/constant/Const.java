@@ -1,4 +1,4 @@
-package com.elv.frame.constant;
+package com.elv.core.constant;
 
 /**
  * @author lxh
@@ -11,8 +11,4 @@ public interface Const {
      */
     int DEFAULT_TIME_ZONE = 8;
 
-    /**
-     * 阈值：慢操作，单位：毫秒
-     */
-    long THRESHOLD_SLOW_OPT = 200;
 }

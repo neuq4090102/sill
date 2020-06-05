@@ -1,4 +1,4 @@
-package com.elv.frame.annotation.desensitization;
+package com.elv.core.annotation.desensitization;
 
 import java.lang.annotation.Documented;
 import java.lang.annotation.ElementType;
