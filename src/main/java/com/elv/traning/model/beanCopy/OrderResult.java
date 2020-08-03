@@ -1,18 +1,14 @@
 package com.elv.traning.model.beanCopy;
 
-import com.elv.core.annotation.desensitization.Blur;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-
 import java.io.Serializable;
 import java.util.List;
 
+import com.elv.core.annotation.desensitization.Blur;
+
 /**
  * @author lxh
- * @date 2020-04-16
+ * @since 2020-04-16
  */
-@Data
-@NoArgsConstructor
 public class OrderResult implements Serializable {
 
     private static final long serialVersionUID = 2323027276494000422L;
@@ -31,4 +27,59 @@ public class OrderResult implements Serializable {
     private long invoicePrice;
     private List<OrderRoomResult> orderRoomEntities;
 
+    public String getChannelOrderNo() {
+        return channelOrderNo;
+    }
+
+    public void setChannelOrderNo(String channelOrderNo) {
+        this.channelOrderNo = channelOrderNo;
+    }
+
+    public long getChannelPrice() {
+        return channelPrice;
+    }
+
+    public void setChannelPrice(long channelPrice) {
+        this.channelPrice = channelPrice;
+    }
+
+    public String getOrderNo() {
+        return orderNo;
+    }
+
+    public void setOrderNo(String orderNo) {
+        this.orderNo = orderNo;
+    }
+
+    public String getContacter() {
+        return contacter;
+    }
+
+    public void setContacter(String contacter) {
+        this.contacter = contacter;
+    }
+
+    public String getMobile() {
+        return mobile;
+    }
+
+    public void setMobile(String mobile) {
+        this.mobile = mobile;
+    }
+
+    public long getInvoicePrice() {
+        return invoicePrice;
+    }
+
+    public void setInvoicePrice(long invoicePrice) {
+        this.invoicePrice = invoicePrice;
+    }
+
+    public List<OrderRoomResult> getOrderRoomEntities() {
+        return orderRoomEntities;
+    }
+
+    public void setOrderRoomEntities(List<OrderRoomResult> orderRoomEntities) {
+        this.orderRoomEntities = orderRoomEntities;
+    }
 }

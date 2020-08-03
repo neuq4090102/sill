@@ -3,7 +3,7 @@ package com.elv.traning.designMode.responsibilityChain;
 /**
  * 抽象抓取策略
  * @author lxh
- * @date 2020-05-20
+ * @since 2020-05-20
  */
 public class GoogleCrawlStrategy extends CrawlStrategy {
 

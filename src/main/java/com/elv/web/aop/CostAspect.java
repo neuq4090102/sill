@@ -21,7 +21,7 @@ import com.elv.web.util.RequestUtil;
  * calculate API Time-consuming
  *
  * @author lxh
- * @date 2020-04-08
+ * @since 2020-04-08
  */
 @Aspect
 @Component
@@ -47,7 +47,7 @@ public class CostAspect {
         if (!(result instanceof ApiResult)) {
             return result;
         }
-        long cost = Duration.between(startInstant, Instant.now()).toMillis(); //unit:milliseconds
+        long cost = Duration.between(startInstant, Instant.now()).toMillis(); // unit:milliseconds
         if (cost > Const.THRESHOLD_SLOW_OPT) {
             logger.warn("API slow response:uri = {}, cost = {}", RequestUtil.getRequest().getRequestURI(), cost);
         }

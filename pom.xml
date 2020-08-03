@@ -23,12 +23,15 @@
         <slf4j.version>1.7.20</slf4j.version>
         <logback.version>1.2.3</logback.version>
 
+        <redis.version>3.3.0</redis.version>
+
         <mysql.version>8.0.18</mysql.version>
         <mybatis.version>3.3.1</mybatis.version>
         <mybatis.spring.version>1.2.4</mybatis.spring.version>
         <mango.version>1.6.1</mango.version>
         <HikariCP.version>3.3.1</HikariCP.version>
 
+        <thymeleaf.version>3.0.11.RELEASE</thymeleaf.version>
         <json.version>2.10.2</json.version>
         <javamail.version>1.4.7</javamail.version>
         <lombok.version>1.18.10</lombok.version>
@@ -39,7 +42,7 @@
     </properties>
 
     <dependencies>
-        <!-- spring:for frame -->
+        <!-- frame:spring -->
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-beans</artifactId>
@@ -101,14 +104,14 @@
             <version>${spring.version}</version>
         </dependency>
 
-        <!--testNG-->
+        <!-- test:testNG -->
         <dependency>
             <groupId>org.testng</groupId>
             <artifactId>testng</artifactId>
             <version>${testng.version}</version>
             <scope>test</scope>
         </dependency>
-        <!--mockito-->
+        <!-- test:mockito -->
         <dependency>
             <groupId>org.mockito</groupId>
             <artifactId>mockito-core</artifactId>
@@ -122,26 +125,28 @@
             <scope>test</scope>
         </dependency>-->
 
-        <!-- slf4j+logback -->
+        <!-- log-api:slf4j -->
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>
             <version>${slf4j.version}</version>
         </dependency>
+
+        <!-- log-impl:logback(核心) -->
         <dependency>
             <groupId>ch.qos.logback</groupId>
             <artifactId>logback-core</artifactId>
             <version>${logback.version}</version>
         </dependency>
 
-        <!-- 实现了Slf4j的API -->
+        <!-- log-impl:logback(实现了Slf4j的API) -->
         <dependency>
             <groupId>ch.qos.logback</groupId>
             <artifactId>logback-classic</artifactId>
             <version>${logback.version}</version>
         </dependency>
 
-        <!-- 集成Servlet环境，可提供http-access的日志接口-->
+        <!-- log-impl:logback(集成Servlet环境，可提供http-access的日志接口) -->
         <dependency>
             <groupId>ch.qos.logback</groupId>
             <artifactId>logback-access</artifactId>
@@ -153,14 +158,21 @@
             <version>0.1.4</version>
         </dependency>
 
-        <!-- mysql-->
+        <!-- db:redis -->
+        <dependency>
+            <groupId>redis.clients</groupId>
+            <artifactId>jedis</artifactId>
+            <version>${redis.version}</version>
+        </dependency>
+
+        <!-- db:mysql-->
         <dependency>
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
             <version>${mysql.version}</version>
         </dependency>
 
-        <!-- mybatis-->
+        <!-- orm:mybatis-->
         <dependency>
             <groupId>org.mybatis</groupId>
             <artifactId>mybatis</artifactId>
@@ -172,28 +184,21 @@
             <version>${mybatis.spring.version}</version>
         </dependency>
 
-        <!-- mango -->
+        <!-- orm:mango -->
         <dependency>
             <groupId>org.jfaster</groupId>
             <artifactId>mango</artifactId>
             <version>${mango.version}</version>
         </dependency>
 
-        <!-- 连接池 -->
+        <!-- db CP:HikariCP -->
         <dependency>
             <groupId>com.zaxxer</groupId>
             <artifactId>HikariCP</artifactId>
             <version>${HikariCP.version}</version>
         </dependency>
 
-        <!-- mail -->
-        <dependency>
-            <groupId>com.sun.mail</groupId>
-            <artifactId>javax.mail</artifactId>
-            <version>1.6.2</version>
-        </dependency>
-
-        <!-- lombok -->
+        <!-- code:lombok(慎用) -->
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
@@ -201,20 +206,21 @@
             <scope>provided</scope>
         </dependency>
 
-        <!-- https://mvnrepository.com/artifact/org.apache.commons/commons-lang3 -->
+        <!-- tool:commons-lang3 -->
         <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-lang3</artifactId>
             <version>3.9</version>
         </dependency>
-        <!-- https://mvnrepository.com/artifact/org.apache.commons/commons-collections4 -->
+
+        <!-- tool:commons-collections4 -->
         <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-collections4</artifactId>
             <version>4.4</version>
         </dependency>
 
-        <!-- json  -->
+        <!-- tool:json  -->
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-databind</artifactId>
@@ -231,27 +237,116 @@
             <version>${json.version}</version>
         </dependency>
 
-        <!-- servlet -->
+        <!-- tool:mail -->
+        <dependency>
+            <groupId>com.sun.mail</groupId>
+            <artifactId>javax.mail</artifactId>
+            <version>1.6.2</version>
+        </dependency>
+
+        <!-- web:thymeleaf，也可渲染邮件模板-->
+        <dependency>
+            <groupId>org.thymeleaf</groupId>
+            <artifactId>thymeleaf</artifactId>
+            <version>${thymeleaf.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.thymeleaf</groupId>
+            <artifactId>thymeleaf-spring4</artifactId>
+            <version>${thymeleaf.version}</version>
+        </dependency>
+
+        <!-- tool:HttpCore -->
+        <dependency>
+            <groupId>org.apache.httpcomponents</groupId>
+            <artifactId>httpcore</artifactId>
+            <version>4.4.13</version>
+        </dependency>
+
+        <!-- tool:httpclient(dependencies:HttpCore) -->
+        <dependency>
+            <groupId>org.apache.httpcomponents</groupId>
+            <artifactId>httpclient</artifactId>
+            <version>4.5.12</version>
+        </dependency>
+
+        <!-- tool:JSoup(静态网页数据分析工具) -->
+        <dependency>
+            <groupId>org.jsoup</groupId>
+            <artifactId>jsoup</artifactId>
+            <version>1.13.1</version>
+        </dependency>
+
+        <!-- tool:HtmlUnit(动态网页模拟并分析工具) -->
+        <dependency>
+            <groupId>net.sourceforge.htmlunit</groupId>
+            <artifactId>htmlunit</artifactId>
+            <version>2.41.0</version>
+        </dependency>
+
+        <!-- api:servlet -->
         <dependency>
             <groupId>javax.servlet</groupId>
             <artifactId>javax.servlet-api</artifactId>
             <version>${servlet.version}</version>
         </dependency>
 
-        <!-- https://mvnrepository.com/artifact/javax.validation/validation-api -->
+        <!-- jsr*: validation-api -->
         <dependency>
             <groupId>javax.validation</groupId>
             <artifactId>validation-api</artifactId>
             <version>1.1.0.Final</version>
         </dependency>
 
-        <!-- https://mvnrepository.com/artifact/org.hibernate/hibernate-validator -->
+        <!-- jsr*:hibernate-validator -->
         <dependency>
             <groupId>org.hibernate</groupId>
             <artifactId>hibernate-validator</artifactId>
             <version>5.2.4.Final</version>
         </dependency>
 
+
+        <!-- tool:libphonenumber(手机号归属地)-->
+        <dependency>
+            <groupId>com.googlecode.libphonenumber</groupId>
+            <artifactId>libphonenumber</artifactId>
+            <version>8.12.6</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.googlecode.libphonenumber</groupId>
+            <artifactId>prefixmapper</artifactId>
+            <version>2.142</version>
+        </dependency>
+
+        <!-- tool:geocoder(手机号地理位置)，依赖：libphonenumber & prefixmapper-->
+        <dependency>
+            <groupId>com.googlecode.libphonenumber</groupId>
+            <artifactId>geocoder</artifactId>
+            <version>2.142</version>
+        </dependency>
+
+        <!-- tool:carrier(手机号运营商)-->
+        <dependency>
+            <groupId>com.googlecode.libphonenumber</groupId>
+            <artifactId>carrier</artifactId>
+            <version>1.132</version>
+        </dependency>
+
+        <!-- tool:openNPL(http://opennlp.apache.org/maven-dependency.html) -->
+        <dependency>
+            <groupId>org.apache.opennlp</groupId>
+            <artifactId>opennlp-tools</artifactId>
+            <version>1.9.2</version>
+        </dependency>
+
+        <!-- tool:敏感词 -->
+        <!--<dependency>
+            <groupId>com.baidu.aip</groupId>
+            <artifactId>java-sdk</artifactId>
+            <version>4.12.0</version>
+        </dependency>-->
 
     </dependencies>
 

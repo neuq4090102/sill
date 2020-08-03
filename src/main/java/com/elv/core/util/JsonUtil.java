@@ -16,7 +16,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 /**
  * @author lxh
- * @date 2020-04-17
+ * @since 2020-04-17
  */
 public class JsonUtil {
 

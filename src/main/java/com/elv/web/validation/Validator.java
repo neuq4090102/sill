@@ -2,17 +2,20 @@ package com.elv.web.validation;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 
-import org.apache.commons.lang3.StringUtils;
-
-import com.elv.core.util.Utils;
+import com.elv.core.util.DateUtil;
+import com.elv.core.util.DateUtil.DateForm;
+import com.elv.core.util.StrUtil;
 import com.elv.web.model.ValidationResult;
 import com.elv.web.util.RequestUtil;
 
 /**
  * @author lxh
- * @date 2020-03-25
+ * @since 2020-03-25
  */
 public class Validator {
 
@@ -20,6 +23,11 @@ public class Validator {
     private List<String> notBlanks = new ArrayList<>();
     private List<String> numbers = new ArrayList<>();
     private List<IValidator> validators = new ArrayList<>();
+    private Map<DateForm, List<String>> dateFormMap = new HashMap<>();
+
+    public static Validator init() {
+        return new Validator();
+    }
 
     public List<String> getRequires() {
         return requires;
@@ -37,8 +45,8 @@ public class Validator {
         return validators;
     }
 
-    public static Validator init() {
-        return new Validator();
+    public Map<DateForm, List<String>> getDateFormMap() {
+        return dateFormMap;
     }
 
     public Validator require(String... params) {
@@ -53,6 +61,30 @@ public class Validator {
 
     public Validator number(String... params) {
         this.getNumbers().addAll(Arrays.asList(params));
+        return this;
+    }
+
+    public Validator dateForm(String... params) {
+        List<String> dateForms = Optional.ofNullable(this.getDateFormMap().get(DateForm.DATE))
+                .orElse(new ArrayList<>());
+        dateForms.addAll(Arrays.asList(params));
+        dateFormMap.put(DateForm.DATE, dateForms);
+        return this;
+    }
+
+    public Validator timeForm(String... params) {
+        List<String> timeForms = Optional.ofNullable(this.getDateFormMap().get(DateForm.TIME))
+                .orElse(new ArrayList<>());
+        timeForms.addAll(Arrays.asList(params));
+        dateFormMap.put(DateForm.TIME, timeForms);
+        return this;
+    }
+
+    public Validator dateTimeForm(String... params) {
+        List<String> dateTimeForms = Optional.ofNullable(this.getDateFormMap().get(DateForm.DATE_TIME))
+                .orElse(new ArrayList<>());
+        dateTimeForms.addAll(Arrays.asList(params));
+        dateFormMap.put(DateForm.DATE_TIME, dateTimeForms);
         return this;
     }
 
@@ -94,27 +126,42 @@ public class Validator {
     public ValidationResult validate() {
         ValidationResult result = new ValidationResult();
 
+        // 参数不足校验
         for (String param : this.getRequires()) {
-            if (StringUtils.isEmpty(RequestUtil.getStringParam(param))) {
-                // 参数不足
+            if (StrUtil.isEmpty(RequestUtil.getStringParam(param))) {
                 result.addError(param, "Required.");
             }
         }
 
+        // 不能为空校验
         for (String param : this.getNotBlanks()) {
-            if (StringUtils.isBlank(RequestUtil.getStringParam(param))) {
-                // 不能为空
+            if (StrUtil.isBlank(RequestUtil.getStringParam(param))) {
                 result.addError(param, "Non-null.");
             }
         }
 
+        // 数值类型校验
         for (String param : this.getNumbers()) {
-            if (!Utils.isNum(RequestUtil.getStringParam(param))) {
-                // 数值类型错误
+            if (!StrUtil.isDigit(RequestUtil.getStringParam(param))) {
                 result.addError(param, "Non-number.");
             }
         }
 
+        // 日期格式校验
+        dateFormMap.forEach((key, value) -> {
+            value.stream().forEach(param -> {
+                String paramVal = RequestUtil.getStringParam(param);
+                if (key == DateForm.DATE && !DateUtil.isDate(paramVal)) {
+                    result.addError(param, "Invalid date form.");
+                } else if (key == DateForm.TIME && !DateUtil.isTime(paramVal)) {
+                    result.addError(param, "Invalid time form.");
+                } else if (key == DateForm.DATE_TIME && !DateUtil.isDateTime(paramVal)) {
+                    result.addError(param, "Invalid dateTime form.");
+                }
+            });
+        });
+
+        // 其他校验：范围、长度、枚举、正则等
         for (IValidator validator : this.getValidators()) {
             ValidationResult validationResult = validator.validate();
             if (validationResult != null) {

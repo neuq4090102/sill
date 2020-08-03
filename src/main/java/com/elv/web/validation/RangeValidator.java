@@ -1,6 +1,6 @@
 package com.elv.web.validation;
 
-import com.elv.core.util.Utils;
+import com.elv.core.util.StrUtil;
 import com.elv.web.model.ValidationResult;
 import com.elv.web.util.RequestUtil;
 
@@ -8,7 +8,7 @@ import com.elv.web.util.RequestUtil;
  * 区间验证
  *
  * @author lxh
- * @date 2020-03-25
+ * @since 2020-03-25
  */
 public class RangeValidator<T> implements IValidator {
 
@@ -40,7 +40,7 @@ public class RangeValidator<T> implements IValidator {
     @Override
     public ValidationResult validate() {
         String parameter = RequestUtil.getStringParam(this.getParam(), "");
-        if (Utils.isNum(parameter)) {
+        if (StrUtil.isDigit(parameter)) {
             if (min instanceof Integer) {
                 int intVal = Integer.parseInt(parameter);
                 if (intVal >= (Integer) getMin() && intVal <= (Integer) getMax()) {

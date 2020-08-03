@@ -1,12 +1,5 @@
 package com.elv.traning.beanCopy;
 
-import com.elv.core.util.BeanUtil;
-import com.elv.core.util.JsonUtil;
-import com.elv.core.util.Utils;
-import com.elv.core.annotation.desensitization.Blur;
-import com.elv.traning.model.beanCopy.OrderEntity;
-import com.elv.traning.model.beanCopy.OrderResult;
-
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
@@ -16,27 +9,38 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
+
+import com.elv.core.annotation.desensitization.Blur;
+import com.elv.core.model.util.BlurCtrl;
+import com.elv.core.util.BeanUtil;
+import com.elv.core.util.Builder;
+import com.elv.core.util.JsonUtil;
+import com.elv.core.util.StrUtil;
+import com.elv.traning.model.beanCopy.OrderEntity;
+import com.elv.traning.model.beanCopy.OrderResult;
 
 /**
  * @author lxh
- * @date 2020-04-09
+ * @since 2020-04-09
  */
 public class BeanCopy {
     public static void main(String[] args) {
-        OrderEntity orderEntity = OrderEntity.builder().orderNo("230343").contacter("张三").mobile("86-13269981234")
-                .invoicePrice(20000L).build();
+        // OrderEntity orderEntity = OrderEntity.builder().orderNo("230343").contacter("张三").mobile("86-13269981234")
+        //         .invoicePrice(20000L).build();
+
+        OrderEntity orderEntity = Builder.of(OrderEntity::new).with(OrderEntity::setOrderNo, "230343").build();
         OrderResult orderResult = convert(orderEntity, OrderResult.class);
 
         System.out.println(JsonUtil.toJson(orderResult));
 
-        List<OrderEntity> orderEntities = Stream
-                .of(OrderEntity.builder().orderNo("2303").contacter("张三").mobile("86-13824321234").invoicePrice(20000L)
-                                .build(), OrderEntity.builder().orderNo("1331").contacter("李四").mobile("86-18343344008")
-                                .invoicePrice(30000L).build(),
-                        OrderEntity.builder().orderNo("1342").contacter("王五").mobile("86-17089192234")
-                                .invoicePrice(40000L).build()).collect(Collectors.toList());
+        // List<OrderEntity> orderEntities = Stream
+        //         .of(OrderEntity.builder().orderNo("2303").contacter("张三").mobile("86-13824321234").invoicePrice(20000L)
+        //                         .build(), OrderEntity.builder().orderNo("1331").contacter("李四").mobile("86-18343344008")
+        //                         .invoicePrice(30000L).build(),
+        //                 OrderEntity.builder().orderNo("1342").contacter("王五").mobile("86-17089192234")
+        //                         .invoicePrice(40000L).build()).collect(Collectors.toList());
+
+        List<OrderEntity> orderEntities = new ArrayList<>();
 
         List<OrderResult> orderResults = convert(orderEntities, OrderResult.class, true);
 
@@ -159,8 +163,8 @@ public class BeanCopy {
     }
 
     private static String desensitize(Object invoke, Blur blur) {
-        return Utils.blur(invoke,
-                com.elv.core.model.Blur.builder().fromIdx(blur.fromIdx()).toIdx(blur.toIdx()).stepSize(blur.setpSize())
+        return StrUtil.blur(invoke,
+                BlurCtrl.builder().fromIdx(blur.fromIdx()).toIdx(blur.toIdx()).stepSize(blur.setpSize())
                         .ratio(blur.ratio()).mask(blur.mask()).build());
     }
 

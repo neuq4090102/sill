@@ -2,7 +2,7 @@ package com.elv.web.constant;
 
 /**
  * @author lxh
- * @date 2020-03-23
+ * @since 2020-03-23
  */
 public interface Const {
 

@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <bean name="jedisPoolConfig" class="redis.clients.jedis.JedisPoolConfig">
+        <property name="maxTotal" value="${redis.max.total}"/>
+        <property name="minIdle" value="${redis.min.idle}"/>
+        <property name="maxIdle" value="${redis.max.idle}"/>
+    </bean>
+
+    <bean id="redisCacheBean" class="com.elv.core.model.RedisCache" init-method="init">
+        <property name="jedisPoolConfig" ref="jedisPoolConfig"/>
+        <property name="host" value="${redis.host}"/>
+        <property name="port" value="${redis.port}"/>
+        <property name="password" value="${redis.password}"/>
+    </bean>
+
+    <!--<bean id="redisQueueBean" class="com.navimind.utils.RedisQueueBean" init-method="setUp">
+        <property name="jedisPoolConfig" ref="jedisPoolConfig" />
+        <property name="host" value="${redis.host}" />
+        <property name="port" value="${redis.port}" />
+        <property name="password" value="${redis.password}" />
+    </bean>
+
+    <bean id="distributedLockProxy" class="com.navimind.utils.DistributedLockProxy">
+        <property name="distributedLock" ref="redisCacheBean" />
+    </bean>
+
+    <bean id="hotelOrderLock" class="com.lvyue.pms.util.HotelOrderLock" />
+    <bean id="channelPriceUpdateLock" class="com.lvyue.pms.util.ChannelPriceUpdateLock" />
+    <bean id="channelStockUpdateLock" class="com.lvyue.pms.util.ChannelStockUpdateLock" />
+    <bean id="arLock" class="com.lvyue.pms.util.ArLock" />
+    <bean id="resourceLock" class="com.lvyue.pms.util.ResourceLock" />
+    <bean id="staffShiftLock" class="com.lvyue.pms.util.StaffShiftLock" />-->
+
+</beans>

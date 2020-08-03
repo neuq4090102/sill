@@ -8,13 +8,17 @@ import javax.servlet.http.HttpServletRequest;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
-import com.elv.core.util.Utils;
+import com.elv.core.util.StrUtil;
 
 /**
  * @author lxh
- * @date 2020-03-23
+ * @since 2020-03-23
  */
 public class RequestUtil {
+
+    private RequestUtil() {
+
+    }
 
     public static int getIntParam(String name) {
         return getIntParam(name, 0);
@@ -30,7 +34,7 @@ public class RequestUtil {
 
     public static long getLongParam(String name, long defaultValue) {
         String parameter = getStringParam(name);
-        if (!Utils.isNum(parameter)) {
+        if (!StrUtil.isDigit(parameter)) {
             return defaultValue;
         }
 
@@ -51,7 +55,7 @@ public class RequestUtil {
 
     public static BigDecimal getBigDecimalParam(String name, BigDecimal defaultValue) {
         String parameter = getStringParam(name);
-        if (!Utils.isNum(parameter)) {
+        if (!StrUtil.isDigit(parameter)) {
             return defaultValue;
         }
 

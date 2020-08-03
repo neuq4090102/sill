@@ -3,20 +3,12 @@ package com.elv.traning.model.jackson;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
 
 /**
  * @author lxh
- * @date 2020-04-17
+ * @since 2020-04-17
  */
 
-@Data
-@Builder
-@NoArgsConstructor
-@AllArgsConstructor
 @JsonIgnoreProperties({ "extra", "uselessValue" })
 public class JsonEntity implements Comparable {
 
@@ -29,6 +21,46 @@ public class JsonEntity implements Comparable {
 
     private String extra = "fluffy";
     private int uselessValue = -13;
+
+    public String get_first_name() {
+        return _first_name;
+    }
+
+    public void set_first_name(String _first_name) {
+        this._first_name = _first_name;
+    }
+
+    public int getValue() {
+        return value;
+    }
+
+    public void setValue(int value) {
+        this.value = value;
+    }
+
+    public int getInternalValue() {
+        return internalValue;
+    }
+
+    public void setInternalValue(int internalValue) {
+        this.internalValue = internalValue;
+    }
+
+    public String getExtra() {
+        return extra;
+    }
+
+    public void setExtra(String extra) {
+        this.extra = extra;
+    }
+
+    public int getUselessValue() {
+        return uselessValue;
+    }
+
+    public void setUselessValue(int uselessValue) {
+        this.uselessValue = uselessValue;
+    }
 
     @Override
     public int compareTo(Object o) {

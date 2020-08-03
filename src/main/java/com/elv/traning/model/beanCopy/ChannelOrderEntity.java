@@ -1,14 +1,27 @@
 package com.elv.traning.model.beanCopy;
 
-import lombok.Data;
-
 /**
  * @author lxh
- * @date 2020-04-16
+ * @since 2020-04-16
  */
-@Data
 public class ChannelOrderEntity {
 
     private String channelOrderNo;
     private long channelPrice;
+
+    public String getChannelOrderNo() {
+        return channelOrderNo;
+    }
+
+    public void setChannelOrderNo(String channelOrderNo) {
+        this.channelOrderNo = channelOrderNo;
+    }
+
+    public long getChannelPrice() {
+        return channelPrice;
+    }
+
+    public void setChannelPrice(long channelPrice) {
+        this.channelPrice = channelPrice;
+    }
 }

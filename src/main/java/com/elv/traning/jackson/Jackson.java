@@ -24,7 +24,7 @@ import java.util.stream.Stream;
 
 /**
  * @author lxh
- * @date 2020-04-16
+ * @since 2020-04-16
  */
 public class Jackson {
 
@@ -70,16 +70,16 @@ public class Jackson {
         System.out.println("map to json:" + toJson(map));
 
         List<JsonEntity> jsonEntities = new ArrayList<>();
-        jsonEntities.add(JsonEntity.builder()._first_name("zhang").value(3).build());
-        jsonEntities.add(JsonEntity.builder()._first_name("li").value(4).build());
-        jsonEntities.add(JsonEntity.builder()._first_name("wang").value(5).build());
+        // jsonEntities.add(JsonEntity.builder()._first_name("zhang").value(3).build());
+        // jsonEntities.add(JsonEntity.builder()._first_name("li").value(4).build());
+        // jsonEntities.add(JsonEntity.builder()._first_name("wang").value(5).build());
 
         System.out.println("list to json:" + toJson(jsonEntities));
 
         TreeSet<JsonEntity> treeSet = new TreeSet<>();
-        treeSet.add(JsonEntity.builder()._first_name("zhang").value(3).build());
-        treeSet.add(JsonEntity.builder()._first_name("zhang2").value(4).build());
-        treeSet.add(JsonEntity.builder()._first_name("zhang3").value(5).build());
+        // treeSet.add(JsonEntity.builder()._first_name("zhang").value(3).build());
+        // treeSet.add(JsonEntity.builder()._first_name("zhang2").value(4).build());
+        // treeSet.add(JsonEntity.builder()._first_name("zhang3").value(5).build());
         System.out.println("treeSet to json:" + toJson(treeSet));
 
         TreeMap<String, String> subTreeMap1 = new TreeMap<>();

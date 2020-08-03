@@ -4,7 +4,7 @@ import java.util.LinkedHashMap;
 
 /**
  * @author lxh
- * @date 2020-03-20
+ * @since 2020-03-20
  */
 public class ValidationResult extends LinkedHashMap<String, Object> {
 

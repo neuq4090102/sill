@@ -5,15 +5,15 @@ import java.time.Instant;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.elv.frame.constant.FrameworkErrorEnum;
-import com.elv.frame.constant.StatusCodeEnum;
-import com.elv.frame.itf.IStatusCodeEnum;
-import com.elv.frame.model.PagingServiceResult;
+import com.elv.frame.constant.FrameworkError;
+import com.elv.frame.constant.StatusCode;
+import com.elv.frame.itf.IStatusCode;
+import com.elv.frame.model.PageServiceResult;
 import com.elv.frame.model.ServiceResult;
 
 /**
  * @author lxh
- * @date 2020-03-20
+ * @since 2020-03-20
  */
 public class ApiResult implements Serializable {
 
@@ -37,7 +37,7 @@ public class ApiResult implements Serializable {
         this.msg = msg;
     }
 
-    public ApiResult(IStatusCodeEnum statusCodeEnum) {
+    public ApiResult(IStatusCode statusCodeEnum) {
         this.code = statusCodeEnum.getCode();
         this.msg = statusCodeEnum.getMsg();
     }
@@ -107,26 +107,26 @@ public class ApiResult implements Serializable {
     }
 
     public boolean isSuccess() {
-        return StatusCodeEnum.isSuccess(this.getCode());
+        return StatusCode.isSuccess(this.getCode());
     }
 
     public static ApiResult success() {
-        return new ApiResult(StatusCodeEnum.SUCCESS);
+        return new ApiResult(StatusCode.SUCCESS);
     }
 
     public static ApiResult success(Object data) {
-        ApiResult result = new ApiResult(StatusCodeEnum.SUCCESS);
+        ApiResult result = new ApiResult(StatusCode.SUCCESS);
         result.setData(data);
         return result;
     }
 
     public static ApiResult success(ServiceResult<?> serviceResult) {
-        ApiResult result = new ApiResult(StatusCodeEnum.SUCCESS);
+        ApiResult result = new ApiResult(StatusCode.SUCCESS);
         result.setData(serviceResult.getData());
         result.setAttachments(serviceResult.getAttachments());
-        if (serviceResult instanceof PagingServiceResult) {
+        if (serviceResult instanceof PageServiceResult) {
             //分页总计
-            result.setTotal(((PagingServiceResult<?>) serviceResult).getTotal());
+            result.setTotal(((PageServiceResult<?>) serviceResult).getTotal());
         }
 
         return result;
@@ -145,21 +145,21 @@ public class ApiResult implements Serializable {
     }
 
     public static ApiResult fail() {
-        return new ApiResult(StatusCodeEnum.FAIL);
+        return new ApiResult(StatusCode.FAIL);
     }
 
-    public static ApiResult fail(IStatusCodeEnum statusCodeEnum) {
+    public static ApiResult fail(IStatusCode statusCodeEnum) {
         return new ApiResult(statusCodeEnum);
     }
 
     public static ApiResult fail(ValidationResult validationResult) {
-        ApiResult result = new ApiResult(FrameworkErrorEnum.PARAM_ERROR);
+        ApiResult result = new ApiResult(FrameworkError.PARAM_ERROR);
         result.setErrors(validationResult);
         return result;
     }
 
     public static ApiResult error(String msg) {
-        return new ApiResult(StatusCodeEnum.FAIL.getCode(), msg);
+        return new ApiResult(StatusCode.FAIL.getCode(), msg);
     }
 
     public static ApiResult error(int code, String msg) {

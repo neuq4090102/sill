@@ -9,7 +9,7 @@ import com.elv.traning.model.beanCopy.OrderEntity;
 
 /**
  * @author lxh
- * @date 2020-06-01
+ * @since 2020-06-01
  */
 public class BeanUtilTest {
 

@@ -1,11 +1,10 @@
 package com.elv.traning.lombok;
 
-import com.elv.core.constant.BooleanEnum;
 import com.elv.traning.model.lombok.LomBokEntity;
 
 /**
  * @author lxh
- * @date 2020-04-16
+ * @since 2020-04-16
  */
 public class Lombok {
 
@@ -21,7 +20,9 @@ public class Lombok {
 
     private static void testBuilder() {
         //此处如果不对name赋值就报错
-        LomBokEntity lomBokEntity = LomBokEntity.builder().adultEnum(BooleanEnum.YES).build();
-        System.out.println(lomBokEntity);
+        // LomBokEntity lomBokEntity = LomBokEntity.builder().adultEnum(BooleanEnum.YES).build();
+        // LomBokEntity lomBokEntity = Builder.of(LomBokEntity::new).with(LomBokEntity::setAdultEnum,BooleanEnum.YES).build();
+
+        // System.out.println(lomBokEntity);
     }
 }

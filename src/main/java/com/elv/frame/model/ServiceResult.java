@@ -4,12 +4,12 @@ import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.elv.frame.constant.StatusCodeEnum;
-import com.elv.frame.itf.IStatusCodeEnum;
+import com.elv.frame.constant.StatusCode;
+import com.elv.frame.itf.IStatusCode;
 
 /**
  * @author lxh
- * @date 2020-03-24
+ * @since 2020-03-24
  */
 public class ServiceResult<T> implements Serializable {
 
@@ -28,7 +28,7 @@ public class ServiceResult<T> implements Serializable {
         this.data = data;
     }
 
-    private ServiceResult(IStatusCodeEnum statusCodeEnum) {
+    private ServiceResult(IStatusCode statusCodeEnum) {
         this.code = statusCodeEnum.getCode();
         this.msg = statusCodeEnum.getMsg();
     }
@@ -74,21 +74,21 @@ public class ServiceResult<T> implements Serializable {
     }
 
     public boolean isSuccess() {
-        return StatusCodeEnum.isSuccess(this.getCode());
+        return StatusCode.isSuccess(this.getCode());
     }
 
     public static <T> ServiceResult<T> success() {
-        return new ServiceResult<>(StatusCodeEnum.SUCCESS);
+        return new ServiceResult<>(StatusCode.SUCCESS);
     }
 
     public static <T> ServiceResult<T> success(T data) {
-        ServiceResult<T> result = new ServiceResult<>(StatusCodeEnum.SUCCESS);
+        ServiceResult<T> result = new ServiceResult<>(StatusCode.SUCCESS);
         result.setData(data);
         return result;
     }
 
     public static <T> ServiceResult<T> error(String msg) {
-        return ServiceResult.error(StatusCodeEnum.FAIL.getCode(), msg, null);
+        return ServiceResult.error(StatusCode.FAIL.getCode(), msg, null);
     }
 
     public static <T> ServiceResult<T> error(int code, String msg) {
@@ -103,7 +103,7 @@ public class ServiceResult<T> implements Serializable {
         return result;
     }
 
-    public static <T> ServiceResult<T> error(IStatusCodeEnum statusCodeEnum) {
+    public static <T> ServiceResult<T> error(IStatusCode statusCodeEnum) {
         return ServiceResult.error(statusCodeEnum.getCode(), statusCodeEnum.getMsg());
     }
 }

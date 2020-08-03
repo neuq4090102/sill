@@ -1,7 +1,6 @@
 package com.elv.core.util;
 
 import java.beans.BeanInfo;
-import java.beans.IntrospectionException;
 import java.beans.Introspector;
 import java.beans.PropertyDescriptor;
 import java.lang.reflect.Field;
@@ -20,23 +19,116 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 
 import com.elv.core.annotation.desensitization.Blur;
+import com.elv.core.model.util.BlurCtrl;
 
 /**
  * @author lxh
- * @date 2020-04-01
+ * @since 2020-04-01
  */
 public class BeanUtil {
 
-    private static final Logger logger = LoggerFactory.getLogger(BeanUtil.class);
+    private static final Logger logger;
+
+    static {
+        logger = LoggerFactory.getLogger(BeanUtil.class);
+    }
 
     private BeanUtil() {
     }
 
     /**
+     * 获取类所有属性（含继承属性）
+     *
+     * @param beanClass 类对象
+     * @return java.util.List
+     */
+    public static List<Field> getAllFields(Class<?> beanClass) {
+        return getFields(beanClass, true);
+    }
+
+    /**
+     * 获取类属性
+     *
+     * @param beanClass   类对象
+     * @param withExtends 是否含继承属性
+     * @return java.util.List
+     */
+    public static List<Field> getFields(Class<?> beanClass, boolean withExtends) {
+        List<Field> fields = new ArrayList<>();
+
+        while (withExtends) {
+            if (beanClass == null || beanClass == Object.class) {
+                break;
+            }
+            fields.addAll(Arrays.asList(beanClass.getDeclaredFields()));
+
+            if (!withExtends) {
+                break;
+            }
+            beanClass = beanClass.getSuperclass();
+        }
+
+        return fields;
+    }
+
+    /**
+     * 获取类属性的取值方法
+     *
+     * @param beanClass 类对象
+     * @return java.util.Map
+     */
+    public static Map<String, Method> getGetterMap(Class<?> beanClass) {
+
+        Map<String, Method> resultMap = new HashMap<>();
+        if (beanClass == null) {
+            return resultMap;
+        }
+
+        try {
+            BeanInfo beanInfo = Introspector.getBeanInfo(beanClass, Object.class);
+
+            for (PropertyDescriptor propertyDescriptor : beanInfo.getPropertyDescriptors()) {
+                resultMap.put(propertyDescriptor.getName(), propertyDescriptor.getReadMethod());
+            }
+        } catch (Throwable t) {
+            // 不能解析类信息
+            throw new RuntimeException("BeanUtil can't parse class info:+" + beanClass.getName());
+        }
+
+        return resultMap;
+    }
+
+    /**
+     * 获取类属性的赋值方法
+     *
+     * @param beanClass 类对象
+     * @return java.util.Map
+     */
+    public static Map<String, Method> getSetterMap(Class<?> beanClass) {
+
+        Map<String, Method> resultMap = new HashMap<>();
+        if (beanClass == null) {
+            return resultMap;
+        }
+
+        try {
+            BeanInfo beanInfo = Introspector.getBeanInfo(beanClass, Object.class);
+            for (PropertyDescriptor propertyDescriptor : beanInfo.getPropertyDescriptors()) {
+                resultMap.put(propertyDescriptor.getName(), propertyDescriptor.getWriteMethod());
+            }
+        } catch (Throwable t) {
+            // 不能解析类信息
+            throw new RuntimeException("BeanUtil can't parse class info:+" + beanClass.getName());
+        }
+
+        return resultMap;
+    }
+
+    /**
      * spring的copy
      *
-     * @param source
-     * @param target
+     * @param source 源对象
+     * @param target 目标对象
      */
     public static void copy(Object source, Object target) {
         if (source == null || target == null) {
@@ -48,10 +140,9 @@ public class BeanUtil {
     /**
      * 单对象转换（不脱敏）
      *
-     * @param source
-     * @param targetClass
-     * @param <T>
-     * @return
+     * @param source      源对象
+     * @param targetClass 目标类对象
+     * @return T
      */
     public static <T> T convert(Object source, Class<T> targetClass) {
         return convert(source, targetClass, false);
@@ -60,11 +151,10 @@ public class BeanUtil {
     /**
      * 单对象转换（支持脱敏）
      *
-     * @param source
-     * @param targetClass
-     * @param needBlur
-     * @param <T>
-     * @return
+     * @param source      源对象
+     * @param targetClass 目标类对象
+     * @param needBlur    是否需要脱敏
+     * @return T
      */
     public static <T> T convert(Object source, Class<T> targetClass, boolean needBlur) {
         if (source == null || targetClass == null) {
@@ -91,10 +181,9 @@ public class BeanUtil {
     /**
      * 批量转换（不脱敏）
      *
-     * @param sources
-     * @param targetClass
-     * @param <T>
-     * @return
+     * @param sources     源对象
+     * @param targetClass 目标类对象
+     * @return java.util.List
      */
     public static <T> List<T> converts(List<? extends Object> sources, Class<T> targetClass) {
         return converts(sources, targetClass, false);
@@ -103,11 +192,10 @@ public class BeanUtil {
     /**
      * 批量转换（支持脱敏）
      *
-     * @param sources
-     * @param targetClass
-     * @param needBlur
-     * @param <T>
-     * @return
+     * @param sources     源对象
+     * @param targetClass 目标类对象
+     * @param needBlur    是否需要脱敏
+     * @return java.util.List
      */
     public static <T> List<T> converts(List<?> sources, Class<T> targetClass, boolean needBlur) {
         if (sources == null || sources.size() == 0 || targetClass == null) {
@@ -135,100 +223,9 @@ public class BeanUtil {
         return results;
     }
 
-    /**
-     * 获取类所有属性（含继承属性）
-     *
-     * @param beanClass
-     * @return
-     */
-    public static List<Field> getAllFields(Class<?> beanClass) {
-        return getFields(beanClass, true);
-    }
-
-    /**
-     * 获取类属性
-     *
-     * @param beanClass
-     * @param withExtends 是否含继承属性
-     * @return
-     */
-    public static List<Field> getFields(Class<?> beanClass, boolean withExtends) {
-        List<Field> fields = new ArrayList<>();
-
-        while (withExtends) {
-            if (beanClass == null || beanClass == Object.class) {
-                break;
-            }
-            fields.addAll(Arrays.asList(beanClass.getDeclaredFields()));
-
-            if (!withExtends) {
-                break;
-            }
-            beanClass = beanClass.getSuperclass();
-        }
-
-        return fields;
-    }
-
-    /**
-     * 获取类属性的取值方法
-     *
-     * @param beanClass
-     * @return
-     * @throws IntrospectionException
-     */
-    public static Map<String, Method> getGetterMap(Class<?> beanClass) {
-
-        Map<String, Method> resultMap = new HashMap<>();
-        if (beanClass == null) {
-            return resultMap;
-        }
-
-        try {
-            BeanInfo beanInfo = Introspector.getBeanInfo(beanClass, Object.class);
-
-            for (PropertyDescriptor propertyDescriptor : beanInfo.getPropertyDescriptors()) {
-                resultMap.put(propertyDescriptor.getName(), propertyDescriptor.getReadMethod());
-            }
-        } catch (Throwable t) {
-            // 不能解析类信息
-            throw new RuntimeException("BeanUtil can't parse class info:+" + beanClass.getName());
-        }
-
-        return resultMap;
-    }
-
-    /**
-     * 获取类属性的赋值方法
-     *
-     * @param beanClass
-     * @return
-     * @throws IntrospectionException
-     */
-    public static Map<String, Method> getSetterMap(Class<?> beanClass) {
-
-        Map<String, Method> resultMap = new HashMap<>();
-        if (beanClass == null) {
-            return resultMap;
-        }
-
-        try {
-            BeanInfo beanInfo = Introspector.getBeanInfo(beanClass, Object.class);
-            for (PropertyDescriptor propertyDescriptor : beanInfo.getPropertyDescriptors()) {
-                resultMap.put(propertyDescriptor.getName(), propertyDescriptor.getWriteMethod());
-            }
-        } catch (Throwable t) {
-            // 不能解析类信息
-            throw new RuntimeException("BeanUtil can't parse class info:+" + beanClass.getName());
-        }
-
-        return resultMap;
-    }
-
     private static <T> void convert(Map<String, Method> getterMap, Map<String, Method> setterMap, List<Field> allFields,
             Map<String, Blur> blurMap, Object source, T result, boolean needBlur)
             throws IllegalAccessException, InvocationTargetException {
-
         for (Field targetField : allFields) {
             if (Modifier.isStatic(targetField.getModifiers()) || Modifier.isFinal(targetField.getModifiers())) {
                 continue;
@@ -268,9 +265,16 @@ public class BeanUtil {
         }
     }
 
-    private static String desensitize(Object invoke, Blur blur) {
-        return Utils.blur(invoke,
-                com.elv.core.model.Blur.builder().fromIdx(blur.fromIdx()).toIdx(blur.toIdx()).stepSize(blur.setpSize())
+    /**
+     * 脱敏
+     *
+     * @param object 脱敏对象
+     * @param blur   脱敏参数
+     * @return java.lang.String
+     */
+    private static String desensitize(Object object, Blur blur) {
+        return StrUtil.blur(object,
+                BlurCtrl.builder().fromIdx(blur.fromIdx()).toIdx(blur.toIdx()).stepSize(blur.setpSize())
                         .ratio(blur.ratio()).mask(blur.mask()).build());
     }
 

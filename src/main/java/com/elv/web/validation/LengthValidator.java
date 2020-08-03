@@ -7,7 +7,7 @@ import com.elv.web.util.RequestUtil;
  * 长度验证
  *
  * @author lxh
- * @date 2020-03-25
+ * @since 2020-03-25
  */
 public class LengthValidator implements IValidator {
 

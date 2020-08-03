@@ -16,7 +16,7 @@ import com.elv.web.util.RequestUtil;
  * 2.枚举值是非线性的，且需要强校验，可以使用此验证
  *
  * @author lxh
- * @date 2020-03-26
+ * @since 2020-03-26
  */
 public class EnumValidator implements IValidator {
 

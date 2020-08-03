@@ -6,7 +6,7 @@ import org.testng.annotations.Test;
 
 /**
  * @author lxh
- * @date 2020-06-01
+ * @since 2020-06-01
  */
 public class JsonUtilTest {
 
