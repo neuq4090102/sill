@@ -211,9 +211,11 @@ public class MailSender {
             Transport.send(message);
         } catch (SendFailedException e) { // 发送失败校验是否存在无效邮箱
             try {
-                if (e.getCause() instanceof SMTPAddressFailedException && e.getValidUnsentAddresses() != null) {
-                    message.setRecipients(Message.RecipientType.TO, e.getValidUnsentAddresses()); // 重新设定有效收件人邮箱
-                    Transport.send(message);
+                if (e.getCause() instanceof SMTPAddressFailedException) {
+                    if (e.getValidUnsentAddresses() != null && e.getValidUnsentAddresses().length > 0) {
+                        message.setRecipients(Message.RecipientType.TO, e.getValidUnsentAddresses()); // 重新设定有效收件人邮箱
+                        Transport.send(message);
+                    }
                 }
             } catch (Exception e2) {
                 throw new BusinessException(" MailSender#send failed to resend email.", e2);

@@ -21,7 +21,7 @@ public abstract class AbstractMailUtil {
         if (this.getUserName() == null) {
             return "";
         }
-        return "smtp." + this.getUserName().substring(this.getUserName().lastIndexOf("@"));
+        return "smtp." + this.getUserName().substring(this.getUserName().lastIndexOf("@") + 1);
     }
 
     /**

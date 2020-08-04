@@ -19,7 +19,7 @@ public class MailUtil extends AbstractMailUtil {
 
     @Override
     public String getPassword() {
-        return "OEMBSFKUMZCNUJZQS";
+        return "OEMBSFKUMZCNUJZQ";
     }
 
     @Override
@@ -35,8 +35,9 @@ public class MailUtil extends AbstractMailUtil {
         // MailParam mailParam = new MailParam(Arrays.asList("neuq4090102@126.com"), "local test", "Test");
 
         MailUtil mailUtil = new MailUtil();
-        mailUtil.send(MailParam.builder().recipients(Arrays.asList("xinghua.lv@foxmail.com"))
-                .ccs(Arrays.asList("neuq4090102@126.com")).subject("local test").content("66666").build());
+        System.out.println(mailUtil.getHost());
+        mailUtil.send(MailParam.builder().recipients(Arrays.asList("nequ4090102@126.com"))
+                .subject("local test").content("66666").build());
         // mailUtil.send(MailParam.builder().recipients(Arrays.asList("neuq4090102@126.com")).subject("local test")
         //         .content("Test2").filePaths(filePaths).build());
         System.out.println("success.");
