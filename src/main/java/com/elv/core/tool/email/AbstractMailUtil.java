@@ -10,14 +10,19 @@ import com.elv.core.util.StrUtil;
 public abstract class AbstractMailUtil {
 
     /**
-     * SMTP服务器服务器
+     * 邮箱服务器
      * <pre>
      *     smtp.126.com
      * </pre>
      *
      * @return java.lang.String
      */
-    public abstract String getHost();
+    public String getHost() {
+        if (this.getUserName() == null) {
+            return "";
+        }
+        return "smtp." + this.getUserName().substring(this.getUserName().lastIndexOf("@"));
+    }
 
     /**
      * 端口，默认25
@@ -65,7 +70,7 @@ public abstract class AbstractMailUtil {
         // Assert.notNull(mailParam.getRecipients(), "AbstractMailUtil#defaultSend recipients not null.");
         // Assert.notBlank(mailParam.getSubject(), "AbstractMailUtil#defaultSend subject not blank.");
 
-        MailSender.of().hostName(getHost()).port(getPort()).userName(getUserName()).password(getPassword()).init()
+        MailSender.of().host(getHost()).port(getPort()).userName(getUserName()).password(getPassword()).init()
                 .send(mailParam);
     }
 

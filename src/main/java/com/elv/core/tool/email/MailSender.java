@@ -34,8 +34,8 @@ public class MailSender {
 
     private String mimeType = "text/html;charset=utf-8";
 
-    private String hostName;
-    private int port = 25; // 默认端口
+    private String host;
+    private int port;
     private String userName;
     private String password;
     private Session session;
@@ -48,23 +48,19 @@ public class MailSender {
         this.password = password;
     }
 
-    public MailSender(String hostName, int port, String userName, String password) {
-        this.hostName = hostName;
+    public MailSender(String host, int port, String userName, String password) {
+        this.host = host;
         this.port = port;
         this.userName = userName;
         this.password = password;
     }
 
-    public static MailSender of() {
-        return new MailSender();
+    public String getHost() {
+        return host;
     }
 
-    public String getHostName() {
-        return hostName;
-    }
-
-    public void setHostName(String hostName) {
-        this.hostName = hostName;
+    public void setHost(String host) {
+        this.host = host;
     }
 
     public int getPort() {
@@ -99,8 +95,12 @@ public class MailSender {
         this.session = session;
     }
 
-    public MailSender hostName(String hostName) {
-        this.hostName = hostName;
+    public static MailSender of() {
+        return new MailSender();
+    }
+
+    public MailSender host(String host) {
+        this.host = host;
         return this;
     }
 
@@ -130,17 +130,12 @@ public class MailSender {
      * @return com.elv.core.tool.email.MailSender
      */
     public MailSender init() {
-
         Assert.notBlank(this.getUserName(), "MailSender#init userName not blank.");
         Assert.notBlank(this.getPassword(), "MailSender#init password not blank.");
         Assert.isTrue(!StrUtil.isEmail(this.getUserName()), "MailSender#init userName isn't mailBox.");
 
-        if (this.getHostName() == null) {
-            this.setHostName("smtp." + this.getUserName().substring(this.getUserName().lastIndexOf("@")));
-        }
-
         Properties props = new Properties();
-        props.put("mail.smtp.host", this.getHostName());
+        props.put("mail.smtp.host", this.getHost());
         props.put("mail.smtp.port", this.getPort());
         props.put("mail.smtp.auth", "true");
         Authenticator authenticator = new MailAuthenticator(getUserName(), getPassword());
