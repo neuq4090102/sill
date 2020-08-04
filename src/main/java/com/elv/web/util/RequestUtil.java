@@ -33,7 +33,7 @@ public class RequestUtil {
     }
 
     public static long getLongParam(String name, long defaultValue) {
-        String parameter = getStringParam(name);
+        String parameter = getStrParam(name);
         if (!StrUtil.isDigit(parameter)) {
             return defaultValue;
         }
@@ -46,7 +46,7 @@ public class RequestUtil {
     }
 
     public static double getDoubleParam(String param, double defaultValue) {
-        // 注意此处是先将double转化为字符串再生成BigDecimal,防数据丢失
+        // 注意：此处是先将double转化为字符串再生成BigDecimal,防数据丢失
         BigDecimal bigDecimal = getBigDecimalParam(param, new BigDecimal(defaultValue + ""));
         bigDecimal = bigDecimal.setScale(2, RoundingMode.HALF_UP);
 
@@ -54,28 +54,29 @@ public class RequestUtil {
     }
 
     public static BigDecimal getBigDecimalParam(String name, BigDecimal defaultValue) {
-        String parameter = getStringParam(name);
+        String parameter = getStrParam(name);
         if (!StrUtil.isDigit(parameter)) {
             return defaultValue;
         }
-
-        BigDecimal bigDecimal = new BigDecimal(parameter);
-        bigDecimal = bigDecimal.setScale(2, RoundingMode.HALF_UP);
-
-        return bigDecimal;
+        return new BigDecimal(parameter).setScale(2, RoundingMode.HALF_UP);
     }
 
-    public static String getStringParam(String name) {
-        return getStringParam(name, null);
+    public static String getStrParam(String name) {
+        return getStrParam(name, null);
     }
 
-    public static String getStringParam(String name, String defaultValue) {
+    public static String getStrParam(String name, String defaultValue) {
         String parameter = getRequest().getParameter(name);
         if (parameter == null) {
             return defaultValue;
         }
 
         return parameter.trim();
+    }
+
+    public static String getIp() {
+        // TODO
+        return "";
     }
 
     public static HttpServletRequest getRequest() {

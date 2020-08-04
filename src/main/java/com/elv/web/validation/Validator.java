@@ -128,21 +128,21 @@ public class Validator {
 
         // 参数不足校验
         for (String param : this.getRequires()) {
-            if (StrUtil.isEmpty(RequestUtil.getStringParam(param))) {
+            if (StrUtil.isEmpty(RequestUtil.getStrParam(param))) {
                 result.addError(param, "Required.");
             }
         }
 
         // 不能为空校验
         for (String param : this.getNotBlanks()) {
-            if (StrUtil.isBlank(RequestUtil.getStringParam(param))) {
+            if (StrUtil.isBlank(RequestUtil.getStrParam(param))) {
                 result.addError(param, "Non-null.");
             }
         }
 
         // 数值类型校验
         for (String param : this.getNumbers()) {
-            if (!StrUtil.isDigit(RequestUtil.getStringParam(param))) {
+            if (!StrUtil.isDigit(RequestUtil.getStrParam(param))) {
                 result.addError(param, "Non-number.");
             }
         }
@@ -150,7 +150,7 @@ public class Validator {
         // 日期格式校验
         dateFormMap.forEach((key, value) -> {
             value.stream().forEach(param -> {
-                String paramVal = RequestUtil.getStringParam(param);
+                String paramVal = RequestUtil.getStrParam(param);
                 if (key == DateForm.DATE && !DateUtil.isDate(paramVal)) {
                     result.addError(param, "Invalid date form.");
                 } else if (key == DateForm.TIME && !DateUtil.isTime(paramVal)) {

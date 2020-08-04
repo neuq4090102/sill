@@ -31,7 +31,7 @@ public class RegexValidator implements IValidator {
 
     @Override
     public ValidationResult validate() {
-        String parameter = RequestUtil.getStringParam(this.getParam(), "");
+        String parameter = RequestUtil.getStrParam(this.getParam(), "");
         if (!Pattern.compile(this.getRegex()).matcher(parameter).matches()) {
             //  格式不合法
             return new ValidationResult(this.getParam(), "Invalid format.");

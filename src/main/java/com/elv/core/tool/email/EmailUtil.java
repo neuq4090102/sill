@@ -24,12 +24,12 @@ public class EmailUtil extends AbstractMailUtil {
 
     @Override
     public String getPassword() {
-        return "OEMBSFKUMZCNUJZQ";
+        return "OEMBSFKUMZCNUJZQS";
     }
 
     @Override
     public void send(MailParam mailParam) {
-        defaultSend(mailParam);
+        this.defaultSend(mailParam);
     }
 
     public static void main(String[] args) {

@@ -47,7 +47,7 @@ public class EnumValidator implements IValidator {
 
     @Override
     public ValidationResult validate() {
-        String parameter = RequestUtil.getStringParam(this.getParam(), "");
+        String parameter = RequestUtil.getStrParam(this.getParam(), "");
         if (!this.getEnumClass().isEnum()) {
             // 非枚举类
             return new ValidationResult(this.getParam(), this.getEnumClass().getSimpleName() + " isn't a enum class.");

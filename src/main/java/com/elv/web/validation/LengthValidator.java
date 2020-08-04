@@ -43,7 +43,7 @@ public class LengthValidator implements IValidator {
 
     @Override
     public ValidationResult validate() {
-        String parameter = RequestUtil.getStringParam(this.getParam(), "");
+        String parameter = RequestUtil.getStrParam(this.getParam(), "");
         int length = parameter.length();
         if (length > this.getMaxLength()) {
             // 长度不能超过

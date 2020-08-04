@@ -1,7 +1,9 @@
 package com.elv.core.util;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 import java.util.regex.Pattern;
@@ -9,6 +11,7 @@ import java.util.regex.Pattern;
 import org.apache.commons.lang3.StringUtils;
 
 import com.elv.core.model.util.BlurCtrl;
+import com.elv.frame.exception.BusinessException;
 
 /**
  * @author lxh
@@ -47,14 +50,14 @@ public class StrUtil {
     /**
      * 是否是数字
      *
-     * @param param 参数
+     * @param str 参数
      * @return boolean
      */
-    public static boolean isDigit(String param) {
-        if (StringUtils.isEmpty(param)) {
+    public static boolean isDigit(String str) {
+        if (isBlank(str)) {
             return false;
         }
-        return digitPattern.matcher(param.trim()).matches();
+        return digitPattern.matcher(str).matches();
     }
 
     /**
@@ -148,7 +151,7 @@ public class StrUtil {
      *      Blur.builder().ratio(0.8).mask("#").build()     = ######g
      * </pre>
      *
-     * @param object 对象
+     * @param object   对象
      * @param blurCtrl 脱敏参数
      * @return java.lang.String
      */
@@ -255,4 +258,29 @@ public class StrUtil {
         }
     }
 
+    /**
+     * 字符串转List
+     *
+     * @param str       入参
+     * @param delimiter 分隔符
+     * @param clazz     要转化的类对象
+     * @return java.util.List
+     */
+    public static <T> List<T> splitToList(String str, String delimiter, Class<T> clazz) {
+        List<T> results = new ArrayList<>();
+        if (isBlank(str)) {
+            return results;
+        }
+
+        try {
+            for (String s : str.split(delimiter)) {
+                if (isNotBlank(s)) {
+                    results.add(clazz.getConstructor(String.class).newInstance(s.trim()));
+                }
+            }
+        } catch (Exception e) {
+            throw new BusinessException("StrUtil#splitToList error.", e);
+        }
+        return results;
+    }
 }

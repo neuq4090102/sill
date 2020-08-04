@@ -39,7 +39,7 @@ public class RangeValidator<T> implements IValidator {
 
     @Override
     public ValidationResult validate() {
-        String parameter = RequestUtil.getStringParam(this.getParam(), "");
+        String parameter = RequestUtil.getStrParam(this.getParam(), "");
         if (StrUtil.isDigit(parameter)) {
             if (min instanceof Integer) {
                 int intVal = Integer.parseInt(parameter);
