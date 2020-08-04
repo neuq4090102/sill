@@ -264,6 +264,7 @@ public class StrUtil {
      * @param str       入参
      * @param delimiter 分隔符
      * @param clazz     要转化的类对象
+     * @param <T>       范型
      * @return java.util.List
      */
     public static <T> List<T> splitToList(String str, String delimiter, Class<T> clazz) {

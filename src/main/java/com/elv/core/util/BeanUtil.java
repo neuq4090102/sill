@@ -142,6 +142,7 @@ public class BeanUtil {
      *
      * @param source      源对象
      * @param targetClass 目标类对象
+     * @param <T>         范型
      * @return T
      */
     public static <T> T convert(Object source, Class<T> targetClass) {
@@ -154,6 +155,7 @@ public class BeanUtil {
      * @param source      源对象
      * @param targetClass 目标类对象
      * @param needBlur    是否需要脱敏
+     * @param <T>         范型
      * @return T
      */
     public static <T> T convert(Object source, Class<T> targetClass, boolean needBlur) {
@@ -183,6 +185,7 @@ public class BeanUtil {
      *
      * @param sources     源对象
      * @param targetClass 目标类对象
+     * @param <T>         范型
      * @return java.util.List
      */
     public static <T> List<T> converts(List<? extends Object> sources, Class<T> targetClass) {
@@ -195,6 +198,7 @@ public class BeanUtil {
      * @param sources     源对象
      * @param targetClass 目标类对象
      * @param needBlur    是否需要脱敏
+     * @param <T>         范型
      * @return java.util.List
      */
     public static <T> List<T> converts(List<?> sources, Class<T> targetClass, boolean needBlur) {

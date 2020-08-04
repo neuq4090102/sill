@@ -52,14 +52,14 @@ public abstract class AbstractMailUtil {
     /**
      * 邮件发送
      *
-     * @param mailParam
+     * @param mailParam 邮件参数
      */
     public abstract void send(MailParam mailParam);
 
     /**
      * 默认邮件发送
      *
-     * @param mailParam
+     * @param mailParam 邮件参数
      */
     public void defaultSend(MailParam mailParam) {
         if (mailParam.getRecipients() == null || mailParam.getRecipients().size() == 0) {

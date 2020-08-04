@@ -19,7 +19,7 @@ public class MailUtil extends AbstractMailUtil {
 
     @Override
     public String getPassword() {
-        return "OEMBSFKUMZCNUJZQ";
+        return "OEMBSFKUMZCNUJZQS";
     }
 
     @Override

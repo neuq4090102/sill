@@ -218,10 +218,10 @@ public class MailSender {
                     }
                 }
             } catch (Exception e2) {
-                throw new BusinessException(" MailSender#send failed to resend email.", e2);
+                throw new BusinessException("MailSender#send failed to resend email.", e2);
             }
         } catch (Exception e) {
-            throw new BusinessException(" MailSender#send failed to send email.", e);
+            throw new BusinessException("MailSender#send failed to send email.", e);
         }
     }
 
