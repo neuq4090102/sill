@@ -55,4 +55,19 @@
     </mvc:annotation-driven>
 
 
+    <!-- thymeleaf模版 -->
+    <bean id="templateEngine" class="org.thymeleaf.spring4.SpringTemplateEngine">
+        <property name="templateResolvers">
+            <set>
+                <ref bean="templateResolver"/>
+            </set>
+        </property>
+    </bean>
+    <bean id="templateResolver" class="org.thymeleaf.spring4.templateresolver.SpringResourceTemplateResolver">
+        <property name="prefix" value="/WEB-INF/templates/"/>
+        <property name="suffix" value=".html"/>
+        <property name="templateMode" value="HTML"/>
+    </bean>
+
+
 </beans>
