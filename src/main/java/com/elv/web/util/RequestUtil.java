@@ -2,6 +2,8 @@ package com.elv.web.util;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.util.Enumeration;
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -11,6 +13,8 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 import com.elv.core.util.StrUtil;
 
 /**
+ * 参数请求工具
+ *
  * @author lxh
  * @since 2020-03-23
  */
@@ -75,11 +79,36 @@ public class RequestUtil {
     }
 
     public static String getIp() {
-        // TODO
-        return "";
+        return Request.getIp(getRequest());
+    }
+
+    public static List<String> getAllParams() {
+        //TODO
+        Enumeration<String> parameterNames = getRequest().getParameterNames();
+
+        return null;
+    }
+
+    public static void md5(String secretKey) {
+    }
+
+    public static void mdBy(String algorithm) {
+
+        // return SecurityUtil.mdBy();
     }
 
     public static HttpServletRequest getRequest() {
         return ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
     }
+
+    public static class Request {
+
+        private static String getIp(HttpServletRequest request) {
+            return request.getRemoteAddr();
+        }
+
+
+
+    }
+
 }

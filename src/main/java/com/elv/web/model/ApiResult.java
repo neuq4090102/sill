@@ -140,7 +140,7 @@ public class ApiResult implements Serializable {
         if (serviceResult.getCause() == null) {
             return ApiResult.error(serviceResult.getCode(), serviceResult.getMsg());
         } else {
-            return ApiResult.error("unknow error1");
+            return ApiResult.error("unknown error");
         }
     }
 
@@ -148,8 +148,8 @@ public class ApiResult implements Serializable {
         return new ApiResult(StatusCode.FAIL);
     }
 
-    public static ApiResult fail(IStatusCode statusCodeEnum) {
-        return new ApiResult(statusCodeEnum);
+    public static ApiResult fail(IStatusCode statusCode) {
+        return new ApiResult(statusCode);
     }
 
     public static ApiResult fail(ValidationResult validationResult) {
@@ -164,6 +164,10 @@ public class ApiResult implements Serializable {
 
     public static ApiResult error(int code, String msg) {
         return new ApiResult(code, msg);
+    }
+
+    public static ApiResult error(IStatusCode statusCode) {
+        return new ApiResult(statusCode);
     }
 
 }

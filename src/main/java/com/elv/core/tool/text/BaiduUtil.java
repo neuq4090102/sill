@@ -10,12 +10,14 @@ import java.util.stream.Collectors;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.elv.core.util.HttpUtil;
-import com.elv.core.util.JsonUtil;
-import com.elv.core.util.StrUtil;
+import com.elv.core.tool.db.jdbc.BasicQuery;
+import com.elv.core.tool.db.model.Authorization;
 import com.elv.core.tool.text.model.BaiduAipResult;
 import com.elv.core.tool.text.model.BaiduDataResult;
 import com.elv.core.tool.text.model.BaiduTokenResult;
+import com.elv.core.util.HttpUtil;
+import com.elv.core.util.JsonUtil;
+import com.elv.core.util.StrUtil;
 
 /**
  * 百度工具
@@ -34,16 +36,14 @@ public class BaiduUtil {
     private static final String TOKEN_URL;
     private static final String TEXT_URL;
     private static final String IMAGE_URL;
-    private static final String API_KEY; // 注册账户申请
-    private static final String SECRET_KEY; // 注册账户申请
+    // private static final String API_KEY; // 注册账户申请
+    // private static final String SECRET_KEY; // 注册账户申请
 
     static {
         logger = LoggerFactory.getLogger(BaiduUtil.class);
         TOKEN_URL = "https://aip.baidubce.com/oauth/2.0/token";
         TEXT_URL = "https://aip.baidubce.com/rest/2.0/solution/v1/text_censor/v2/user_defined";
         IMAGE_URL = "https://aip.baidubce.com/rest/2.0/solution/v1/img_censor/v2/user_defined";
-        API_KEY = "U8W4Uqb9xME5PgCSXB6Ywxtu";
-        SECRET_KEY = "xKk6wBpmi8GLpgOI2PjE1X2NE95EhW2mf";
     }
 
     /**
@@ -102,7 +102,7 @@ public class BaiduUtil {
         public static String fetchToken() {
             // TODO 从DB或者redis中获取token，如果没有则请求接口并缓存
             String url = TOKEN_URL + "?grant_type=client_credentials&client_id=%s&client_secret=%s";
-            String result = HttpUtil.get(String.format(url, API_KEY, SECRET_KEY));
+            String result = HttpUtil.get(String.format(url, getApiKey(), getSecretKey()));
             BaiduTokenResult baiduToken = JsonUtil.toObject(result, BaiduTokenResult.class);
             if (baiduToken != null && StrUtil.isNotBlank(baiduToken.getAccess_token())) {
                 // TODO insert to db or cache into redis.
@@ -112,6 +112,18 @@ public class BaiduUtil {
             logger.warn("BaiduUtil, token is empty.");
 
             return "";
+        }
+
+        private static String getApiKey() {
+            return authorization().getApiKey();
+        }
+
+        private static String getSecretKey() {
+            return authorization().getAppSecret();
+        }
+
+        private static Authorization authorization() {
+            return BasicQuery.authorization();
         }
 
         /**

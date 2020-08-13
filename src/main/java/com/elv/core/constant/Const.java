@@ -7,17 +7,17 @@ package com.elv.core.constant;
 public interface Const {
 
     /**
-     * 默认东八区
+     * 默认时区-东八区
      */
-    int DEFAULT_TIME_ZONE = 8;
+    int TIME_ZONE = 8;
 
     /**
-     * 国别码-中国
+     * 默认国别码-中国
      */
     int COUNTRY_CODE_CHINA = 86;
 
     /**
-     * 默认字符集
+     * 默认字符集-UTF-8
      */
     String UTF8 = "UTF-8";
 

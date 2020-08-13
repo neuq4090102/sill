@@ -10,18 +10,18 @@ import com.elv.frame.exception.BusinessException;
  * @see org.springframework.util.Assert
  * @since 2020-07-27
  */
-public class Assert {
+public abstract class Assert {
 
     public static void notNull(Object object, String msg) {
         isTrue(object == null, msg);
     }
 
-    public static void notEmpty(Collection<?> collection, String message) {
-        isTrue(collection == null || collection.isEmpty(), message);
+    public static void notEmpty(Collection<?> collection, String msg) {
+        isTrue(collection == null || collection.isEmpty(), msg);
     }
 
-    public static void notEmpty(Map<?, ?> map, String message) {
-        isTrue(map == null || map.isEmpty(), message);
+    public static void notEmpty(Map<?, ?> map, String msg) {
+        isTrue(map == null || map.isEmpty(), msg);
     }
 
     public static void notBlank(String string, String msg) {

@@ -23,6 +23,8 @@ import com.elv.core.model.util.BlurCtrl;
 
 /**
  * @author lxh
+ * @see <a href="https://mapstruct.org">MapStruct</a>
+ * @see org.springframework.beans.BeanUtils
  * @since 2020-04-01
  */
 public class BeanUtil {

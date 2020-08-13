@@ -40,11 +40,11 @@ public class Dater {
     }
 
     public static Dater of(Date date) {
-        return of(date.getTime() + "", Const.DEFAULT_TIME_ZONE);
+        return of(date.getTime() + "", Const.TIME_ZONE);
     }
 
     public static Dater of(String dateStr) {
-        return of(dateStr, Const.DEFAULT_TIME_ZONE);
+        return of(dateStr, Const.TIME_ZONE);
     }
 
     public static Dater of(String dateStr, int timeZone) {
@@ -444,12 +444,21 @@ public class Dater {
     }
 
     /**
-     * 获取时间戳
+     * 获取时间戳对象
      *
      * @return java.time.Instant
      */
     public Instant getInstant() {
         return this.getZonedDateTime().toInstant();
+    }
+
+    /**
+     * 获取时间戳（单位：毫秒）
+     *
+     * @return long
+     */
+    public long getTimestamp() {
+        return this.getZonedDateTime().toInstant().toEpochMilli();
     }
 
     /**

@@ -8,7 +8,8 @@ import com.elv.frame.itf.IStatusCode;
  */
 public enum FrameworkError implements IStatusCode {
 
-    PARAM_ERROR(-100, "参数检查错误"),  //
+    COMMON_ERROR(-100, "通用异常错误"),  //
+    PARAM_ERROR(-101, "参数检查错误"),  //
     ;
 
     private final int code;

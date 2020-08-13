@@ -70,4 +70,7 @@
         <property name="templateEngine" ref="templateEngine"/>
     </bean>
 
+    <!-- API异常处理器 -->
+    <bean id="apiExceptionHandler" class="com.elv.web.servlet.ExceptionHandler"/>
+
 </beans>

@@ -16,8 +16,8 @@ public class BaiduToolDrill {
 
     //设置APPID/AK/SK
     public static final String APP_ID = "21672001";
-    public static final String API_KEY = "U8W4Uqb9xME5PgCSXB6Ywxtu";
-    public static final String SECRET_KEY = "xKk6wBpmi8GLpgOI2PjE1X2NE95EhW2mf";
+    public static final String API_KEY = "";
+    public static final String SECRET_KEY = "";
 
     public static void main(String[] args) {
 

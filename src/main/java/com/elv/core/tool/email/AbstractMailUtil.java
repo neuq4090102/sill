@@ -67,9 +67,6 @@ public abstract class AbstractMailUtil {
         } else if (StrUtil.isBlank(mailParam.getSubject())) {
             return;
         }
-        // Assert.notNull(mailParam.getRecipients(), "AbstractMailUtil#defaultSend recipients not null.");
-        // Assert.notBlank(mailParam.getSubject(), "AbstractMailUtil#defaultSend subject not blank.");
-
         MailSender.of().host(getHost()).port(getPort()).userName(getUserName()).password(getPassword()).init()
                 .send(mailParam);
     }

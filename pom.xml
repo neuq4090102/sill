@@ -220,6 +220,14 @@
             <version>4.4</version>
         </dependency>
 
+        <!-- tool:commons-codec-->
+        <!--
+          <dependency>
+              <groupId>commons-codec</groupId>
+              <artifactId>commons-codec</artifactId>
+              <version>1.14</version>
+          </dependency>-->
+
         <!-- tool:json  -->
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
