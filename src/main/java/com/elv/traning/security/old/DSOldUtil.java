@@ -1,4 +1,4 @@
-package com.elv.traning.security;
+package com.elv.traning.security.old;
 
 import java.nio.charset.Charset;
 import java.security.Key;
@@ -16,6 +16,8 @@ import com.elv.core.constant.SecurityEnum;
 import com.elv.core.constant.SecurityEnum.AbsAlgo;
 import com.elv.core.constant.SecurityEnum.Algorithm;
 import com.elv.core.util.Assert;
+import com.elv.core.tool.security.Base64Util;
+import com.elv.core.tool.security.KeyUtil;
 
 /**
  * 数字签名（Digital Signature）
@@ -25,7 +27,7 @@ import com.elv.core.util.Assert;
  * @author lxh
  * @since 2020-08-07
  */
-public class DSUtil {
+public class DSOldUtil {
 
     public static final int KEY_SIZE_RSA = 2048;
 
@@ -236,7 +238,7 @@ public class DSUtil {
         Algorithm keyAlgorithm = Algorithm.DSA;
         Algorithm signAlgorithm = Algorithm.SHA256withDSA;
 
-        Map<String, Key> keyPair = KeyUtil.initKeyPair(keyAlgorithm.getVal(), DSUtil.KEY_SIZE_RSA);
+        Map<String, Key> keyPair = KeyUtil.initKeyPair(keyAlgorithm.getVal(), DSOldUtil.KEY_SIZE_RSA);
         byte[] publicKeys = KeyUtil.fetchPublicKey(keyPair);
         byte[] privateKeys = KeyUtil.fetchPrivateKey(keyPair);
 

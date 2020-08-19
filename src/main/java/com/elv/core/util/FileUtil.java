@@ -7,7 +7,6 @@ import java.security.MessageDigest;
 import java.util.zip.CRC32;
 
 import com.elv.frame.exception.BusinessException;
-import com.elv.traning.security.SecurityUtil;
 
 /**
  * @author lxh

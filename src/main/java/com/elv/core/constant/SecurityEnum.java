@@ -36,6 +36,8 @@ public class SecurityEnum {
         DESede("DESede", AbsAlgo.SE, "DESede/CBC/PKCS5Padding"),  //
         AES("AES", AbsAlgo.SE, "AES/CBC/PKCS5Padding"), //
 
+        PBEWithMD5AndDES("PBEWithMD5AndDES", AbsAlgo.SE, "PBEWithMD5AndDES"), //
+
         RSA("RSA", AbsAlgo.AE, ""), //
         DSA("DSA", AbsAlgo.AE, ""), // 仅用于签名算法中的密钥算法
 

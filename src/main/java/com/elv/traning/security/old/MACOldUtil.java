@@ -1,4 +1,4 @@
-package com.elv.traning.security;
+package com.elv.traning.security.old;
 
 import java.nio.charset.Charset;
 import java.util.Optional;
@@ -11,6 +11,8 @@ import com.elv.core.constant.SecurityEnum;
 import com.elv.core.constant.SecurityEnum.AbsAlgo;
 import com.elv.core.constant.SecurityEnum.Algorithm;
 import com.elv.core.util.Assert;
+import com.elv.core.tool.security.KeyUtil;
+import com.elv.core.tool.security.NumerationUtil;
 
 /**
  * 消息认证码（Message Authentication Code）
@@ -18,9 +20,9 @@ import com.elv.core.util.Assert;
  * @author lxh
  * @since 2020-08-07
  */
-public class MACUtil {
+public class MACOldUtil {
 
-    private MACUtil() {
+    private MACOldUtil() {
     }
 
     /**
@@ -101,7 +103,7 @@ public class MACUtil {
      * @param msg         消息
      * @param algorithm   MAC算法
      * @param hexKeyStr   密钥(16进制)
-     * @param receivedMac 消息认证码(base64)
+     * @param receivedMac 消息认证码(16进制)
      * @return boolean
      */
     private static boolean verifyMAC(String msg, Algorithm algorithm, String hexKeyStr, String receivedMac) {
@@ -114,7 +116,7 @@ public class MACUtil {
      * @param msg         消息
      * @param algorithm   MAC算法
      * @param secretKey   密钥
-     * @param receivedMac 消息认证码(base64)
+     * @param receivedMac 消息认证码(16进制)
      * @return boolean
      */
     public static boolean verify(String msg, String algorithm, String secretKey, String receivedMac) {

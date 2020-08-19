@@ -1,4 +1,4 @@
-package com.elv.traning.security;
+package com.elv.traning.security.old;
 
 import java.security.Key;
 import java.security.KeyFactory;
@@ -13,6 +13,8 @@ import javax.crypto.Cipher;
 
 import com.elv.core.constant.SecurityEnum;
 import com.elv.core.constant.SecurityEnum.Algorithm;
+import com.elv.core.tool.security.Base64Util;
+import com.elv.core.tool.security.KeyUtil;
 
 /**
  * 非对称加密（Asymmetric encryption）
@@ -20,7 +22,7 @@ import com.elv.core.constant.SecurityEnum.Algorithm;
  * @author lxh
  * @since 2020-08-07
  */
-public class AEUtil {
+public class AEOldUtil {
 
     public static final int KEY_SIZE_RSA = 2048;
 
@@ -127,18 +129,18 @@ public class AEUtil {
 
     private static void testAE() {
         String plaintext = "从前有座山，山里有座庙，庙里有个老和尚在跟小和尚讲着一个故事：~";
-        Map<String, Key> keyPair = AEUtil.initRsaKeyPair(AEUtil.KEY_SIZE_RSA);
+        Map<String, Key> keyPair = AEOldUtil.initRsaKeyPair(AEOldUtil.KEY_SIZE_RSA);
         byte[] publicKeys = KeyUtil.fetchPublicKey(keyPair);
         byte[] privateKeys = KeyUtil.fetchPrivateKey(keyPair);
 
         // 公钥加密
-        byte[] ciphers = AEUtil.encryptByRSA(plaintext, publicKeys);
+        byte[] ciphers = AEOldUtil.encryptByRSA(plaintext, publicKeys);
         String cipherText = Base64Util.base64Encode(ciphers);
         System.out.println("cipher text:" + cipherText);
         System.out.println("cipher length:" + cipherText.length());
 
         // 私钥解密
-        byte[] dataBytes = AEUtil.decryptByRSA(ciphers, privateKeys);
+        byte[] dataBytes = AEOldUtil.decryptByRSA(ciphers, privateKeys);
         System.out.println(new String(dataBytes, SecurityEnum.UTF8));
 
         // base64

@@ -1,4 +1,4 @@
-package com.elv.traning.security;
+package com.elv.traning.security.old;
 
 import java.nio.charset.Charset;
 import java.security.Key;
@@ -15,6 +15,8 @@ import com.elv.core.constant.SecurityEnum.AbsAlgo;
 import com.elv.core.constant.SecurityEnum.Algorithm;
 import com.elv.core.util.Assert;
 import com.elv.core.util.StrUtil;
+import com.elv.core.tool.security.KeyUtil;
+import com.elv.core.tool.security.NumerationUtil;
 
 /**
  * 对称加密（Symmetric Encryption）
@@ -22,7 +24,7 @@ import com.elv.core.util.StrUtil;
  * @author lxh
  * @since 2020-08-07
  */
-public class SEUtil {
+public class SEOldUtil {
 
     /**
      * DES加密
@@ -129,7 +131,7 @@ public class SEUtil {
      * @param hexCiphertext 密文(16进制)
      * @param algorithm     密钥算法
      * @param secretKey     密钥
-     * @param iv            密钥
+     * @param iv            初始化向量
      * @param cs            字符集
      * @return java.lang.String
      */
@@ -227,16 +229,16 @@ public class SEUtil {
         String plaintext = "从前有座山，山里有座庙，庙里有个老和尚在跟小和尚讲着一个故事：";
         String secretKey = "c4680140a338cdcf"; // 密钥
         String iv = "4cb79d35"; // 初始化向量(根据工作模式，有的不需要)
-        String desCipher = SEUtil.encryptByDES(plaintext, secretKey, iv);
+        String desCipher = SEOldUtil.encryptByDES(plaintext, secretKey, iv);
         System.out.println(desCipher);
-        System.out.println(SEUtil.decryptByDES(desCipher, secretKey, iv));
+        System.out.println(SEOldUtil.decryptByDES(desCipher, secretKey, iv));
 
-        String desEdeCipher = SEUtil.encryptBy3DES(plaintext, secretKey + secretKey + secretKey, iv);
+        String desEdeCipher = SEOldUtil.encryptBy3DES(plaintext, secretKey + secretKey + secretKey, iv);
         System.out.println(desEdeCipher);
-        System.out.println(SEUtil.decryptBy3DES(desEdeCipher, secretKey + secretKey + secretKey, iv));
+        System.out.println(SEOldUtil.decryptBy3DES(desEdeCipher, secretKey + secretKey + secretKey, iv));
 
-        String aesCipher = SEUtil.encryptByAES(plaintext, secretKey, "4cb79d35583f8ea6");
+        String aesCipher = SEOldUtil.encryptByAES(plaintext, secretKey, "4cb79d35583f8ea6");
         System.out.println(aesCipher);
-        System.out.println(SEUtil.decryptByAES(aesCipher, secretKey, "4cb79d35583f8ea6"));
+        System.out.println(SEOldUtil.decryptByAES(aesCipher, secretKey, "4cb79d35583f8ea6"));
     }
 }

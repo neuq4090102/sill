@@ -2,8 +2,7 @@ package com.elv.core.tool.unique.token;
 
 import com.elv.core.util.Assert;
 import com.elv.core.util.StrUtil;
-import com.elv.traning.security.MDUtil;
-import com.elv.traning.security.SecurityUtil;
+import com.elv.core.util.SecurityUtil;
 
 /**
  * token 抽象工具
@@ -59,8 +58,8 @@ public abstract class AbstractTokenUtil {
         Assert.isTrue(StrUtil.isBlank(iv), "AbstractTokenUtil#getIV is blank.");
         Assert.isTrue(iv.length() != 16, "AbstractTokenUtil#getIV's length should be 16.");
 
-        String hexCiphertext = SecurityUtil.encryptByAES(plaintext, secretKey, iv);
-        return MDUtil.sha256(hexCiphertext) + hexCiphertext;
+        String hexCipherText = SecurityUtil.encryptByAES(plaintext, secretKey, iv);
+        return SecurityUtil.sha256(hexCipherText) + hexCipherText;
     }
 
     /**

@@ -1,10 +1,16 @@
-package com.elv.traning.security;
+package com.elv.core.util;
 
 import java.nio.charset.Charset;
 import java.security.SecureRandom;
 
 import com.elv.core.constant.SecurityEnum;
 import com.elv.core.constant.SecurityEnum.Algorithm;
+import com.elv.core.tool.security.Base64Util;
+import com.elv.core.tool.security.NumerationUtil;
+import com.elv.core.tool.security.impl.DSUtil;
+import com.elv.core.tool.security.impl.MACUtil;
+import com.elv.core.tool.security.impl.MDUtil;
+import com.elv.core.tool.security.impl.SEUtil;
 
 /**
  * @author lxh
@@ -90,7 +96,7 @@ public class SecurityUtil {
      * @return java.lang.String，16进制
      */
     public static String md5(String msg) {
-        return MDUtil.mdBy(msg, Algorithm.MD5.getVal());
+        return MDUtil.of().algorithm(Algorithm.MD5).md(msg);
     }
 
     /**
@@ -101,7 +107,7 @@ public class SecurityUtil {
      * @return java.lang.String，16进制
      */
     public static String md5(String msg, Charset cs) {
-        return MDUtil.mdBy(msg, Algorithm.MD5.getVal(), cs);
+        return MDUtil.of().algorithm(Algorithm.MD5).cs(cs).md(msg);
     }
 
     /**
@@ -111,7 +117,7 @@ public class SecurityUtil {
      * @return java.lang.String，16进制
      */
     public static String sha(String msg) {
-        return MDUtil.mdBy(msg, Algorithm.SHA.getVal());
+        return MDUtil.of().algorithm(Algorithm.SHA).md(msg);
     }
 
     /**
@@ -122,7 +128,7 @@ public class SecurityUtil {
      * @return java.lang.String，16进制
      */
     public static String sha(String msg, Charset cs) {
-        return MDUtil.mdBy(msg, Algorithm.SHA.getVal(), cs);
+        return MDUtil.of().algorithm(Algorithm.SHA).cs(cs).md(msg);
     }
 
     /**
@@ -132,7 +138,7 @@ public class SecurityUtil {
      * @return java.lang.String，16进制
      */
     public static String sha256(String msg) {
-        return MDUtil.mdBy(msg, Algorithm.SHA256.getVal());
+        return MDUtil.of().algorithm(Algorithm.SHA256).md(msg);
     }
 
     /**
@@ -142,7 +148,7 @@ public class SecurityUtil {
      * @return java.lang.String，16进制
      */
     public static String sha512(String msg) {
-        return MDUtil.mdBy(msg, Algorithm.SHA512.getVal());
+        return MDUtil.of().algorithm(Algorithm.SHA512).md(msg);
     }
 
     /**
@@ -153,7 +159,7 @@ public class SecurityUtil {
      * @return java.lang.String
      */
     public static String mdBy(String msg, String algorithm) {
-        return MDUtil.mdBy(msg, algorithm);
+        return MDUtil.of().algorithm(algorithm).md(msg);
     }
 
     /**
@@ -165,7 +171,7 @@ public class SecurityUtil {
      * @return java.lang.String，16进制
      */
     public static String mdBy(String msg, String algorithm, Charset cs) {
-        return MDUtil.mdBy(msg, algorithm, cs);
+        return MDUtil.of().algorithm(algorithm).cs(cs).md(msg);
     }
 
     /**
@@ -177,7 +183,7 @@ public class SecurityUtil {
      * @return java.lang.String
      */
     public static String mac(String msg, Algorithm algorithm, String secretKey) {
-        return MACUtil.mac(msg, algorithm, secretKey);
+        return MACUtil.of().algorithm(algorithm).secretKey(secretKey).mac(msg);
     }
 
     /**
@@ -190,7 +196,7 @@ public class SecurityUtil {
      * @return java.lang.String
      */
     public static String mac(String msg, String algorithm, String secretKey, Charset cs) {
-        return MACUtil.mac(msg, algorithm, secretKey, cs);
+        return MACUtil.of().algorithm(algorithm).secretKey(secretKey).cs(cs).mac(msg);
     }
 
     /**
@@ -204,7 +210,7 @@ public class SecurityUtil {
      * @return boolean
      */
     public static boolean macVerify(String msg, String algorithm, String secretKey, String receivedMac, Charset cs) {
-        return MACUtil.mac(msg, algorithm, secretKey, cs).equals(receivedMac);
+        return MACUtil.of().algorithm(algorithm).secretKey(secretKey).cs(cs).verify(msg, receivedMac);
     }
 
     /**
@@ -216,7 +222,7 @@ public class SecurityUtil {
      * @return java.lang.String
      */
     public static String encryptByAES(String plaintext, String secretKey, String iv) {
-        return SEUtil.encrypt(plaintext, Algorithm.AES, secretKey, iv, SecurityEnum.UTF8);
+        return SEUtil.of().algorithm(Algorithm.AES).secretKey(secretKey).iv(iv).encrypt(plaintext);
     }
 
     /**
@@ -228,7 +234,7 @@ public class SecurityUtil {
      * @return java.lang.String
      */
     public static String decryptByAES(String hexCiphertext, String secretKey, String iv) {
-        return SEUtil.decrypt(hexCiphertext, Algorithm.AES, secretKey, iv, SecurityEnum.UTF8);
+        return SEUtil.of().algorithm(Algorithm.AES).secretKey(secretKey).iv(iv).decrypt(hexCiphertext);
     }
 
     /**
@@ -241,7 +247,8 @@ public class SecurityUtil {
      * @return java.lang.String
      */
     public static String signByRSA(String msg, Algorithm signAlgorithm, String privateKey, Charset cs) {
-        return DSUtil.signByRSA(msg, signAlgorithm, privateKey, cs);
+        return DSUtil.of().signAlgorithm(signAlgorithm).keyAlgorithm(Algorithm.RSA).privateKey(privateKey).cs(cs)
+                .sign(msg);
     }
 
     /**
@@ -254,20 +261,21 @@ public class SecurityUtil {
      * @return java.lang.String
      */
     public static String signByDSA(String msg, Algorithm signAlgorithm, String privateKey, Charset cs) {
-        return DSUtil.signByDSA(msg, signAlgorithm, privateKey, cs);
+        return DSUtil.of().signAlgorithm(signAlgorithm).keyAlgorithm(Algorithm.DSA).privateKey(privateKey).cs(cs)
+                .sign(msg);
     }
 
     /**
      * 自定义数字签名
      *
-     * @param msg           消息
+     * @param msg           消息(md后的消息)
      * @param keyAlgorithm  密钥算法
      * @param signAlgorithm 签名算法
      * @param privateKey    私钥(base64)
      * @return java.lang.String
      */
     public static String signBy(String msg, Algorithm keyAlgorithm, Algorithm signAlgorithm, String privateKey) {
-        return DSUtil.signBy(msg, keyAlgorithm, signAlgorithm, privateKey);
+        return DSUtil.of().signAlgorithm(signAlgorithm).keyAlgorithm(keyAlgorithm).privateKey(privateKey).sign(msg);
     }
 
     /**
@@ -282,7 +290,8 @@ public class SecurityUtil {
      */
     public static boolean verifyByRSA(String msg, Algorithm signAlgorithm, String publicKey, String digitalSignature,
             Charset cs) {
-        return DSUtil.verifyByRSA(msg, signAlgorithm, publicKey, digitalSignature, cs);
+        return DSUtil.of().signAlgorithm(signAlgorithm).keyAlgorithm(Algorithm.RSA).publicKey(publicKey).cs(cs)
+                .verify(msg, digitalSignature);
     }
 
     /**
@@ -297,13 +306,14 @@ public class SecurityUtil {
      */
     public static boolean verifyByDSA(String msg, Algorithm signAlgorithm, String publicKey, String digitalSignature,
             Charset cs) {
-        return DSUtil.verifyByDSA(msg, signAlgorithm, publicKey, digitalSignature, cs);
+        return DSUtil.of().signAlgorithm(signAlgorithm).keyAlgorithm(Algorithm.DSA).publicKey(publicKey).cs(cs)
+                .verify(msg, digitalSignature);
     }
 
     /**
      * 自定义签名验证
      *
-     * @param msg              消息
+     * @param msg              消息(md后的消息)
      * @param keyAlgorithm     密钥算法
      * @param signAlgorithm    签名算法
      * @param publicKey        公钥(base64)
@@ -312,7 +322,8 @@ public class SecurityUtil {
      */
     public static boolean verifyBy(String msg, Algorithm keyAlgorithm, Algorithm signAlgorithm, String publicKey,
             String digitalSignature) {
-        return DSUtil.verifyBy(msg, keyAlgorithm, signAlgorithm, publicKey, digitalSignature);
+        return DSUtil.of().signAlgorithm(signAlgorithm).keyAlgorithm(keyAlgorithm).publicKey(publicKey)
+                .verify(msg, digitalSignature);
     }
 
     /**
@@ -358,7 +369,7 @@ public class SecurityUtil {
     }
 
     public static void main(String[] args) {
-        MDUtil.sha256("333");
+        System.out.println(sha256("333"));;
         System.out.println(salt(16));
     }
 

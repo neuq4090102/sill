@@ -3,7 +3,6 @@ package com.elv.core.util;
 import com.elv.core.tool.db.jdbc.BasicQuery;
 import com.elv.core.tool.db.model.SecurityConfig;
 import com.elv.core.tool.unique.token.AbstractTokenUtil;
-import com.elv.traning.security.SecurityUtil;
 
 /**
  * 自定义token工具

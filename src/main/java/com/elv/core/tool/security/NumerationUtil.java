@@ -1,4 +1,4 @@
-package com.elv.traning.security;
+package com.elv.core.tool.security;
 
 import org.apache.commons.codec.DecoderException;
 import org.apache.commons.codec.binary.Hex;
@@ -9,8 +9,6 @@ import org.apache.commons.codec.binary.Hex;
  * @author lxh
  * @since 2020-08-07
  */
-
-// TODO 以最新为准
 public class NumerationUtil {
 
     /**
@@ -52,7 +50,7 @@ public class NumerationUtil {
         try {
             return Hex.decodeHex(hexStr);
         } catch (DecoderException e) {
-            throw new RuntimeException("NumerationUtil toByte error.", e);
+            throw new RuntimeException("NumerationUtil#toBytes error.", e);
         }
     }
 }

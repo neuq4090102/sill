@@ -1,12 +1,14 @@
-package com.elv.traning.security;
+package com.elv.traning.security.old;
 
 import java.nio.charset.Charset;
 import java.security.MessageDigest;
 import java.util.Optional;
 
 import com.elv.core.constant.SecurityEnum;
+import com.elv.core.constant.SecurityEnum.AbsAlgo;
 import com.elv.core.constant.SecurityEnum.Algorithm;
 import com.elv.core.util.Assert;
+import com.elv.core.tool.security.NumerationUtil;
 
 /**
  * 消息摘要（Message Digest）
@@ -14,9 +16,9 @@ import com.elv.core.util.Assert;
  * @author lxh
  * @since 2020-08-07
  */
-public class MDUtil {
+public class MDOldUtil {
 
-    private MDUtil() {
+    private MDOldUtil() {
     }
 
     /**
@@ -26,7 +28,7 @@ public class MDUtil {
      * @return java.lang.String，16进制
      */
     public static String md5(String msg) {
-        return MDUtil.mdBy(msg, Algorithm.MD5.getVal());
+        return MDOldUtil.mdBy(msg, Algorithm.MD5);
     }
 
     /**
@@ -37,7 +39,7 @@ public class MDUtil {
      * @return java.lang.String，16进制
      */
     public static String md5(String msg, Charset cs) {
-        return MDUtil.mdBy(msg, Algorithm.MD5.getVal(), cs);
+        return MDOldUtil.mdBy(msg, Algorithm.MD5.getVal(), cs);
     }
 
     /**
@@ -47,7 +49,7 @@ public class MDUtil {
      * @return java.lang.String，16进制
      */
     public static String sha(String msg) {
-        return MDUtil.mdBy(msg, Algorithm.SHA.getVal());
+        return MDOldUtil.mdBy(msg, Algorithm.SHA);
     }
 
     /**
@@ -58,7 +60,7 @@ public class MDUtil {
      * @return java.lang.String，16进制
      */
     public static String sha(String msg, Charset cs) {
-        return MDUtil.mdBy(msg, Algorithm.SHA.getVal(), cs);
+        return MDOldUtil.mdBy(msg, Algorithm.SHA.getVal(), cs);
     }
 
     /**
@@ -68,7 +70,7 @@ public class MDUtil {
      * @return java.lang.String，16进制
      */
     public static String sha256(String msg) {
-        return MDUtil.mdBy(msg, Algorithm.SHA256.getVal());
+        return MDOldUtil.mdBy(msg, Algorithm.SHA256);
     }
 
     /**
@@ -78,7 +80,7 @@ public class MDUtil {
      * @return java.lang.String，16进制
      */
     public static String sha512(String msg) {
-        return MDUtil.mdBy(msg, Algorithm.SHA512.getVal());
+        return MDOldUtil.mdBy(msg, Algorithm.SHA512);
     }
 
     /**
@@ -88,11 +90,12 @@ public class MDUtil {
      * @param algorithm 消息摘要算法
      * @return java.lang.String
      */
-    public static String mdBy(String msg, String algorithm) {
+    public static String mdBy(String msg, Algorithm algorithm) {
         Assert.notBlank(msg, "MDUtil#mdBy msg not blank.");
-        Assert.notBlank(algorithm, "MDUtil#mdBy algorithm not blank.");
+        Assert.notNull(algorithm, "MDUtil#mdBy algorithm not null.");
+        Assert.isTrue(!algorithm.belong(AbsAlgo.MD), "MDUtil#mdBy invalid algorithm:" + algorithm.getVal());
 
-        return NumerationUtil.toHex(md(msg.getBytes(SecurityEnum.UTF8), algorithm));
+        return NumerationUtil.toHex(md(msg.getBytes(SecurityEnum.UTF8), algorithm.getVal()));
 
     }
 
