@@ -27,7 +27,7 @@ public abstract class AbstractMDUtil extends BasicSecurity {
         try {
             return MessageDigest.getInstance(getAlgorithm()).digest(msg);
         } catch (Exception e) {
-            throw new RuntimeException("AbstractMDUtil#md error.");
+            throw new RuntimeException("AbstractMDUtil#md error.", e);
         }
     }
 }

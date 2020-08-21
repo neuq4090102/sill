@@ -18,7 +18,6 @@ import com.elv.core.tool.db.model.EmailAccount;
 import com.elv.core.tool.db.model.JDBCQueryParam;
 import com.elv.core.util.BeanUtil;
 import com.elv.core.util.JsonUtil;
-import com.elv.frame.exception.BusinessException;
 
 /**
  * JDBC工具
@@ -35,7 +34,7 @@ public class JDBC {
             Class.forName("com.mysql.cj.jdbc.Driver");
             connection = DriverManager.getConnection(getUrl(), getUser(), getPassword());
         } catch (Exception e) {
-            throw new BusinessException("JDBC#init error.", e);
+            throw new RuntimeException("JDBC#init error.", e);
         }
     }
 
@@ -85,7 +84,7 @@ public class JDBC {
             }
             return results;
         } catch (Exception e) {
-            throw new BusinessException("JDBC#query error.", e);
+            throw new RuntimeException("JDBC#query error.", e);
         }
     }
 

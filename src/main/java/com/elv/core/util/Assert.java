@@ -4,6 +4,8 @@ import java.util.Collection;
 import java.util.Map;
 
 import com.elv.frame.exception.BusinessException;
+import com.elv.frame.itf.IStatusCode;
+import com.elv.frame.model.ServiceResult;
 
 /**
  * @author lxh
@@ -36,7 +38,19 @@ public abstract class Assert {
 
     public static void isTrue(boolean expression, String msg) {
         if (expression) {
-            throw new BusinessException(msg);
+            throw new RuntimeException(msg);
+        }
+    }
+
+    public static void isTrue(boolean expression, IStatusCode statusCode) {
+        if (expression) {
+            throw new BusinessException(statusCode);
+        }
+    }
+
+    public static void check(ServiceResult<?> serviceResult) {
+        if (!serviceResult.isSuccess()) {
+            throw new BusinessException(serviceResult.getCode(), serviceResult.getMsg());
         }
     }
 

@@ -6,8 +6,6 @@ import java.security.DigestInputStream;
 import java.security.MessageDigest;
 import java.util.zip.CRC32;
 
-import com.elv.frame.exception.BusinessException;
-
 /**
  * @author lxh
  * @since 2020-06-16
@@ -60,13 +58,13 @@ public class FileUtil {
             }
             return SecurityUtil.toHex(dis.getMessageDigest().digest());
         } catch (Exception e) {
-            throw new BusinessException("FileUtil#md5 error.", e);
+            throw new RuntimeException("FileUtil#md5 error.", e);
         } finally {
             if (dis != null) {
                 try {
                     dis.close();
                 } catch (IOException e) {
-                    throw new BusinessException("FileUtil#md5 close file error.", e);
+                    throw new RuntimeException("FileUtil#md5 close file error.", e);
                 }
             }
         }

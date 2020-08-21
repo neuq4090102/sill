@@ -11,7 +11,6 @@ import java.util.regex.Pattern;
 import org.apache.commons.lang3.StringUtils;
 
 import com.elv.core.model.util.BlurCtrl;
-import com.elv.frame.exception.BusinessException;
 
 /**
  * @author lxh
@@ -114,6 +113,14 @@ public class StrUtil {
 
     public static String UUID() {
         return UUID.randomUUID().toString().replaceAll("-", "");
+    }
+
+    public static <T extends CharSequence> T defaultIfBlank(final T str, final T defaultVal) {
+        return StringUtils.defaultIfBlank(str, defaultVal);
+    }
+
+    public static <T extends CharSequence> T defaultIfEmpty(final T str, final T defaultVal) {
+        return StringUtils.defaultIfEmpty(str, defaultVal);
     }
 
     /**
@@ -280,7 +287,7 @@ public class StrUtil {
                 }
             }
         } catch (Exception e) {
-            throw new BusinessException("StrUtil#splitToList error.", e);
+            throw new RuntimeException("StrUtil#splitToList error.", e);
         }
         return results;
     }

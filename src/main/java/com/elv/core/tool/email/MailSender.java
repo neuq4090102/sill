@@ -27,7 +27,6 @@ import com.elv.core.constant.Const;
 import com.elv.core.tool.email.model.MailParam;
 import com.elv.core.util.Assert;
 import com.elv.core.util.StrUtil;
-import com.elv.frame.exception.BusinessException;
 import com.sun.mail.smtp.SMTPAddressFailedException;
 
 public class MailSender {
@@ -218,10 +217,10 @@ public class MailSender {
                     }
                 }
             } catch (Exception e2) {
-                throw new BusinessException("MailSender#send failed to resend email.", e2);
+                throw new RuntimeException("MailSender#send failed to resend email.", e2);
             }
         } catch (Exception e) {
-            throw new BusinessException("MailSender#send failed to send email.", e);
+            throw new RuntimeException("MailSender#send failed to send email.", e);
         }
     }
 
