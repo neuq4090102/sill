@@ -6,6 +6,8 @@ import com.elv.web.model.ValidationResult;
 import com.elv.web.util.RequestUtil;
 
 /**
+ * 正则验证
+ *
  * @author lxh
  * @since 2020-04-21
  */

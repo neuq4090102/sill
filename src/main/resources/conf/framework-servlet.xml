@@ -2,19 +2,23 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns:mvc="http://www.springframework.org/schema/mvc"
-       xmlns:util="http://www.springframework.org/schema/util"
        xmlns:context="http://www.springframework.org/schema/context"
        xsi:schemaLocation="http://www.springframework.org/schema/beans
 		http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
 		http://www.springframework.org/schema/context 
 		http://www.springframework.org/schema/context/spring-context-4.0.xsd
 		http://www.springframework.org/schema/mvc 
-		http://www.springframework.org/schema/mvc/spring-mvc-4.0.xsd
-        http://www.springframework.org/schema/util
-        http://www.springframework.org/schema/util/spring-util-3.1.xsd">
+		http://www.springframework.org/schema/mvc/spring-mvc-4.0.xsd">
 
+    <!-- 默认控制器: 解决静态资源访问问题 -->
+    <mvc:default-servlet-handler/>
+    <!--<mvc:resources mapping="/res/**" location="/WEB-INF/res/" />-->
 
-    <!--<mvc:annotation-driven>
+    <context:component-scan base-package="com.**.controller">
+        <context:exclude-filter type="annotation" expression="org.springframework.stereotype.Service"/>
+    </context:component-scan>
+
+    <mvc:annotation-driven content-negotiation-manager="cnManager">
         <mvc:message-converters>
             <bean class="org.springframework.http.converter.StringHttpMessageConverter">
                 <property name="supportedMediaTypes">
@@ -25,35 +29,48 @@
                 </property>
             </bean>
         </mvc:message-converters>
-    </mvc:annotation-driven>-->
-
-    <!-- 默认控制器: 解决静态资源访问问题 -->
-    <mvc:default-servlet-handler/>
-    <!--<mvc:resources mapping="/res/**" location="/WEB-INF/res/" />-->
-
-    <context:component-scan base-package="com.**.controller">
-        <context:exclude-filter type="annotation" expression="org.springframework.stereotype.Service"/>
-    </context:component-scan>
-
-
-    <bean name="jacksonObjectMapper" class="org.springframework.http.converter.json.Jackson2ObjectMapperFactoryBean">
-        <property name="featuresToDisable">
-            <array>
-                <util:constant
-                        static-field="com.fasterxml.jackson.databind.SerializationFeature.WRITE_DATES_AS_TIMESTAMPS"/>
-            </array>
-        </property>
-        <property name="simpleDateFormat" value="yyyy-MM-dd HH:mm:ss"></property>
-    </bean>
-
-    <mvc:annotation-driven>
-        <mvc:message-converters register-defaults="true">
-            <bean class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter">
-                <property name="objectMapper" ref="jacksonObjectMapper"/>
-            </bean>
-        </mvc:message-converters>
     </mvc:annotation-driven>
 
+    <bean id="cnManager" class="org.springframework.web.accept.ContentNegotiationManagerFactoryBean">
+        <property name="favorPathExtension" value="true"/>
+        <property name="favorParameter" value="false"/>
+        <property name="ignoreAcceptHeader" value="false"/>
+        <property name="mediaTypes">
+            <props>
+                <prop key="json">application/json;charset=UTF-8</prop>
+                <prop key="html">text/html;charset=UTF-8</prop>
+                <prop key="xls">application/vnd.ms-excel</prop>
+            </props>
+        </property>
+    </bean>
+
+    <!-- 多视图控制器 -->
+    <bean class="org.springframework.web.servlet.view.ContentNegotiatingViewResolver">
+        <property name="contentNegotiationManager" ref="cnManager"/>
+        <property name="order" value="1"/>
+        <property name="defaultViews">
+            <list>
+                <bean class="com.elv.web.servlet.MappingToJsonView">
+                    <property name="extractValueFromSingleKeyModel" value="true"/>
+                    <property name="contentType" value="application/json;charset=utf-8"/>
+                    <property name="filterKeys">
+                        <list>
+                            <value>apiResult</value>
+                            <value>jsonResult</value>
+                        </list>
+                    </property>
+                </bean>
+            </list>
+        </property>
+        <property name="viewResolvers">
+            <list>
+                <!-- Thymeleaf视图解析器 -->
+                <bean class="org.thymeleaf.spring4.view.ThymeleafViewResolver">
+                    <property name="templateEngine" ref="templateEngine"/>
+                </bean>
+            </list>
+        </property>
+    </bean>
 
     <!-- thymeleaf:TemplateResolver <- TemplateEngine <- ViewResolver  -->
     <bean id="templateResolver" class="org.thymeleaf.spring4.templateresolver.SpringResourceTemplateResolver">
@@ -64,10 +81,6 @@
 
     <bean id="templateEngine" class="org.thymeleaf.spring4.SpringTemplateEngine">
         <property name="templateResolver" ref="templateResolver"/>
-    </bean>
-
-    <bean class="org.thymeleaf.spring4.view.ThymeleafViewResolver">
-        <property name="templateEngine" ref="templateEngine"/>
     </bean>
 
     <!-- API异常处理器 -->

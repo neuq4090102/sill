@@ -25,7 +25,7 @@ public class Validator {
     private List<IValidator> validators = new ArrayList<>();
     private Map<DateForm, List<String>> dateFormMap = new HashMap<>();
 
-    public static Validator init() {
+    public static Validator of() {
         return new Validator();
     }
 
@@ -152,11 +152,11 @@ public class Validator {
             value.stream().forEach(param -> {
                 String paramVal = RequestUtil.getStrParam(param);
                 if (key == DateForm.DATE && !DateUtil.isDate(paramVal)) {
-                    result.addError(param, "Invalid date form.");
+                    result.addError(param, "Invalid date form, please refer:" + key.getPattern());
                 } else if (key == DateForm.TIME && !DateUtil.isTime(paramVal)) {
-                    result.addError(param, "Invalid time form.");
+                    result.addError(param, "Invalid time form, please refer:" + key.getPattern());
                 } else if (key == DateForm.DATE_TIME && !DateUtil.isDateTime(paramVal)) {
-                    result.addError(param, "Invalid dateTime form.");
+                    result.addError(param, "Invalid dateTime form, please refer:" + key.getPattern());
                 }
             });
         });

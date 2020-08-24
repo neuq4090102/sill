@@ -12,6 +12,7 @@ public abstract class AbstractException extends RuntimeException {
 
     private int code;
     private String msg = "";
+    private Object error; // 异常数据
 
     public AbstractException(String msg) {
         super(msg);
@@ -34,6 +35,13 @@ public abstract class AbstractException extends RuntimeException {
         this.msg = statusCode.getMsg();
     }
 
+    public AbstractException(IStatusCode statusCode, Object error) {
+        super(statusCode.getMsg());
+        this.code = statusCode.getCode();
+        this.msg = statusCode.getMsg();
+        this.error = error;
+    }
+
     public AbstractException(String msg, Exception e) {
         super(msg);
         this.msg = msg;
@@ -53,5 +61,13 @@ public abstract class AbstractException extends RuntimeException {
 
     public void setMsg(String msg) {
         this.msg = msg;
+    }
+
+    public Object getError() {
+        return error;
+    }
+
+    public void setError(Object error) {
+        this.error = error;
     }
 }

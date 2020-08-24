@@ -26,8 +26,13 @@ public class BusinessException extends AbstractException {
         super(statusCode);
     }
 
+    public BusinessException(IStatusCode statusCode, Object error) {
+        super(statusCode, error);
+    }
+
     public BusinessException(String msg, Exception e) {
         super(msg, e);
     }
+
 }
 

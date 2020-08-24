@@ -17,6 +17,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
+import org.springframework.web.util.UrlPathHelper;
 
 import com.elv.core.constant.SecurityEnum.Algorithm;
 import com.elv.core.constant.SortEnum;
@@ -106,7 +107,11 @@ public class RequestUtil {
      * @return java.lang.String
      */
     public static String getURI() {
-        return getRequest().getRequestURI();
+        return Request.getURI(getRequest());
+    }
+
+    public static String getURI(HttpServletRequest request) {
+        return Request.getURI(request);
     }
 
     /**
@@ -221,7 +226,17 @@ public class RequestUtil {
         return ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
     }
 
-    private static class Request {
+    public static class Request {
+
+        /**
+         * 获取请求URI
+         *
+         * @param request 请求对象
+         * @return java.lang.String
+         */
+        public static String getURI(HttpServletRequest request) {
+            return new UrlPathHelper().getRequestUri(request);
+        }
 
         /**
          * 获取请求IP

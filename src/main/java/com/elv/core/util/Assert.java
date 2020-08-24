@@ -3,9 +3,11 @@ package com.elv.core.util;
 import java.util.Collection;
 import java.util.Map;
 
+import com.elv.frame.constant.FrameworkError;
 import com.elv.frame.exception.BusinessException;
 import com.elv.frame.itf.IStatusCode;
 import com.elv.frame.model.ServiceResult;
+import com.elv.web.model.ValidationResult;
 
 /**
  * @author lxh
@@ -51,6 +53,12 @@ public abstract class Assert {
     public static void check(ServiceResult<?> serviceResult) {
         if (!serviceResult.isSuccess()) {
             throw new BusinessException(serviceResult.getCode(), serviceResult.getMsg());
+        }
+    }
+
+    public static void check(ValidationResult validationResult) {
+        if (validationResult.hasError()) {
+            throw new BusinessException(FrameworkError.PARAM_ERROR, validationResult);
         }
     }
 
