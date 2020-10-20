@@ -92,7 +92,7 @@ public class BeanUtil {
             for (PropertyDescriptor propertyDescriptor : beanInfo.getPropertyDescriptors()) {
                 resultMap.put(propertyDescriptor.getName(), propertyDescriptor.getReadMethod());
             }
-        } catch (Throwable t) {
+        } catch (Exception e) {
             // 不能解析类信息
             throw new RuntimeException("BeanUtil can't parse class info:+" + beanClass.getName());
         }
@@ -118,7 +118,7 @@ public class BeanUtil {
             for (PropertyDescriptor propertyDescriptor : beanInfo.getPropertyDescriptors()) {
                 resultMap.put(propertyDescriptor.getName(), propertyDescriptor.getWriteMethod());
             }
-        } catch (Throwable t) {
+        } catch (Exception e) {
             // 不能解析类信息
             throw new RuntimeException("BeanUtil can't parse class info:+" + beanClass.getName());
         }

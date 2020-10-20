@@ -47,8 +47,9 @@ public class FileUtil {
      */
     public static String md5(String filePath) {
         DigestInputStream dis = null;
+        FileInputStream fis = null;
         try {
-            FileInputStream fis = new FileInputStream(filePath);
+            fis = new FileInputStream(filePath);
             dis = new DigestInputStream(fis, MessageDigest.getInstance("md5"));
             int length = 1024;
             byte[] buffer = new byte[length];
@@ -60,11 +61,18 @@ public class FileUtil {
         } catch (Exception e) {
             throw new RuntimeException("FileUtil#md5 error.", e);
         } finally {
+            if (fis != null) {
+                try {
+                    fis.close();
+                } catch (IOException e) {
+                    throw new RuntimeException("FileUtil#md5 close fis error.", e);
+                }
+            }
             if (dis != null) {
                 try {
                     dis.close();
                 } catch (IOException e) {
-                    throw new RuntimeException("FileUtil#md5 close file error.", e);
+                    throw new RuntimeException("FileUtil#md5 close dis error.", e);
                 }
             }
         }

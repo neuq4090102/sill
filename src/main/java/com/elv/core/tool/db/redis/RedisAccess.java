@@ -1,4 +1,4 @@
-package com.elv.core.model;
+package com.elv.core.tool.db.redis;
 
 import com.elv.core.util.StrUtil;
 
@@ -10,7 +10,7 @@ import redis.clients.jedis.JedisPoolConfig;
  * @author lxh
  * @since 2020-06-16
  */
-public class RedisCache {
+public class RedisAccess {
 
     private JedisPool jedisPool;
 
@@ -67,7 +67,14 @@ public class RedisCache {
         }
     }
 
-    public Jedis conn() {
-        return jedisPool.getResource();
-    }
+    // public Jedis conn() {
+    //     return jedisPool.getResource();
+    // }
+    //
+    // public void close(Jedis jedis) {
+    //     if (jedis != null) {
+    //         jedis.close();
+    //     }
+    // }
+
 }

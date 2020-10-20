@@ -12,7 +12,7 @@ import java.time.temporal.TemporalAdjusters;
 import java.util.Date;
 
 import com.elv.core.constant.Const;
-import com.elv.core.util.DateUtil.DateForm;
+import com.elv.core.constant.FormEnum.DateForm;
 
 /**
  * Date and Time generator

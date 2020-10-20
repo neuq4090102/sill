@@ -58,11 +58,15 @@ public class JDBC {
                 .collect(Collectors.toMap(item -> item.getName(), item -> humpToUnderline(item.getName())));
         Map<String, Method> setterMap = BeanUtil.getSetterMap(targetClass);
 
-        List<T> results = new ArrayList<>();
+        Connection conn = null;
+        Statement statement = null;
+        ResultSet rs = null;
         try {
-            Connection conn = getConnection();
-            Statement statement = conn.createStatement();
-            ResultSet rs = statement.executeQuery(getSql(queryParam));
+            conn = getConnection();
+            statement = conn.createStatement();
+            rs = statement.executeQuery(getSql(queryParam));
+
+            List<T> results = new ArrayList<>();
             while (rs.next()) {
                 T result = targetClass.newInstance();
                 results.add(result);
@@ -85,8 +89,12 @@ public class JDBC {
             return results;
         } catch (Exception e) {
             throw new RuntimeException("JDBC#query error.", e);
+        } finally {
+            close(rs,statement,conn);
         }
     }
+
+
 
     private static String getSql(JDBCQueryParam queryParam) {
         StringBuilder sql = new StringBuilder();
@@ -143,6 +151,10 @@ public class JDBC {
         }
         matcher.appendTail(sb);
         return sb.toString();
+    }
+
+    private static void close(ResultSet rs, Statement statement, Connection conn) {
+        // TODO:
     }
 
     public static void main(String[] args) {

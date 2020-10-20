@@ -198,6 +198,14 @@
             <version>${HikariCP.version}</version>
         </dependency>
 
+        <!-- redis tool: https://github.com/redisson/redisson/wiki/1.-Overview -->
+        <dependency>
+            <groupId>org.redisson</groupId>
+            <artifactId>redisson</artifactId>
+            <version>3.13.3</version>
+        </dependency>
+
+
         <!-- code:lombok(慎用) -->
         <dependency>
             <groupId>org.projectlombok</groupId>

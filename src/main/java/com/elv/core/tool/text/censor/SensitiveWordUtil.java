@@ -1,4 +1,4 @@
-package com.elv.core.tool.text;
+package com.elv.core.tool.text.censor;
 
 import java.util.HashMap;
 import java.util.Map;

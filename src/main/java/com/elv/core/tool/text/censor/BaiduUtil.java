@@ -1,4 +1,4 @@
-package com.elv.core.tool.text;
+package com.elv.core.tool.text.censor;
 
 import java.util.ArrayList;
 import java.util.Arrays;

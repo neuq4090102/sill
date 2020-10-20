@@ -2,6 +2,7 @@ package com.elv.core.tool.db.model;
 
 /**
  * 邮件账户
+ *
  * @author lxh
  * @since 2020-08-13
  */

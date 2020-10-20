@@ -9,6 +9,7 @@
 
 	<import resource="classpath:conf/framework-redis.xml"/>
 	<import resource="classpath:conf/framework-servlet.xml"/>
+	<import resource="classpath:conf/framework-aop.xml"/>
 
 	<context:component-scan base-package="com.elv">
 		<context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller"  />

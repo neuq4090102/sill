@@ -15,8 +15,6 @@ public class Utils {
     private Utils() {
     }
 
-
-
     public static List<Date> daters(Dater startDater, Dater endDater) {
         List<Date> dates = new ArrayList<>();
 

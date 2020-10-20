@@ -29,9 +29,7 @@ public class ParseMobile {
         // strategies.add(new TianTianXieYeStrategy());
         strategies.add(new ToolLuStrategy());
 
-        AbstractParser otherParser = OtherParser.of().strategies(strategies);
-
-        return otherParser;
+        return OtherParser.of().strategies(strategies);
     }
 
     public static AbstractParser assemble() {

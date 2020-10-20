@@ -7,8 +7,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+import com.elv.core.constant.FormEnum;
 import com.elv.core.util.DateUtil;
-import com.elv.core.util.DateUtil.DateForm;
+import com.elv.core.constant.FormEnum.DateForm;
 import com.elv.core.util.StrUtil;
 import com.elv.web.model.ValidationResult;
 import com.elv.web.util.RequestUtil;

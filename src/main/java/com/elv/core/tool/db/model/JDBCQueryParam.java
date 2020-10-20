@@ -1,11 +1,8 @@
 package com.elv.core.tool.db.model;
 
 import java.util.List;
-import java.util.Map;
 
 /**
- * desc
- *
  * @author lxh
  * @since 2020-08-13
  */

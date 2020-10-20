@@ -2,6 +2,7 @@ package com.elv.core.util;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -266,7 +267,7 @@ public class StrUtil {
     }
 
     /**
-     * 字符串转List
+     * 转List(默认去重)
      *
      * @param str       入参
      * @param delimiter 分隔符
@@ -275,11 +276,48 @@ public class StrUtil {
      * @return java.util.List
      */
     public static <T> List<T> splitToList(String str, String delimiter, Class<T> clazz) {
-        List<T> results = new ArrayList<>();
-        if (isBlank(str)) {
+        return splitToList(str, delimiter, clazz, true);
+    }
+
+    /**
+     * 转List
+     *
+     * @param str       入参
+     * @param delimiter 分隔符
+     * @param clazz     要转化的类对象
+     * @param distinct  是否去重
+     * @param <T>       范型
+     * @return java.util.List
+     */
+    public static <T> List<T> splitToList(String str, String delimiter, Class<T> clazz, boolean distinct) {
+        if (distinct) {
+            return new ArrayList<>(splitToSet(str, delimiter, clazz));
+        } else {
+            List<T> results = new ArrayList<>();
+            add(str, delimiter, clazz, results);
             return results;
         }
+    }
 
+    /**
+     * 转Set
+     *
+     * @param str       入参
+     * @param delimiter 分隔符
+     * @param clazz     要转化的类对象
+     * @param <T>       范型
+     * @return java.util.List
+     */
+    public static <T> Set<T> splitToSet(String str, String delimiter, Class<T> clazz) {
+        Set<T> results = new HashSet<>();
+        add(str, delimiter, clazz, results);
+        return results;
+    }
+
+    private static <T> void add(String str, String delimiter, Class<T> clazz, Collection<T> results) {
+        if (isBlank(str)) {
+            return;
+        }
         try {
             for (String s : str.split(delimiter)) {
                 if (isNotBlank(s)) {
@@ -287,8 +325,8 @@ public class StrUtil {
                 }
             }
         } catch (Exception e) {
-            throw new RuntimeException("StrUtil#splitToList error.", e);
+            throw new RuntimeException("StrUtil#add error.", e);
         }
-        return results;
     }
+
 }
