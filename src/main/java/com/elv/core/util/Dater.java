@@ -212,8 +212,10 @@ public class Dater {
         } else if (hour > 23) {
             hour = 24;
         }
+
         this.setZonedDateTime(ZonedDateTime
-                .of(this.offsetDays(dayOffset).getLocalDate(), LocalTime.of(hour - 1, 59, 59), this.getZoneId()));
+                .of(this.offsetDays(dayOffset).getLocalDate(), LocalTime.of(hour - 1, 0, 0).plusHours(1).minusNanos(1L),
+                        this.getZoneId()));
         return this;
     }
 
@@ -625,6 +627,9 @@ public class Dater {
         System.out.println(end.getInstant());
         System.out.println(ref.isBetween(start, end));
         System.out.println(ref.isBetween(ref, ref));
+
+        System.out.println(Dater.now().offsetDays(-1).end().getTimestamp());
+        System.out.println(Dater.now().endOf(-1).getTimestamp());
 
         System.out.println(
                 Dater.now().withYear(2021).withMonth(2).withDayOfMonth(28).withHour(22).withMinute(33).withSecond(33));
