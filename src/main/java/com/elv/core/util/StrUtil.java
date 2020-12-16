@@ -39,12 +39,28 @@ public class StrUtil {
         return !isEmpty(cs);
     }
 
+    public static boolean isAllEmpty(final CharSequence... css) {
+        return StringUtils.isAllEmpty(css);
+    }
+
+    public static boolean isAnyEmpty(final CharSequence... css) {
+        return StringUtils.isAnyEmpty(css);
+    }
+
     public static boolean isBlank(final CharSequence cs) {
         return StringUtils.isBlank(cs);
     }
 
     public static boolean isNotBlank(final CharSequence cs) {
         return !isBlank(cs);
+    }
+
+    public static boolean isAllBlank(final CharSequence... css) {
+        return StringUtils.isAllBlank(css);
+    }
+
+    public static boolean isAnyBlank(final CharSequence... css) {
+        return StringUtils.isAnyBlank(css);
     }
 
     /**

@@ -1,6 +1,5 @@
-package com.elv.core.tool.db.rb;
+package com.elv.traning.db.redis;
 
-import java.security.Key;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -78,6 +77,7 @@ public class RedisUtil extends ContextLauncher {
         RedisCache redisCache = context.getBean(RedisCache.class);
         System.out.println(redisCache.get("abc"));
         System.out.println(redisCache.exists("ttt"));
+
 
         RedisQueue redisQueue = context.getBean(RedisQueue.class);
         String sms = "sms2";

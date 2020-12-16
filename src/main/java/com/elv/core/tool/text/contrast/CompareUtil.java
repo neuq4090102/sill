@@ -2,11 +2,10 @@ package com.elv.core.tool.text.contrast;
 
 import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-
-import org.apache.commons.collections4.CollectionUtils;
 
 import com.elv.core.tool.text.model.LayoutRoomEntity;
 import com.elv.core.util.BeanUtil;
@@ -22,6 +21,18 @@ public class CompareUtil {
 
     /**
      * 属性对比
+     *
+     * @param oldObject 旧实例对象
+     * @param newObject 新实例对象
+     * @return com.elv.core.tool.text.contrast.CompareVO
+     * @see #compare(Object, Object, Collection)
+     */
+    public static CompareVO compare(Object oldObject, Object newObject) {
+        return compare(oldObject, newObject, null);
+    }
+
+    /**
+     * 属性对比
      * <p>
      * 1.支持不同类实例对比
      * 2.不支持深度对比
@@ -31,14 +42,18 @@ public class CompareUtil {
      * @param compareFields 需要对比的属性，可空，为空时对比全部属性
      * @return com.elv.core.tool.text.contrast.CompareVO
      */
-    public static CompareVO compare(Object oldObject, Object newObject, List<String> compareFields) {
+    public static CompareVO compare(Object oldObject, Object newObject, Collection<String> compareFields) {
         List<CompareDetailVO> detailVOs = new ArrayList<>();
         if (oldObject == null || newObject == null) {
             return CompareVO.of().detailVOs(detailVOs);
         }
 
         boolean limitField = false;
-        if (CollectionUtils.isNotEmpty(compareFields)) {
+        if (compareFields == null) {
+            // do-nothing.
+        } else if (compareFields.size() == 0) {
+            return CompareVO.of().detailVOs(detailVOs);
+        } else {
             limitField = true;
         }
 
@@ -51,8 +66,11 @@ public class CompareUtil {
 
             for (Entry<String, Method> oldEntry : oldGetterMap.entrySet()) {
                 String fieldName = oldEntry.getKey();
+                if (limitField && !compareFields.contains(fieldName)) {
+                    continue;
+                }
                 Method newMethod = newGetterMap.get(fieldName);
-                if (limitField && !compareFields.contains(fieldName) || newMethod == null) {
+                if (newMethod == null) {
                     continue;
                 }
                 Method oldMethod = oldEntry.getValue();
@@ -68,18 +86,6 @@ public class CompareUtil {
 
         return CompareVO.of().detailVOs(detailVOs);
 
-    }
-
-    /**
-     * 对比
-     *
-     * @param oldObject 旧实例对象
-     * @param newObject 新实例对象
-     * @return com.elv.core.tool.text.contrast.CompareVO
-     * @see #compare(Object, Object, List)
-     */
-    public static CompareVO compare(Object oldObject, Object newObject) {
-        return compare(oldObject, newObject, null);
     }
 
     public static void main(String[] args) {

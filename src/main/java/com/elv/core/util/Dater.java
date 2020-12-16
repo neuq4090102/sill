@@ -11,7 +11,6 @@ import java.time.format.DateTimeFormatter;
 import java.time.temporal.TemporalAdjusters;
 import java.util.Date;
 
-import com.elv.core.constant.Const;
 import com.elv.core.constant.FormEnum.DateForm;
 
 /**
@@ -25,26 +24,18 @@ public class Dater {
     private ZonedDateTime zonedDateTime;
 
     private Dater() {
-        zonedDateTime = ZonedDateTime.now();
     }
 
-    public static Dater now() {
+    private static Dater of() {
         return new Dater();
     }
 
-    public static Dater now(int timeZone) {
-        ZoneId zoneId = getZoneId(timeZone);
-        Dater dater = new Dater();
-        dater.setZonedDateTime(ZonedDateTime.of(LocalDateTime.now(zoneId), zoneId));
-        return dater;
-    }
-
     public static Dater of(Date date) {
-        return of(date.getTime() + "", Const.TIME_ZONE);
+        return of(date.getTime() + "", now().getZoneId());
     }
 
     public static Dater of(String dateStr) {
-        return of(dateStr, Const.TIME_ZONE);
+        return of(dateStr, now().getZoneId());
     }
 
     public static Dater of(String dateStr, int timeZone) {
@@ -52,33 +43,54 @@ public class Dater {
     }
 
     private static Dater of(String dateStr, ZoneId zoneId) {
-        Dater dater = new Dater();
         if (StrUtil.isBlank(dateStr) || zoneId == null) {
-            return dater;
+            return Dater.now();
         }
-
-        if (dateStr.length() == 10 && StrUtil.isDigit(dateStr)) {
-            dater.setZonedDateTime(ZonedDateTime.ofInstant(Instant.ofEpochSecond(Long.parseLong(dateStr)), zoneId));
-        } else if (dateStr.length() == 13 && StrUtil.isDigit(dateStr)) {
-            dater.setZonedDateTime(ZonedDateTime.ofInstant(Instant.ofEpochMilli(Long.parseLong(dateStr)), zoneId));
-        } else if (dateStr.length() == 7 && DateUtil.isYearMonth(dateStr)) {
+        Dater dater = Dater.of();
+        if (dateStr.length() == 10 && StrUtil.isDigit(dateStr)) { // 时间戳：秒
+            return dater.zonedDateTime(ZonedDateTime.ofInstant(Instant.ofEpochSecond(Long.parseLong(dateStr)), zoneId));
+        } else if (dateStr.length() == 13 && StrUtil.isDigit(dateStr)) { // 时间戳：毫秒
+            return dater.zonedDateTime(ZonedDateTime.ofInstant(Instant.ofEpochMilli(Long.parseLong(dateStr)), zoneId));
+        } else if (dateStr.length() == 7 && DateUtil.isYearMonth(dateStr)) { // 年月格式
             String[] dateStrArr = dateStr.split("-");
             LocalDate localDate = LocalDate.of(Integer.parseInt(dateStrArr[0]), Integer.parseInt(dateStrArr[1]), 1);
-            dater.setZonedDateTime(ZonedDateTime.of(localDate, LocalTime.MIN, zoneId));
-        } else if (dateStr.length() == 10 && DateUtil.isDate(dateStr)) {
+            return dater.zonedDateTime(ZonedDateTime.of(localDate, LocalTime.MIN, zoneId));
+        } else if (dateStr.length() == 10 && DateUtil.isDate(dateStr)) { // 年月日格式
             String[] dateStrArr = dateStr.split("-");
             LocalDate localDate = LocalDate.of(Integer.parseInt(dateStrArr[0]), Integer.parseInt(dateStrArr[1]),
                     Integer.parseInt(dateStrArr[2]));
-            dater.setZonedDateTime(ZonedDateTime.of(localDate, LocalTime.MIN, zoneId));
-        } else if (dateStr.length() == 19 && DateUtil.isDateTime(dateStr)) {
+            return dater.zonedDateTime(ZonedDateTime.of(localDate, LocalTime.MIN, zoneId));
+        } else if (dateStr.length() == 19 && DateUtil.isDateTime(dateStr)) { // 年月日时分秒格式
             LocalDateTime localDateTime = LocalDateTime
                     .parse(dateStr, DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
-            dater.setZonedDateTime(ZonedDateTime.of(localDateTime, zoneId));
+            return dater.zonedDateTime(ZonedDateTime.of(localDateTime, zoneId));
         } else {
             throw new IllegalArgumentException("日期参数无法识别：" + dateStr);
         }
+    }
 
-        return dater;
+    public static Dater of(LocalDate localDate) {
+        return Dater.of(localDate, now().getZoneId());
+    }
+
+    public static Dater of(LocalDate localDate, ZoneId zoneId) {
+        return now().zonedDateTime(ZonedDateTime.of(localDate, LocalTime.MIN, zoneId));
+    }
+
+    public static Dater of(LocalDateTime localDateTime) {
+        return Dater.of(localDateTime, Dater.now().getZoneId());
+    }
+
+    public static Dater of(LocalDateTime localDateTime, ZoneId zoneId) {
+        return Dater.now().zonedDateTime(ZonedDateTime.of(localDateTime, zoneId));
+    }
+
+    public static Dater now() {
+        return Dater.of().zonedDateTime(ZonedDateTime.now());
+    }
+
+    public static Dater now(int timeZone) {
+        return Dater.of().zonedDateTime(ZonedDateTime.now(getZoneId(timeZone)));
     }
 
     /**
@@ -108,6 +120,11 @@ public class Dater {
 
     public void setZonedDateTime(ZonedDateTime zonedDateTime) {
         this.zonedDateTime = zonedDateTime;
+    }
+
+    public Dater zonedDateTime(ZonedDateTime zonedDateTime) {
+        this.setZonedDateTime(zonedDateTime);
+        return this;
     }
 
     // ***********************************Dater application.**************************************
@@ -414,7 +431,7 @@ public class Dater {
      *
      * @return java.time.LocalDateTime
      */
-    private LocalDateTime getLocalDateTime() {
+    public LocalDateTime getLocalDateTime() {
         return this.getZonedDateTime().toLocalDateTime();
     }
 
@@ -423,7 +440,7 @@ public class Dater {
      *
      * @return java.time.LocalDate
      */
-    private LocalDate getLocalDate() {
+    public LocalDate getLocalDate() {
         return this.getZonedDateTime().toLocalDate();
     }
 
@@ -432,7 +449,7 @@ public class Dater {
      *
      * @return java.time.LocalTime
      */
-    private LocalTime getLocalTime() {
+    public LocalTime getLocalTime() {
         return this.getZonedDateTime().toLocalTime();
     }
 
@@ -491,12 +508,31 @@ public class Dater {
     }
 
     /**
+     * 获取字符串时间，格式：HH:mm:ss
+     *
+     * @return java.lang.String
+     */
+    public String getTimeStr() {
+        return this.getZonedDateTime().format(DateTimeFormatter.ofPattern(DateForm.TIME.getPattern()));
+    }
+
+    /**
      * 获取字符串年月，格式：yyyy-MM
      *
      * @return java.lang.String
      */
     public String getYearMonthStr() {
         return this.getZonedDateTime().format(DateTimeFormatter.ofPattern(DateForm.YEAR_MONTH.getPattern()));
+    }
+
+    /**
+     * 获取固定格式日期字符串
+     *
+     * @param formatter
+     * @return java.lang.String
+     */
+    public String getFormatterStr(DateTimeFormatter formatter) {
+        return this.getZonedDateTime().format(formatter);
     }
 
     public int getYear() {
@@ -616,8 +652,8 @@ public class Dater {
         System.out.println(Dater.of("2020-01-01 12:23:24").endOf(24));
         System.out.println(Dater.of("2020-01-01 12:23:24").endOf(0));
 
-        System.out.println(Dater.now(8));
-        System.out.println(Dater.now(7));
+        System.out.println("dfafda" + Dater.now(8));
+        System.out.println("dfafda" + Dater.now(7));
 
         Dater ref = Dater.now();
         Dater start = Dater.of(ref.getInstant().toEpochMilli() + "").offsetSeconds(1);

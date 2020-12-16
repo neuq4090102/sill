@@ -18,7 +18,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.elv.core.model.util.RandomCtrl;
-import com.elv.traning.model.beanCopy.OrderEntity;
 
 /**
  * mock and init util - used by myself
@@ -318,7 +317,13 @@ public class MockUtil {
     }
 
     public static void main(String[] args) {
-        OrderEntity orderEntity = MockUtil.mock(OrderEntity.class);
-        System.out.println(JsonUtil.toJson(orderEntity));
+        // OrderEntity orderEntity = MockUtil.mock(OrderEntity.class);
+        // System.out.println(JsonUtil.toJson(orderEntity));
+
+        int limitNum = 100;
+        int ceil = (int) Math.ceil(limitNum / 100.0d);
+        for (int i = 0; i < ceil; i++) {
+            System.out.println(i + 1);
+        }
     }
 }

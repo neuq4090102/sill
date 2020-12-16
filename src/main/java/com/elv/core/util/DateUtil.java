@@ -1,12 +1,16 @@
 package com.elv.core.util;
 
+import java.time.format.DateTimeFormatter;
+import java.util.Arrays;
+import java.util.Comparator;
+import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import com.elv.core.constant.FormEnum;
 import com.elv.core.constant.FormEnum.DateForm;
+import com.elv.core.constant.SortEnum;
 
 /**
  * Date and Time util
@@ -26,7 +30,7 @@ public class DateUtil {
      * @return boolean
      */
     public static boolean allIsDate(String... dates) {
-        for (String date : dates) {
+        for (String date : Optional.ofNullable(dates).orElse(new String[] { "" })) {
             if (!isDate(date)) {
                 return false;
             }
@@ -41,7 +45,7 @@ public class DateUtil {
      * @return boolean
      */
     public static boolean isDate(String date) {
-        return check(date, DateForm.DATE);
+        return check(Optional.ofNullable(date).orElse(""), DateForm.DATE);
     }
 
     /**
@@ -51,7 +55,7 @@ public class DateUtil {
      * @return boolean
      */
     public static boolean allIsTime(String... times) {
-        for (String time : times) {
+        for (String time : Optional.ofNullable(times).orElse(new String[] { "" })) {
             if (!isTime(time)) {
                 return false;
             }
@@ -66,7 +70,7 @@ public class DateUtil {
      * @return boolean
      */
     public static boolean isTime(String time) {
-        return check(time, DateForm.TIME);
+        return check(Optional.ofNullable(time).orElse(""), DateForm.TIME);
     }
 
     /**
@@ -76,7 +80,7 @@ public class DateUtil {
      * @return boolean
      */
     public static boolean allIsDateTime(String... dateTimes) {
-        for (String dateTime : dateTimes) {
+        for (String dateTime : Optional.ofNullable(dateTimes).orElse(new String[] { "" })) {
             if (!isDateTime(dateTime)) {
                 return false;
             }
@@ -91,7 +95,7 @@ public class DateUtil {
      * @return boolean
      */
     public static boolean isDateTime(String dateTime) {
-        return check(dateTime, DateForm.DATE_TIME);
+        return check(Optional.ofNullable(dateTime).orElse(""), DateForm.DATE_TIME);
     }
 
     /**
@@ -101,7 +105,7 @@ public class DateUtil {
      * @return boolean
      */
     public static boolean allIsYearMonth(String... yearMonths) {
-        for (String yearMonth : yearMonths) {
+        for (String yearMonth : Optional.ofNullable(yearMonths).orElse(new String[] { "" })) {
             if (!isYearMonth(yearMonth)) {
                 return false;
             }
@@ -116,7 +120,7 @@ public class DateUtil {
      * @return boolean
      */
     public static boolean isYearMonth(String yearMonth) {
-        return check(yearMonth + "-01", DateForm.DATE);
+        return check(Optional.ofNullable(yearMonth).orElse("") + "-01", DateForm.DATE);
     }
 
     private static boolean check(String str, DateForm dateForm) {
@@ -188,6 +192,62 @@ public class DateUtil {
         return Dater.of(year + "-01-01").isLeapYear();
     }
 
+    public static String max(String... dateTimes) {
+        if (StrUtil.isAnyBlank(dateTimes)) {
+            return "";
+        }
+        return limitVal(Optional.ofNullable(dateTimes).orElse(new String[] { "" }), SortEnum.DESC);
+    }
+
+    public static String min(String... dateTimes) {
+        if (StrUtil.isAnyBlank(dateTimes)) {
+            return "";
+        }
+        return limitVal(Optional.ofNullable(dateTimes).orElse(new String[] { "" }), SortEnum.ASC);
+    }
+
+    private static String limitVal(String[] dateTimes, SortEnum sort) {
+        Comparator<? super Long> comparator = (sort == SortEnum.DESC) ?
+                Comparator.reverseOrder() :
+                Comparator.naturalOrder();
+
+        if (allIsDateTime(dateTimes)) {
+            return Arrays.stream(dateTimes).map(item -> Dater.of(item))
+                    .sorted(Comparator.comparing(item -> item.getTimestamp(), comparator)).findFirst().get()
+                    .getDateTimeStr();
+        } else if (allIsDate(dateTimes)) {
+            return Arrays.stream(dateTimes).map(item -> Dater.of(item))
+                    .sorted(Comparator.comparing(item -> item.getTimestamp(), comparator)).findFirst().get()
+                    .getDateStr();
+        } else if (allIsTime(dateTimes)) {
+            Dater now = Dater.now();
+            return Arrays.stream(dateTimes).map(item -> Dater.of(now.getDateStr() + " " + item))
+                    .sorted(Comparator.comparing(item -> item.getTimestamp(), comparator)).findFirst().get()
+                    .getTimeStr();
+        }
+
+        Comparator<String> keyComparator = (sort == SortEnum.DESC) ?
+                Comparator.reverseOrder() :
+                Comparator.naturalOrder();
+        return Arrays.stream(dateTimes).sorted(Comparator.comparing(String::toString, keyComparator)).findFirst().get();
+    }
+
+    public static Dater max(Dater... dateTimes) {
+        return limitVal(Optional.ofNullable(dateTimes).orElse(new Dater[] { Dater.now() }), SortEnum.DESC);
+    }
+
+    public static Dater min(Dater... dateTimes) {
+        return limitVal(Optional.ofNullable(dateTimes).orElse(new Dater[] { Dater.now() }), SortEnum.ASC);
+    }
+
+    private static Dater limitVal(Dater[] dateTimes, SortEnum sort) {
+        Comparator<? super Long> comparator = (sort == SortEnum.DESC) ?
+                Comparator.reverseOrder() :
+                Comparator.naturalOrder();
+        return Arrays.stream(dateTimes).sorted(Comparator.comparing(item -> item.getTimestamp(), comparator))
+                .findFirst().get();
+    }
+
     public static void main(String[] args) {
         System.out.println(Integer.valueOf("0004"));
         System.out.println(isDate("2019-09-30"));
@@ -196,5 +256,15 @@ public class DateUtil {
         System.out.println(isTime("00:00:00"));
         System.out.println(isDateTime("2019-09-30 15:59:59"));
         System.out.println(isYearMonth("2019-04"));
+
+        System.out.println(Dater.now().getFormatterStr(DateTimeFormatter.ISO_LOCAL_DATE_TIME));
+        System.out.println(Dater.now().getFormatterStr(DateTimeFormatter.ISO_ZONED_DATE_TIME));
+        System.out.println(Dater.now().getFormatterStr(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss'+0700'")));
+
+        System.out.println(min("00:00:00", "24:00:00"));
+        System.out.println(max("00:00:00", "24:00:00"));
+        System.out.println(min("2020-10-11", "2020-11-11", "2020-11-15"));
+        System.out.println(max("2020-10-11", "2020-11-11", "2020-11-15"));
+        System.out.println(max("2020-11-10 12:11:11", "2020-10-11"));
     }
 }
