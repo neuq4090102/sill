@@ -20,6 +20,18 @@ import com.elv.core.constant.SortEnum;
  */
 public class DateUtil {
 
+    public static final DateTimeFormatter DATE_FORMATTER;
+    public static final DateTimeFormatter TIME_FORMATTER;
+    public static final DateTimeFormatter DATETIME_FORMATTER;
+    public static final DateTimeFormatter YEAR_MONTH_FORMATTER;
+
+    static {
+        DATE_FORMATTER = DateTimeFormatter.ofPattern(DateForm.DATE.getPattern());
+        TIME_FORMATTER = DateTimeFormatter.ofPattern(DateForm.TIME.getPattern());
+        DATETIME_FORMATTER = DateTimeFormatter.ofPattern(DateForm.DATE_TIME.getPattern());
+        YEAR_MONTH_FORMATTER = DateTimeFormatter.ofPattern(DateForm.YEAR_MONTH.getPattern());
+    }
+
     private DateUtil() {
     }
 
@@ -249,22 +261,23 @@ public class DateUtil {
     }
 
     public static void main(String[] args) {
+        DateUtil dateUtil = new DateUtil();
         System.out.println(Integer.valueOf("0004"));
         System.out.println(isDate("2019-09-30"));
-        System.out.println(isTime("23:59:59"));
-        System.out.println(isTime("24:00:00"));
-        System.out.println(isTime("00:00:00"));
-        System.out.println(isDateTime("2019-09-30 15:59:59"));
-        System.out.println(isYearMonth("2019-04"));
-
-        System.out.println(Dater.now().getFormatterStr(DateTimeFormatter.ISO_LOCAL_DATE_TIME));
-        System.out.println(Dater.now().getFormatterStr(DateTimeFormatter.ISO_ZONED_DATE_TIME));
-        System.out.println(Dater.now().getFormatterStr(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss'+0700'")));
-
-        System.out.println(min("00:00:00", "24:00:00"));
-        System.out.println(max("00:00:00", "24:00:00"));
-        System.out.println(min("2020-10-11", "2020-11-11", "2020-11-15"));
-        System.out.println(max("2020-10-11", "2020-11-11", "2020-11-15"));
-        System.out.println(max("2020-11-10 12:11:11", "2020-10-11"));
+        // System.out.println(isTime("23:59:59"));
+        // System.out.println(isTime("24:00:00"));
+        // System.out.println(isTime("00:00:00"));
+        // System.out.println(isDateTime("2019-09-30 15:59:59"));
+        // System.out.println(isYearMonth("2019-04"));
+        //
+        // System.out.println(Dater.now().getFormatterStr(DateTimeFormatter.ISO_LOCAL_DATE_TIME));
+        // System.out.println(Dater.now().getFormatterStr(DateTimeFormatter.ISO_ZONED_DATE_TIME));
+        // System.out.println(Dater.now().getFormatterStr(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss'+0700'")));
+        //
+        // System.out.println(min("00:00:00", "24:00:00"));
+        // System.out.println(max("00:00:00", "24:00:00"));
+        // System.out.println(min("2020-10-11", "2020-11-11", "2020-11-15"));
+        // System.out.println(max("2020-10-11", "2020-11-11", "2020-11-15"));
+        // System.out.println(max("2020-11-10 12:11:11", "2020-10-11"));
     }
 }
