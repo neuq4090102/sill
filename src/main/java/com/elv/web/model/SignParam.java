@@ -3,7 +3,7 @@ package com.elv.web.model;
 import java.io.Serializable;
 import java.util.Map;
 
-import org.hibernate.validator.constraints.NotBlank;
+import javax.validation.constraints.NotBlank;
 
 import com.elv.core.constant.SortEnum;
 

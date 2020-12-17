@@ -2,7 +2,7 @@ package com.elv.core.tool.email.model;
 
 import java.util.List;
 
-import org.hibernate.validator.constraints.NotBlank;
+import javax.validation.constraints.NotBlank;
 
 /**
  * @author lxh

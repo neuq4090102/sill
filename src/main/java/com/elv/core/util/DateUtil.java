@@ -1,5 +1,6 @@
 package com.elv.core.util;
 
+import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 import java.util.Comparator;
@@ -135,6 +136,26 @@ public class DateUtil {
         return check(Optional.ofNullable(yearMonth).orElse("") + "-01", DateForm.DATE);
     }
 
+    /**
+     * 是否是短时分格式：HH:mm
+     *
+     * @param hourMinute
+     * @return boolean
+     */
+    public static boolean isShortHourMinute(String hourMinute) {
+        return check(Optional.ofNullable(hourMinute).orElse("") + ":00", DateForm.TIME);
+    }
+
+    /**
+     * 是否是长时分格式：yyyy-MM-dd HH:mm
+     *
+     * @param hourMinute
+     * @return boolean
+     */
+    public static boolean isLongHourMinute(String hourMinute) {
+        return check(Optional.ofNullable(hourMinute).orElse("") + ":00", DateForm.DATE_TIME);
+    }
+
     private static boolean check(String str, DateForm dateForm) {
         if (StrUtil.isBlank(str)) {
             return false;
@@ -204,6 +225,21 @@ public class DateUtil {
         return Dater.of(year + "-01-01").isLeapYear();
     }
 
+    /**
+     * 生日
+     *
+     * @param date
+     * @return com.elv.core.util.Dater
+     */
+    public static Dater birthday(String date) {
+        if (!DateUtil.isDate(date) && !DateUtil.isLongHourMinute(date) && !DateUtil.isDateTime(date)) {
+            return Dater.now();
+        }
+        Dater dater = Dater.of(date);
+        LocalDate localDate = LocalDate.of(Dater.now().getYear(), dater.getMonth(), dater.getDayOfMonth());
+        return Dater.of(localDate, dater.getZoneId());
+    }
+
     public static String max(String... dateTimes) {
         if (StrUtil.isAnyBlank(dateTimes)) {
             return "";
@@ -261,9 +297,9 @@ public class DateUtil {
     }
 
     public static void main(String[] args) {
-        DateUtil dateUtil = new DateUtil();
-        System.out.println(Integer.valueOf("0004"));
-        System.out.println(isDate("2019-09-30"));
+        // DateUtil dateUtil = new DateUtil();
+        // System.out.println(Integer.valueOf("0004"));
+        // System.out.println(isDate("2019-09-30"));
         // System.out.println(isTime("23:59:59"));
         // System.out.println(isTime("24:00:00"));
         // System.out.println(isTime("00:00:00"));
@@ -279,5 +315,7 @@ public class DateUtil {
         // System.out.println(min("2020-10-11", "2020-11-11", "2020-11-15"));
         // System.out.println(max("2020-10-11", "2020-11-11", "2020-11-15"));
         // System.out.println(max("2020-11-10 12:11:11", "2020-10-11"));
+
+        System.out.println(birthday("1990-11-19 11:12").getDateStr());
     }
 }

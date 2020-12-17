@@ -246,7 +246,7 @@ public class RequestUtil {
          */
         public static String getRemoteIP(HttpServletRequest request) {
             String unknown = "unknown";
-            String ip = request.getHeader("X-Forwarded-For"); //Squid服务代理
+            String ip = request.getHeader("X-Forwarded-For"); // Squid服务代理
             if (StrUtil.isEmpty(ip) || unknown.equalsIgnoreCase(ip)) {
                 ip = request.getHeader("X-Real-IP"); // Nginx服务代理
             }

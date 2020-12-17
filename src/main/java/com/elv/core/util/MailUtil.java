@@ -15,6 +15,13 @@ import com.elv.core.tool.email.model.MailParam;
  */
 public class MailUtil extends AbstractMailUtil {
 
+    private MailUtil() {
+    }
+
+    public static MailUtil of() {
+        return new MailUtil();
+    }
+
     @Override
     public String getUserName() {
         return queryEmailAccount().getAccount();
@@ -41,7 +48,7 @@ public class MailUtil extends AbstractMailUtil {
 
         // MailParam mailParam = new MailParam(Arrays.asList("neuq4090102@126.com"), "local test", "Test");
 
-        MailUtil mailUtil = new MailUtil();
+        MailUtil mailUtil = MailUtil.of();
         System.out.println(mailUtil.getHost());
         mailUtil.send(MailParam.builder().recipients(Arrays.asList("neuq4090102@126.com")).subject("local test")
                 .content("666ddfd66").build());
