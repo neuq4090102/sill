@@ -1,5 +1,7 @@
 package com.elv.core.tool.db.redis;
 
+import java.util.Optional;
+
 import javax.annotation.Resource;
 
 /**
@@ -11,26 +13,30 @@ public abstract class AbstractCache {
     @Resource
     protected RedisCache redisCache;
 
-    protected abstract String key();
+    protected <T> void add(String key, T t) {
+        redisCache.add(this.keyOf(key), t, ttl());
+    }
 
-    protected abstract <T> void add(T t);
+    protected String get(String key) {
+        return redisCache.get(this.keyOf(key));
+    }
 
-    protected abstract <T> T get();
+    protected <T> T get(String key, Class<T> clazz) {
+        return redisCache.get(this.keyOf(key), clazz);
+    }
+
+    protected abstract String getKeyPrefix();
+
+    protected String getKeySuffix() {
+        return "";
+    }
 
     protected int ttl() {
         return 24 * 3600; // 单位：秒
     }
 
-    protected <T> void defaultAdd(T t) {
-        redisCache.add(key(), t, ttl());
-    }
-
-    protected String defaultGet() {
-        return redisCache.get(key());
-    }
-
-    protected <T> T defaultGet(Class<T> clazz) {
-        return redisCache.get(key(), clazz);
+    protected String keyOf(String key) {
+        return Optional.ofNullable(getKeyPrefix()).orElse("") + key + Optional.ofNullable(getKeySuffix()).orElse("");
     }
 
 }

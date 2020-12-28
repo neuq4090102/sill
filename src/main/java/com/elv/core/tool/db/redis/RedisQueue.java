@@ -34,23 +34,6 @@ public class RedisQueue extends BaseRedis {
     }
 
     /**
-     * 队列大小
-     *
-     * @param key key
-     * @return long
-     */
-    @Redis
-    public long size(String key) {
-        String type = type(key);
-        if (TypeEnum.is(type, TypeEnum.NONE)) {
-            return 0L;
-        }
-        Assert.isTrue(!TypeEnum.is(type, TypeEnum.LIST), "RedisQueue#size key[" + key + "] is not list.");
-
-        return jedis.llen(key);
-    }
-
-    /**
      * 入队列
      *
      * @param key key
@@ -61,7 +44,7 @@ public class RedisQueue extends BaseRedis {
     @Redis
     public <T> boolean enqueue(String key, T... ts) {
         if (exists(key)) {
-            Assert.isTrue(!TypeEnum.is(type(key), TypeEnum.LIST), "");
+            Assert.isTrue(TypeEnum.isNotList(type(key)), "");
         }
 
         String[] inputs = new String[ts.length];
@@ -86,7 +69,7 @@ public class RedisQueue extends BaseRedis {
      */
     @Redis
     public String dequeue(String key) {
-        if (!TypeEnum.is(type(key), TypeEnum.LIST)) {
+        if (TypeEnum.isNotList(type(key))) {
             return "";
         }
         return jedis.lpop(key);
@@ -101,7 +84,7 @@ public class RedisQueue extends BaseRedis {
      */
     @Redis
     public List<String> dequeue(String key, long count) {
-        if (!TypeEnum.is(type(key), TypeEnum.LIST)) {
+        if (TypeEnum.isNotList(type(key))) {
             return Collections.emptyList();
         }
 

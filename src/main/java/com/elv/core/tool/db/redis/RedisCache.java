@@ -1,6 +1,7 @@
 package com.elv.core.tool.db.redis;
 
 import java.util.Arrays;
+import java.util.Map;
 import java.util.Set;
 
 import com.elv.core.annotation.redis.Redis;
@@ -15,6 +16,19 @@ import com.fasterxml.jackson.core.type.TypeReference;
 public class RedisCache extends BaseRedis {
 
     /**
+     * 储值
+     *
+     * @param key key
+     * @param t   值
+     * @param <T> 范型
+     * @return java.lang.String
+     */
+    @Redis
+    public <T> boolean add(String key, T t) {
+        return success(jedis.set(key, t instanceof String ? (String) t : JsonUtil.toJson(t)));
+    }
+
+    /**
      * @param key     key
      * @param t       储值对象
      * @param seconds 秒数
@@ -23,8 +37,7 @@ public class RedisCache extends BaseRedis {
      */
     @Redis
     public <T> boolean add(String key, T t, int seconds) {
-        String value = t instanceof String ? (String) t : JsonUtil.toJson(t);
-        if (!ok(set(key, value))) {
+        if (!success(jedis.set(key, t instanceof String ? (String) t : JsonUtil.toJson(t)))) {
             return false;
         }
         return expire(key, seconds);
@@ -32,13 +45,39 @@ public class RedisCache extends BaseRedis {
 
     @Redis
     public <T> boolean add(String key, T[] t, int seconds) {
-        if (!ok(set(key, JsonUtil.toJson(t)))) {
+        if (!success(jedis.set(key, JsonUtil.toJson(t)))) {
             return false;
         }
         return expire(key, seconds);
     }
 
-    // TODO add set
+    /**
+     * 取值
+     *
+     * @param key key
+     * @return java.lang.String
+     */
+    @Redis
+    public String get(String key) {
+        return jedis.get(key);
+    }
+
+    @Redis
+    public <T> T get(String key, Class<T> clazz) {
+        return JsonUtil.toObject(jedis.get(key), clazz);
+    }
+
+    @Redis
+    public <T> T get(String key, TypeReference<T> reference) {
+        return JsonUtil.toObject(jedis.get(key), reference);
+    }
+
+    /*********************************** set begin ***********************************/
+    /**
+     * @param key    key
+     * @param values 储值对象
+     * @return boolean
+     */
     @Redis
     public boolean addSet(String key, String[] values) {
         return success(jedis.sadd(key, values));
@@ -52,11 +91,20 @@ public class RedisCache extends BaseRedis {
     }
 
     @Redis
-    public Set<String> getSetMembers(String key) {
+    public boolean addSet(String key, String[] values, int seconds) {
+        if (!success(jedis.sadd(key, values))) {
+            return false;
+        }
+        return expire(key, seconds);
+    }
+
+    @Redis
+    public Set<String> membersOf(String key) {
         return jedis.smembers(key);
     }
 
-    public boolean isSetMember(String key, String value) {
+    @Redis
+    public boolean isMember(String key, String value) {
         return jedis.sismember(key, value);
     }
 
@@ -72,47 +120,27 @@ public class RedisCache extends BaseRedis {
                         .toArray(String[]::new)));
     }
 
-    /**
-     * 取值
-     *
-     * @param key key
-     * @return java.lang.String
-     */
+    /*********************************** set end ***********************************/
+    /*********************************** sorted set begin ***********************************/
     @Redis
-    public String get(String key) {
-        return super.get(key);
+    public boolean addSortedSet(String key, Map<String, Double> members) {
+        return success(jedis.zadd(key, members));
     }
 
     @Redis
-    public <T> T get(String key, Class<T> clazz) {
-        String result = super.get(key);
-        if (result == null) {
-            return null;
+    public boolean addSortedSet(String key, Map<String, Double> members, int seconds) {
+        if (!success(jedis.zadd(key, members))) {
+            return false;
         }
-        return JsonUtil.toObject(result, clazz);
+
+        return expire(key, seconds);
     }
 
     @Redis
-    public <T> T get(String key, TypeReference<T> typeReference) {
-        String result = super.get(key);
-        if (result == null) {
-            return null;
-        }
-        return JsonUtil.toObject(result, typeReference);
+    public Set<String> rangeOf(String key, long start, long stop) {
+        return jedis.zrange(key, start, stop);
     }
 
-    // TODO  add&get map/list/set
-
-    // public static void family(String key) {
-    //     System.out.println("set:" + set(key, "777"));
-    //     System.out.println("get:" + get(key));
-    //     System.out.println("getSet:" + getSet(key, "888t"));
-    //     System.out.println("incr:" + incr(key));
-    //     System.out.println("incr:" + incrBy(key, 3));
-    //     System.out.println("decr:" + decr(key));
-    //     System.out.println("decr:" + decrBy(key, 2));
-    //     System.out.println("append:" + append(key, "999"));
-    //     System.out.println("length:" + length(key));
-    // }
+    /*********************************** sorted set end ***********************************/
 
 }

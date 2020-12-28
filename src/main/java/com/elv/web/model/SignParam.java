@@ -3,8 +3,6 @@ package com.elv.web.model;
 import java.io.Serializable;
 import java.util.Map;
 
-import javax.validation.constraints.NotBlank;
-
 import com.elv.core.constant.SortEnum;
 
 /**
@@ -19,7 +17,7 @@ public class SignParam implements Serializable {
     private SortEnum sortEnum = SortEnum.ASC; // 排序
     private String algorithm; // 摘要算法
     private String secretName; // 密钥参数
-    @NotBlank
+    // @NotBlank
     private String secretKey; // 密钥
 
     public static SignParam of() {

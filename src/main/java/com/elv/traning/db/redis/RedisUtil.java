@@ -6,10 +6,9 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 
+import com.elv.core.tool.db.redis.BaseRedis;
 import com.elv.core.tool.db.redis.RedisCache;
-import com.elv.core.tool.db.redis.RedisQueue;
 import com.elv.core.tool.frame.ContextLauncher;
-import com.elv.core.util.JsonUtil;
 
 import redis.clients.jedis.Jedis;
 
@@ -18,9 +17,6 @@ import redis.clients.jedis.Jedis;
  * @since 2020-06-16
  */
 public class RedisUtil extends ContextLauncher {
-
-    private static long NOT_EXIST = -2L;
-    private static String SUCCESS = "OK";
 
     private static Jedis jedis;
 
@@ -41,28 +37,19 @@ public class RedisUtil extends ContextLauncher {
         // testKey();
         // testString();
         // testHash();
-        //
         // jedis.close();
-
     }
 
     private static void testHash() {
-        // RedisHash.family("hash", "hk");
-        // RedisList.family("list");
         RedisSet.family("set");
     }
 
     private static void testString() {
-
         RedisString.family("ttt");
     }
 
     public static void testKey() {
-        // long ttl = RedisKey.ttl("ab");
-        // System.out.println(ttl);
-
         RedisKey.family("abc");
-
     }
 
     public static void testConn() {
@@ -71,24 +58,32 @@ public class RedisUtil extends ContextLauncher {
 
     @Override
     protected void exec() {
+        TimeZoneCache timeZoneCache = context.getBean(TimeZoneCache.class);
+        if (timeZoneCache == null) {
+            System.out.println("timeZoneCache is null.");
+        } else {
+            System.out.println("timeZoneCache is not null.");
+        }
+
+        timeZoneCache.add(441L, 8);
+        Integer integer = timeZoneCache.fetch(441L);
+        System.out.println("timeZoneCache=" + integer);
+
         //得到类的实例
-        // RedisCache redisCache = context.getBean(RedisCache.class);
-        // Jedis jedis = redisCache.getRedisAccess().conn();
         RedisCache redisCache = context.getBean(RedisCache.class);
         System.out.println(redisCache.get("abc"));
         System.out.println(redisCache.exists("ttt"));
 
-
-        RedisQueue redisQueue = context.getBean(RedisQueue.class);
-        String sms = "sms2";
-        for (int i = 0; i < 0; i++) {
-            redisQueue.enqueue(sms, "1", 2, null, "abc", 455, "dkdk", "ldf");
-            redisQueue.enqueue(sms, "1");
-        }
-        System.out.println(redisQueue.size(sms));
-        System.out.println(JsonUtil.toJson(redisQueue.queue(sms)));
-        System.out.println(JsonUtil.toJson(redisQueue.dequeue(sms, 3)));
-        System.out.println(JsonUtil.toJson(redisQueue.queue(sms)));
+        // RedisQueue redisQueue = context.getBean(RedisQueue.class);
+        // String sms = "sms2";
+        // for (int i = 0; i < 0; i++) {
+        //     redisQueue.enqueue(sms, "1", 2, null, "abc", 455, "dkdk", "ldf");
+        //     redisQueue.enqueue(sms, "1");
+        // }
+        // System.out.println(redisQueue.size(sms));
+        // System.out.println(JsonUtil.toJson(redisQueue.queue(sms)));
+        // System.out.println(JsonUtil.toJson(redisQueue.dequeue(sms, 3)));
+        // System.out.println(JsonUtil.toJson(redisQueue.queue(sms)));
     }
 
     private static class RedisConn {
@@ -159,7 +154,7 @@ public class RedisUtil extends ContextLauncher {
          * @return long
          */
         public static long ttl(String key) {
-            return Optional.ofNullable(jedis.ttl(key)).orElse(NOT_EXIST);
+            return Optional.ofNullable(jedis.ttl(key)).orElse(BaseRedis.NOT_EXIST);
         }
 
         /**
@@ -170,7 +165,7 @@ public class RedisUtil extends ContextLauncher {
          * @return long
          */
         public static long pttl(String key) {
-            return Optional.ofNullable(jedis.pttl(key)).orElse(NOT_EXIST);
+            return Optional.ofNullable(jedis.pttl(key)).orElse(BaseRedis.NOT_EXIST);
         }
 
         /**

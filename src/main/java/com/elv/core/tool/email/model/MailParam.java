@@ -2,18 +2,16 @@ package com.elv.core.tool.email.model;
 
 import java.util.List;
 
-import javax.validation.constraints.NotBlank;
-
 /**
  * @author lxh
  * @since 2020-05-31
  */
 public class MailParam {
 
-    @NotBlank
+    // @NotBlank
     private List<String> recipients; // 收件人
     private List<String> ccs; //抄送人
-    @NotBlank
+    // @NotBlank
     private String subject; // 邮件主题
     private Object content = ""; // 邮箱内容
     private List<String> filePaths; // 附件路径列表-可空

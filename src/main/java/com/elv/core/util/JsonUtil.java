@@ -37,7 +37,7 @@ public class JsonUtil {
         try {
             result = mapper.writeValueAsString(object);
         } catch (JsonProcessingException e) {
-            logger.error(" Failed to convert to json with {}.", object.toString(), e);
+            logger.error(" Failed to convert to Object with {}.", object.toString(), e);
         }
 
         return result;
@@ -45,13 +45,15 @@ public class JsonUtil {
 
     public static <T> T toObject(String json, Class<T> targetClass) {
         T result = null;
-        try {
-            result = mapper.readValue(json, targetClass);
-        } catch (Exception e) {
-            if (!isJson(json)) {
-                logger.error(" It's not valid json string with {}.", json, e);
-            } else {
-                logger.error(" Failed to convert to Object with {}.", json, e);
+        if (json != null) {
+            try {
+                result = mapper.readValue(json, targetClass);
+            } catch (Exception e) {
+                if (!isJson(json)) {
+                    logger.error(" It's not valid json string with {}.", json, e);
+                } else {
+                    logger.error(" Failed to convert to Object with {}.", json, e);
+                }
             }
         }
 
@@ -60,13 +62,15 @@ public class JsonUtil {
 
     public static <T> T toObject(String json, TypeReference<T> typeReference) {
         T result = null;
-        try {
-            result = mapper.readValue(json, typeReference);
-        } catch (IOException e) {
-            if (!isJson(json)) {
-                logger.error(" It's not valid json string with {}.", json, e);
-            } else {
-                logger.error(" Failed to convert to Object with {}.", json, e);
+        if (json != null) {
+            try {
+                result = mapper.readValue(json, typeReference);
+            } catch (IOException e) {
+                if (!isJson(json)) {
+                    logger.error(" It's not valid json string with {}.", json, e);
+                } else {
+                    logger.error(" Failed to convert to Object with {}.", json, e);
+                }
             }
         }
 
@@ -83,6 +87,9 @@ public class JsonUtil {
     }
 
     public static JsonNode toTree(String json) {
+        if (json == null) {
+            return null;
+        }
         JsonNode result = null;
         try {
             result = mapper.readTree(json);

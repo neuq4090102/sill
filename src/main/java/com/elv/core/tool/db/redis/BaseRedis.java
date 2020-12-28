@@ -4,20 +4,20 @@ import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
 
+import com.elv.core.constant.RedisEnum.TypeEnum;
+
 import redis.clients.jedis.Jedis;
 
 /**
- * desc
- *
  * @author lxh
  * @since 2020-08-25
  */
 public abstract class BaseRedis {
 
-    private static final long FOREVER_EXIST = -1L;
-    private static final long NOT_EXIST = -2L;
-    private static final String OK = "OK";
-    private static final long SUCCESS = 1L;
+    public static final long FOREVER_EXIST = -1L;
+    public static final long NOT_EXIST = -2L;
+    public static final String OK = "OK";
+    public static final long SUCCESS = 1L;
 
     private RedisAccess redisAccess;
     protected Jedis jedis;
@@ -76,7 +76,7 @@ public abstract class BaseRedis {
         if (!exists(oldKey)) {
             return false;
         }
-        return ok(jedis.rename(oldKey, newKey));
+        return success(jedis.rename(oldKey, newKey));
     }
 
     /**
@@ -133,7 +133,7 @@ public abstract class BaseRedis {
      * @param key
      * @return long
      */
-    public long del(String key) {
+    public long delete(String key) {
         return jedis.del(key);
     }
 
@@ -148,27 +148,30 @@ public abstract class BaseRedis {
     }
 
     /**
-     * 储值
-     *
-     * @param key   key
-     * @param value 值
-     * @return java.lang.String
-     */
-    protected String set(String key, String value) {
-        return jedis.set(key, value);
-    }
-
-    /**
-     * 取值
+     * 容量大小
      *
      * @param key key
-     * @return java.lang.String
+     * @return long
      */
-    protected String get(String key) {
-        return jedis.get(key);
+    public long size(String key) {
+        String type = type(key);
+        if (TypeEnum.isInvalid(type)) {
+            return 0L;
+        } else if (TypeEnum.isString(type)) {
+            return 1L;
+        } else if (TypeEnum.isList(type)) {
+            return jedis.llen(key);
+        } else if (TypeEnum.isSet(type)) {
+            return jedis.scard(key);
+        } else if (TypeEnum.isSortedSet(type)) {
+            return jedis.zcard(key);
+        } else if (TypeEnum.isHash(type)) {
+            return jedis.hlen(key);
+        }
+        return 0L;
     }
 
-    public boolean ok(String str) {
+    public boolean success(String str) {
         return OK.equalsIgnoreCase(str);
     }
 
