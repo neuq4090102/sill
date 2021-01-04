@@ -27,7 +27,9 @@ public class ExceptionHandler implements HandlerExceptionResolver {
     @Override
     public ModelAndView resolveException(HttpServletRequest request, HttpServletResponse response, Object handler,
             Exception e) {
-        logger.error("API access error, handler:{}, msg:{}, exception:{}", handler, e.getMessage(), e);
+        if (!FrameworkError.CONCURRENT_ERROR.getMsg().equals(e.getMessage())) {
+            logger.error("API access error, handler:{}, msg:{}, exception:{}", handler, e.getMessage(), e);
+        }
 
         String requestURI = RequestUtil.getURI(request);
 

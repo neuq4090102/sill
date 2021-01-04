@@ -1,5 +1,6 @@
 package com.elv.traning.db.redis;
 
+import com.elv.core.tool.distributed.lock.LockResult;
 import com.elv.core.tool.frame.ContextLauncher;
 
 import redis.clients.jedis.Jedis;
@@ -58,12 +59,10 @@ public class RedisUtil extends ContextLauncher {
         // System.out.println(lock);
         // redisLock.unlock("aaaaaa", "aadd");
 
-        OrderLock orderLock = context.getBean(OrderLock.class);
         long orderId = 111L;
-
+        OrderLock orderLock = context.getBean(OrderLock.class);
         T1 t1 = new T1(orderLock);
         t1.exec(orderId);
-
         T2 t2 = new T2(orderLock);
         t2.exec(orderId);
     }
@@ -76,14 +75,13 @@ public class RedisUtil extends ContextLauncher {
         }
 
         public void exec(long orderId) {
-            boolean lock1 = orderLock.lock(orderId, 300000);
-            if (lock1) {
+            LockResult lockResult = orderLock.lock(orderId, 300000);
+            if (lockResult.isLocked()) {
                 System.out.println("锁单成功");
                 System.out.println("订单处理完了");
             } else {
                 System.out.println("锁单失败");
             }
-            // orderLock.unlock(orderId);
         }
     }
 
@@ -95,14 +93,14 @@ public class RedisUtil extends ContextLauncher {
         }
 
         public void exec(long orderId) {
-            boolean lock1 = orderLock.lock(orderId, 300000);
-            if (lock1) {
+            LockResult lockResult = orderLock.lock(orderId, 300000);
+            if (lockResult.isLocked()) {
                 System.out.println("锁单成功");
                 System.out.println("订单处理完了");
             } else {
                 System.out.println("锁单失败");
             }
-            orderLock.unlock(orderId);
+            lockResult.unlock();
         }
     }
 

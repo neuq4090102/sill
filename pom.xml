@@ -14,7 +14,7 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
-<!--        <spring.version>4.3.11.RELEASE</spring.version>-->
+        <!--        <spring.version>4.3.11.RELEASE</spring.version>-->
         <spring.version>4.3.29.RELEASE</spring.version>
 
         <testng.version>7.1.0</testng.version>
@@ -323,7 +323,6 @@
             <version>7.0.0.Final</version>
         </dependency>
 
-
         <!-- tool:libphonenumber(手机号归属地)-->
         <dependency>
             <groupId>com.googlecode.libphonenumber</groupId>
@@ -365,12 +364,6 @@
             <version>4.12.0</version>
         </dependency>-->
 
-        <dependency>
-            <groupId>javax</groupId>
-            <artifactId>javaee-web-api</artifactId>
-            <version>8.0.1</version>
-            <scope>provided</scope>
-        </dependency>
 
     </dependencies>
 
