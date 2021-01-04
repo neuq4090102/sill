@@ -4,7 +4,7 @@ import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
 
-import com.elv.core.constant.RedisEnum.TypeEnum;
+import com.elv.core.constant.RedisEnum.DataTypeEnum;
 
 import redis.clients.jedis.Jedis;
 
@@ -155,17 +155,17 @@ public abstract class BaseRedis {
      */
     public long size(String key) {
         String type = type(key);
-        if (TypeEnum.isInvalid(type)) {
+        if (DataTypeEnum.isInvalid(type)) {
             return 0L;
-        } else if (TypeEnum.isString(type)) {
+        } else if (DataTypeEnum.isString(type)) {
             return 1L;
-        } else if (TypeEnum.isList(type)) {
+        } else if (DataTypeEnum.isList(type)) {
             return jedis.llen(key);
-        } else if (TypeEnum.isSet(type)) {
+        } else if (DataTypeEnum.isSet(type)) {
             return jedis.scard(key);
-        } else if (TypeEnum.isSortedSet(type)) {
+        } else if (DataTypeEnum.isSortedSet(type)) {
             return jedis.zcard(key);
-        } else if (TypeEnum.isHash(type)) {
+        } else if (DataTypeEnum.isHash(type)) {
             return jedis.hlen(key);
         }
         return 0L;

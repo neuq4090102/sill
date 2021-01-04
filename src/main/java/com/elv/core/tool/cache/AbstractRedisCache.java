@@ -1,14 +1,16 @@
-package com.elv.core.tool.db.redis;
+package com.elv.core.tool.cache;
 
 import java.util.Optional;
 
 import javax.annotation.Resource;
 
+import com.elv.core.tool.db.redis.RedisCache;
+
 /**
  * @author lxh
  * @since 2020-08-26
  */
-public abstract class AbstractCache {
+public abstract class AbstractRedisCache {
 
     @Resource
     protected RedisCache redisCache;

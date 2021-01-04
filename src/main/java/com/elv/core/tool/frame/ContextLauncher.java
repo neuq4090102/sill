@@ -11,12 +11,17 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
  * @author lxh
  * @since 2020-08-24
  */
-public abstract class ContextLauncher  {
+public abstract class ContextLauncher {
 
     protected ApplicationContext context;
 
     protected void init() {
-        context = new ClassPathXmlApplicationContext("classpath:META-INF/spring/applicationContext.xml");
+        try {
+            context = new ClassPathXmlApplicationContext("classpath:META-INF/spring/applicationContext.xml");
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+
     }
 
     protected abstract void exec();

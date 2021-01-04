@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import com.elv.core.annotation.redis.Redis;
-import com.elv.core.constant.RedisEnum.TypeEnum;
+import com.elv.core.constant.RedisEnum.DataTypeEnum;
 import com.elv.core.util.Assert;
 import com.elv.core.util.JsonUtil;
 
@@ -44,7 +44,7 @@ public class RedisQueue extends BaseRedis {
     @Redis
     public <T> boolean enqueue(String key, T... ts) {
         if (exists(key)) {
-            Assert.isTrue(TypeEnum.isNotList(type(key)), "");
+            Assert.isTrue(DataTypeEnum.isNotList(type(key)), "");
         }
 
         String[] inputs = new String[ts.length];
@@ -69,7 +69,7 @@ public class RedisQueue extends BaseRedis {
      */
     @Redis
     public String dequeue(String key) {
-        if (TypeEnum.isNotList(type(key))) {
+        if (DataTypeEnum.isNotList(type(key))) {
             return "";
         }
         return jedis.lpop(key);
@@ -84,7 +84,7 @@ public class RedisQueue extends BaseRedis {
      */
     @Redis
     public List<String> dequeue(String key, long count) {
-        if (TypeEnum.isNotList(type(key))) {
+        if (DataTypeEnum.isNotList(type(key)) || size(key) == 0) {
             return Collections.emptyList();
         }
 

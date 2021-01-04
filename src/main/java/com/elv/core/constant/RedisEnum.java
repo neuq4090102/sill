@@ -10,7 +10,7 @@ import java.util.stream.Collectors;
  */
 public class RedisEnum {
 
-    public enum TypeEnum {
+    public enum DataTypeEnum {
         NONE("none"), // key不存在
         STRING("string"), // 字符串
         LIST("list"), // 列表
@@ -19,15 +19,15 @@ public class RedisEnum {
         HASH("hash"), // 哈希表
         ;
 
-        private static final Map<String, TypeEnum> map;
+        private static final Map<String, DataTypeEnum> map;
 
         static {
-            map = Arrays.stream(TypeEnum.values()).collect(Collectors.toMap(key -> key.getType(), val -> val));
+            map = Arrays.stream(DataTypeEnum.values()).collect(Collectors.toMap(key -> key.getType(), val -> val));
         }
 
         private final String type;
 
-        TypeEnum(String type) {
+        DataTypeEnum(String type) {
             this.type = type;
         }
 
@@ -35,7 +35,7 @@ public class RedisEnum {
             return type;
         }
 
-        public static TypeEnum itemOf(String type) {
+        public static DataTypeEnum itemOf(String type) {
             return map.get(type);
         }
 
@@ -69,6 +69,24 @@ public class RedisEnum {
 
         public static boolean isHash(String type) {
             return itemOf(type) == HASH;
+        }
+    }
+
+    public enum LockTypeEnum {
+        XX("xx"), //
+        NX("nx"), //
+        PX("px"), //
+        EX("ex"), //
+        ;
+
+        private final String type;
+
+        LockTypeEnum(String type) {
+            this.type = type;
+        }
+
+        public String getType() {
+            return type;
         }
     }
 }

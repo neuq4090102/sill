@@ -32,7 +32,7 @@ public class RedisUtil extends ContextLauncher {
     protected void exec() {
         // 得到类的实例
         // RedisCache redisCache = context.getBean(RedisCache.class);
-        // System.out.println(redisCache.get("abc"));
+        // System.out.println(redisCache.get("abcddd") == null);
         // System.out.println(redisCache.exists("ttt"));
 
         // RedisQueue redisQueue = context.getBean(RedisQueue.class);
@@ -46,11 +46,63 @@ public class RedisUtil extends ContextLauncher {
         // System.out.println(JsonUtil.toJson(redisQueue.dequeue(sms, 3)));
         // System.out.println(JsonUtil.toJson(redisQueue.queue(sms)));
 
-        TimeZoneCache timeZoneCache = context.getBean(TimeZoneCache.class);
-        if (timeZoneCache != null) {
-            timeZoneCache.add(441L, 8);
-            Integer integer = timeZoneCache.fetch(441L);
-            System.out.println("timeZoneCache=" + integer);
+        // TimeZoneCache timeZoneCache = context.getBean(TimeZoneCache.class);
+        // if (timeZoneCache != null) {
+        //     timeZoneCache.add(441L, 9);
+        //     Integer integer = timeZoneCache.fetch(441L);
+        //     System.out.println("timeZoneCache=" + integer);
+        // }
+
+        // RedisLock redisLock = context.getBean(RedisLock.class);
+        // boolean lock = redisLock.lock("aaaaaa", "aadd", 300000);
+        // System.out.println(lock);
+        // redisLock.unlock("aaaaaa", "aadd");
+
+        OrderLock orderLock = context.getBean(OrderLock.class);
+        long orderId = 111L;
+
+        T1 t1 = new T1(orderLock);
+        t1.exec(orderId);
+
+        T2 t2 = new T2(orderLock);
+        t2.exec(orderId);
+    }
+
+    class T1 extends Thread {
+        private OrderLock orderLock;
+
+        public T1(OrderLock orderLock) {
+            this.orderLock = orderLock;
+        }
+
+        public void exec(long orderId) {
+            boolean lock1 = orderLock.lock(orderId, 300000);
+            if (lock1) {
+                System.out.println("锁单成功");
+                System.out.println("订单处理完了");
+            } else {
+                System.out.println("锁单失败");
+            }
+            // orderLock.unlock(orderId);
+        }
+    }
+
+    class T2 extends Thread {
+        private OrderLock orderLock;
+
+        public T2(OrderLock orderLock) {
+            this.orderLock = orderLock;
+        }
+
+        public void exec(long orderId) {
+            boolean lock1 = orderLock.lock(orderId, 300000);
+            if (lock1) {
+                System.out.println("锁单成功");
+                System.out.println("订单处理完了");
+            } else {
+                System.out.println("锁单失败");
+            }
+            orderLock.unlock(orderId);
         }
     }
 

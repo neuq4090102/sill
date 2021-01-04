@@ -17,20 +17,21 @@
         <property name="password" value="${redis.password}"/>
     </bean>
 
-    <bean id="redisCache" class="com.elv.core.tool.db.redis.RedisCache">
-        <property name="redisAccess" ref="redisAccess"/>
-    </bean>
-
     <bean id="redisQueue" class="com.elv.core.tool.db.redis.RedisQueue">
         <property name="redisAccess" ref="redisAccess"/>
     </bean>
 
-    <!--
 
-    <bean id="distributedLockProxy" class="com.navimind.utils.DistributedLockProxy">
-        <property name="distributedLock" ref="redisCacheBean" />
+    <bean id="redisCache" class="com.elv.core.tool.db.redis.RedisCache">
+        <property name="redisAccess" ref="redisAccess"/>
     </bean>
 
-    -->
+    <bean id="distributedLock" class="com.elv.core.tool.distributed.lock.DistributedLock">
+        <property name="redisAccess" ref="redisAccess"/>
+    </bean>
+
+    <bean id="distributedLockProxy" class="com.elv.core.tool.distributed.lock.DistributedLockProxy">
+        <property name="distributedLock" ref="distributedLock"/>
+    </bean>
 
 </beans>
