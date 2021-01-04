@@ -10,6 +10,7 @@ public enum FrameworkError implements IStatusCode {
 
     COMMON_ERROR(-100, "通用异常错误"),  //
     PARAM_ERROR(-101, "参数检查错误"),  //
+    CONCURRENT_ERROR(-102, "并发操作，请刷新后重试"),  //
     ;
 
     private final int code;
