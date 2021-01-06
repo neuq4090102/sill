@@ -29,13 +29,24 @@ public class CostAspect {
 
     private static final Logger logger = LoggerFactory.getLogger(CostAspect.class);
 
-    @Pointcut("execution (* com.elv..*.controller..*.*(..)) || execution (* com.elv..*.ctrl..*.*(..))")
+    static {
+        logger.info("CostAspect#static has run.");
+    }
+
+    // @Pointcut("execution (* com.elv..*.controller..*.*(..)) || execution (* com.elv..*.ctrl..*.*(..))")
+    @Pointcut("@annotation(org.springframework.web.bind.annotation.RequestMapping) || "
+            + "@annotation(org.springframework.web.bind.annotation.PostMapping) || "
+            + "@annotation(org.springframework.web.bind.annotation.GetMapping) || "
+            + "@annotation(org.springframework.web.bind.annotation.PutMapping) || "
+            + "@annotation(org.springframework.web.bind.annotation.PatchMapping) || "
+            + "@annotation(org.springframework.web.bind.annotation.DeleteMapping) ")
     public void beforePointcut() {
 
     }
 
     @Before("beforePointcut()")
     public void before(JoinPoint joinPoint) {
+        // logger.info("CostAspect#before has run.");
     }
 
     @Around("execution (* com.elv..*.controller..*.*(..)) || execution (* com.elv..*.ctrl..*.*(..))")
@@ -49,7 +60,8 @@ public class CostAspect {
         }
         long cost = Duration.between(startInstant, Instant.now()).toMillis(); // unit:milliseconds
         if (cost > Const.THRESHOLD_SLOW_OPT) {
-            logger.warn("API slow response:uri = {}, cost = {}", RequestUtil.getRequest().getRequestURI(), cost);
+            logger.warn("CostAspect#around, API slow response:uri = {}, cost = {}",
+                    RequestUtil.getRequest().getRequestURI(), cost);
         }
 
         ApiResult apiResult = (ApiResult) result;

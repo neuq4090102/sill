@@ -27,7 +27,9 @@ public class ExceptionHandler implements HandlerExceptionResolver {
     @Override
     public ModelAndView resolveException(HttpServletRequest request, HttpServletResponse response, Object handler,
             Exception e) {
-        if (!FrameworkError.CONCURRENT_ERROR.getMsg().equals(e.getMessage())) {
+        if (e instanceof AbstractException && FrameworkError.isNotPrintLog(((AbstractException) e).getCode())) {
+            // do-nothing.
+        } else {
             logger.error("API access error, handler:{}, msg:{}, exception:{}", handler, e.getMessage(), e);
         }
 

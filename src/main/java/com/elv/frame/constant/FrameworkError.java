@@ -1,5 +1,9 @@
 package com.elv.frame.constant;
 
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
+
 import com.elv.frame.itf.IStatusCode;
 
 /**
@@ -13,10 +17,17 @@ public enum FrameworkError implements IStatusCode {
     CONCURRENT_ERROR(-102, "并发操作，请刷新后重试"),  //
     ;
 
+    private static List<Integer> ignoreLogs;
+
+    static {
+        ignoreLogs = Arrays.stream(FrameworkError.values()).filter(item -> item != COMMON_ERROR)
+                .map(item -> item.getCode()).collect(Collectors.toList());
+    }
+
     private final int code;
     private final String msg;
 
-    private FrameworkError(int code, String msg) {
+    FrameworkError(int code, String msg) {
         this.code = code;
         this.msg = msg;
     }
@@ -27,5 +38,9 @@ public enum FrameworkError implements IStatusCode {
 
     public String getMsg() {
         return msg;
+    }
+
+    public static boolean isNotPrintLog(Integer code) {
+        return ignoreLogs.contains(code);
     }
 }

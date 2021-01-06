@@ -6,10 +6,17 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
 
-import com.elv.core.constant.FormEnum;
-import com.elv.core.util.DateUtil;
+import javax.validation.ConstraintViolation;
+import javax.validation.Validation;
+import javax.validation.ValidatorFactory;
+
+import org.hibernate.validator.HibernateValidator;
+
 import com.elv.core.constant.FormEnum.DateForm;
+import com.elv.core.util.DateUtil;
 import com.elv.core.util.StrUtil;
 import com.elv.web.model.ValidationResult;
 import com.elv.web.util.RequestUtil;
@@ -173,4 +180,46 @@ public class Validator {
         return result;
     }
 
+    /**
+     * JSR校验Bean（建议API项目使用）
+     *
+     * @param bean   要验证的bean
+     * @param groups 分组
+     * @return com.elv.web.model.ValidationResult
+     */
+    public static <T> ValidationResult validate(T bean, Class<?>... groups) {
+        ValidationResult result = new ValidationResult();
+        result.putAll(check(bean, false, groups));
+        return result;
+    }
+
+    /**
+     * JSR校验Bean（建议服务项目使用）
+     *
+     * @param bean   要验证的bean
+     * @param groups 分组
+     * @return java.util.Map
+     */
+    public static <T> Map<String, String> check(T bean, Class<?>... groups) {
+        return check(bean, true, groups);
+    }
+
+    /**
+     * JSR校验Bean（建议服务项目使用）
+     *
+     * @param bean     要验证的bean
+     * @param failFast 是否快速失败
+     * @param groups   分组
+     * @return java.util.Map
+     */
+    public static <T> Map<String, String> check(T bean, boolean failFast, Class<?>... groups) {
+        ValidatorFactory vf = Validation.byProvider(HibernateValidator.class).configure().failFast(failFast)
+                .buildValidatorFactory(); // 方式一
+        // ValidatorFactory vf = Validation.buildDefaultValidatorFactory(); // 方式二
+        // ValidatorFactory vf = Validation.byDefaultProvider().configure()
+        //         .addProperty("hibernate.validator.fail_fast", "false").buildValidatorFactory(); // 方式三
+        Set<ConstraintViolation<T>> validations = vf.getValidator().validate(bean, groups);
+        return validations.stream()
+                .collect(Collectors.toMap(key -> key.getPropertyPath().toString(), val -> val.getMessage()));
+    }
 }

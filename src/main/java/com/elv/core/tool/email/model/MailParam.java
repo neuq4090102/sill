@@ -3,6 +3,7 @@ package com.elv.core.tool.email.model;
 import java.util.List;
 
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
 /**
  * @author lxh
@@ -10,10 +11,10 @@ import javax.validation.constraints.NotBlank;
  */
 public class MailParam {
 
-    @NotBlank
+    @NotNull(message = "收件人不能为空")
     private List<String> recipients; // 收件人
     private List<String> ccs; //抄送人
-    @NotBlank
+    @NotBlank(message = "邮件主题必传")
     private String subject; // 邮件主题
     private Object content = ""; // 邮箱内容
     private List<String> filePaths; // 附件路径列表-可空
