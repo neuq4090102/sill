@@ -189,7 +189,7 @@ public class Validator {
      */
     public static <T> ValidationResult validate(T bean, Class<?>... groups) {
         ValidationResult result = new ValidationResult();
-        result.putAll(check(bean, false, groups));
+        result.putAll(jsrCheck(bean, false, groups));
         return result;
     }
 
@@ -200,8 +200,8 @@ public class Validator {
      * @param groups 分组
      * @return java.util.Map
      */
-    public static <T> Map<String, String> check(T bean, Class<?>... groups) {
-        return check(bean, true, groups);
+    public static <T> Map<String, String> jsrCheck(T bean, Class<?>... groups) {
+        return jsrCheck(bean, true, groups);
     }
 
     /**
@@ -212,7 +212,7 @@ public class Validator {
      * @param groups   分组
      * @return java.util.Map
      */
-    public static <T> Map<String, String> check(T bean, boolean failFast, Class<?>... groups) {
+    public static <T> Map<String, String> jsrCheck(T bean, boolean failFast, Class<?>... groups) {
         ValidatorFactory vf = Validation.byProvider(HibernateValidator.class).configure().failFast(failFast)
                 .buildValidatorFactory(); // 方式一
         // ValidatorFactory vf = Validation.buildDefaultValidatorFactory(); // 方式二
