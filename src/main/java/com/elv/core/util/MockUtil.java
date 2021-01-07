@@ -156,7 +156,7 @@ public class MockUtil {
                         } else {
                             Class<?> argument = (Class<?>) actualTypeArgument;
                             Object actualType = newInstance(argument);
-                            if (actualType != null && isBean(argument)) {
+                            if (actualType != null && BeanUtil.isBean(argument)) {
                                 init(actualType);
                             }
 
@@ -186,13 +186,13 @@ public class MockUtil {
                             Class<?> keyBeanClass = (Class<?>) keyArgument;
                             Object keyBean = newInstance(keyBeanClass);
                             if (keyBean != null) {
-                                if (keyBean != null && isBean(keyBeanClass)) {
+                                if (keyBean != null && BeanUtil.isBean(keyBeanClass)) {
                                     init(keyBean);
                                 }
 
                                 Class<?> valBeanClass = (Class<?>) valArgument;
                                 Object valBean = newInstance(valBeanClass);
-                                if (valBean != null && isBean(valBeanClass)) {
+                                if (valBean != null && BeanUtil.isBean(valBeanClass)) {
                                     init(valBean);
                                 }
 
@@ -208,7 +208,7 @@ public class MockUtil {
                 } else {
                     Class<?> beanClass = Class.forName(fieldType.getName());
                     newValue = newInstance(beanClass);
-                    if (newValue != null && isBean(beanClass)) {
+                    if (newValue != null && BeanUtil.isBean(beanClass)) {
                         init(newValue);
                     }
                 }
@@ -301,29 +301,33 @@ public class MockUtil {
         return result;
     }
 
-    /**
-     * 是否是bean
-     *
-     * @param clazz 类对象
-     * @return boolean
-     */
-    private static boolean isBean(Class<?> clazz) {
-        Map<String, Method> getterMap = BeanUtil.getGetterMap(clazz);
-        Map<String, Method> setterMap = BeanUtil.getSetterMap(clazz);
-        if (getterMap.size() + setterMap.size() > 0) {
-            return true;
-        }
-        return false;
-    }
-
     public static void main(String[] args) {
         // OrderEntity orderEntity = MockUtil.mock(OrderEntity.class);
         // System.out.println(JsonUtil.toJson(orderEntity));
 
-        int limitNum = 100;
-        int ceil = (int) Math.ceil(limitNum / 100.0d);
-        for (int i = 0; i < ceil; i++) {
-            System.out.println(i + 1);
+        MyTest myTest = new MyTest();
+        myTest.getAbc();
+
+        System.out.println(BeanUtil.isJavaBean(MyTest.class));
+        System.out.println(BeanUtil.isBean(MyTest.class));
+    }
+
+    public static class MyTest {
+
+        public MyTest() {
+        }
+
+        private String abc;
+
+        public String getAbc() {
+            return abc;
+        }
+
+        public void setAbc(String abc) {
+            this.abc = abc;
         }
     }
 }
+
+
+

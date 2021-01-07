@@ -28,9 +28,9 @@ public class BeanReflect {
         //        testClass(clazz);
         //        testAnnotation(clazz);
         //        testConstructor(clazz);
-        testField(clazz);
+        // testField(clazz);
         //        testMethod(clazz);
-        //        testOther(clazz);
+               testOther(clazz);
 
         //        try {
         //            Map<String, Method> getterMap = getterMap(clazz);
@@ -50,6 +50,7 @@ public class BeanReflect {
         System.out.println(clazz.isAnnotation()); //注解类
         System.out.println(clazz.isLocalClass()); //局部类
         System.out.println(clazz.isMemberClass()); //内部类
+        System.out.println(clazz.getModifiers());
     }
 
     private static void testMethod(Class<?> clazz) {

@@ -39,6 +39,46 @@ public class BeanUtil {
     }
 
     /**
+     * 是否是JavaBean
+     * <p>
+     * 条件：
+     * 1.类必须是具体且公共的（public class 修饰）
+     * 2.具有无参构造器
+     * 3.提供一致性设计模式的公共方法访问内部域或成员属性（get合set方法）
+     *
+     * @param clazz 类对象
+     * @return boolean
+     */
+    public static boolean isJavaBean(Class<?> clazz) {
+        if (!Modifier.isPublic(clazz.getModifiers())) {
+            return false;
+        }
+
+        if (!Arrays.stream(clazz.getConstructors())
+                .filter(item -> item.getParameterCount() == 0 && Modifier.isPublic(item.getModifiers())).findFirst()
+                .isPresent()) {
+            return false;
+        }
+
+        return isBean(clazz);
+    }
+
+    /**
+     * 是否是bean
+     *
+     * @param clazz 类对象
+     * @return boolean
+     */
+    public static boolean isBean(Class<?> clazz) {
+        Map<String, Method> setterMap = getSetterMap(clazz);
+        Map<String, Method> getterMap = getGetterMap(clazz);
+
+        return getAllFields(clazz).stream()
+                .filter(item -> setterMap.get(item.getName()) != null && getterMap.get(item.getName()) != null)
+                .findFirst().isPresent();
+    }
+
+    /**
      * 获取类所有属性（含继承属性）
      *
      * @param beanClass 类对象
@@ -58,7 +98,7 @@ public class BeanUtil {
     public static List<Field> getFields(Class<?> beanClass, boolean withExtends) {
         List<Field> fields = new ArrayList<>();
 
-        while (withExtends) {
+        while (true) {
             if (beanClass == null || beanClass == Object.class) {
                 break;
             }

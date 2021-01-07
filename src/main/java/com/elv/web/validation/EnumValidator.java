@@ -54,8 +54,8 @@ public class EnumValidator implements IValidator {
         }
         Class<Enum> enumClass = (Class<Enum>) this.getEnumClass();
 
-        Optional<Field> targetField = BeanUtil.getFields(enumClass, false).stream().peek(field -> {
-        }).filter(field -> !field.isEnumConstant() && field.getName().equals(this.getEnumKey())).findFirst();
+        Optional<Field> targetField = BeanUtil.getFields(enumClass, false).stream()
+                .filter(field -> !field.isEnumConstant() && field.getName().equals(this.getEnumKey())).findFirst();
         if (!targetField.isPresent()) {
             // 未查到枚举类有对应的属性名称
             return new ValidationResult(this.getParam(),

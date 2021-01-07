@@ -11,6 +11,13 @@ import java.util.Set;
  */
 public class OrderEntity extends ChannelOrderEntity {
 
+    public OrderEntity() {
+    }
+
+    public OrderEntity(String orderNo) {
+        this.orderNo = orderNo;
+    }
+
     private String orderNo;
     private String contacter;
     private String mobile;
