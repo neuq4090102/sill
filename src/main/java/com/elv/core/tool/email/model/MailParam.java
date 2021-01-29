@@ -13,7 +13,8 @@ public class MailParam {
 
     @NotNull(message = "收件人不能为空")
     private List<String> recipients; // 收件人
-    private List<String> ccs; //抄送人
+    private List<String> ccs; // 抄送人
+    private List<String> bccs; // 暗送人
     @NotBlank(message = "邮件主题必传")
     private String subject; // 邮件主题
     private Object content = ""; // 邮箱内容
@@ -36,6 +37,7 @@ public class MailParam {
     private MailParam(Builder builder) {
         this.setRecipients(builder.getRecipients());
         this.setCcs(builder.getCcs());
+        this.setBccs(builder.getBccs());
         this.setSubject(builder.getSubject());
         this.setContent(builder.getContent());
         this.setFilePaths(builder.getFilePaths());
@@ -55,6 +57,14 @@ public class MailParam {
 
     public void setCcs(List<String> ccs) {
         this.ccs = ccs;
+    }
+
+    public List<String> getBccs() {
+        return bccs;
+    }
+
+    public void setBccs(List<String> bccs) {
+        this.bccs = bccs;
     }
 
     public String getSubject() {
@@ -88,6 +98,7 @@ public class MailParam {
     public static class Builder {
         private List<String> recipients; // 收件人
         private List<String> ccs; //抄送人
+        private List<String> bccs; //暗送人
         private String subject; // 邮件主题
         private Object content = ""; // 邮箱内容
         private List<String> filePaths; // 附件路径列表-可空
@@ -107,6 +118,15 @@ public class MailParam {
 
         public Builder ccs(List<String> ccs) {
             this.ccs = ccs;
+            return this;
+        }
+
+        public List<String> getBccs() {
+            return bccs;
+        }
+
+        public Builder bccs(List<String> bccs) {
+            this.bccs = bccs;
             return this;
         }
 

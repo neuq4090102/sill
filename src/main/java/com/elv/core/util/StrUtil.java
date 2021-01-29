@@ -68,6 +68,7 @@ public class StrUtil {
      *
      * @param str 参数
      * @return boolean
+     * @see Character#isDigit(char)
      */
     public static boolean isDigit(String str) {
         if (isBlank(str)) {

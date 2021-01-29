@@ -15,30 +15,37 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
         <!--        <spring.version>4.3.11.RELEASE</spring.version>-->
+        <!-- frame -->
         <spring.version>4.3.29.RELEASE</spring.version>
 
+        <!-- test -->
         <testng.version>7.1.0</testng.version>
         <junit.version>4.12</junit.version>
         <mockito.version>3.1.0</mockito.version>
 
+        <!-- log -->
         <slf4j.version>1.7.20</slf4j.version>
         <logback.version>1.2.3</logback.version>
 
+        <!-- db & orm -->
         <redis.version>3.3.0</redis.version>
-
         <mysql.version>8.0.18</mysql.version>
         <mybatis.version>3.3.1</mybatis.version>
         <mybatis.spring.version>1.2.4</mybatis.spring.version>
         <mango.version>1.6.1</mango.version>
         <HikariCP.version>3.3.1</HikariCP.version>
 
-        <thymeleaf.version>3.0.11.RELEASE</thymeleaf.version>
+        <!-- tool -->
         <json.version>2.10.2</json.version>
         <javamail.version>1.4.7</javamail.version>
+        <guava.version>29.0-jre</guava.version>
         <lombok.version>1.18.10</lombok.version>
 
+        <!-- web -->
         <servlet.version>3.1.0</servlet.version>
+        <thymeleaf.version>3.0.11.RELEASE</thymeleaf.version>
 
+        <!-- other -->
         <github.global.server>github</github.global.server>
     </properties>
 
@@ -365,6 +372,13 @@
             <artifactId>opennlp-tools</artifactId>
             <version>1.9.2</version>
         </dependency>
+
+        <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+            <version>${guava.version}</version>
+        </dependency>
+
 
         <!-- tool:敏感词 -->
         <!--<dependency>

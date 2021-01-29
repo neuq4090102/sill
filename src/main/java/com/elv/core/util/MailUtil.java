@@ -51,7 +51,7 @@ public class MailUtil extends AbstractMailUtil {
         MailUtil mailUtil = MailUtil.of();
         System.out.println(mailUtil.getHost());
         mailUtil.send(MailParam.builder().recipients(Arrays.asList("neuq4090102@126.com")).subject("local test")
-                .content("666ddfd66").build());
+                .content("Just a test.").build());
         // mailUtil.send(MailParam.builder().recipients(Arrays.asList("neuq4090102@126.com")).subject("local test")
         //         .content("Test2").filePaths(filePaths).build());
         System.out.println("success.");

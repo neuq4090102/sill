@@ -11,6 +11,7 @@ import javax.mail.Address;
 import javax.mail.Authenticator;
 import javax.mail.BodyPart;
 import javax.mail.Message;
+import javax.mail.Message.RecipientType;
 import javax.mail.Multipart;
 import javax.mail.PasswordAuthentication;
 import javax.mail.SendFailedException;
@@ -161,6 +162,9 @@ public class MailSender {
             // 抄送人
             Address[] ccAddresses = this.fetchAddress(mailParam.getCcs());
 
+            // 暗送人
+            Address[] bccAddresses = this.fetchAddress(mailParam.getBccs());
+
             // 邮件内容
             Object content = null;
             List<String> filePaths = mailParam.getFilePaths();
@@ -195,10 +199,14 @@ public class MailSender {
             // 设置发件人
             message.setFrom(address);
             // 设置收件人，TO表示发送，CC表示抄送，BCC表示密送
-            message.setRecipients(Message.RecipientType.TO, toAddresses);
+            message.addRecipients(RecipientType.TO, toAddresses);
             if (ccAddresses != null) {
                 // 设置抄送人
-                message.setRecipients(Message.RecipientType.CC, ccAddresses);
+                message.addRecipients(RecipientType.CC, ccAddresses);
+            }
+            if (bccAddresses != null) {
+                // 设置抄送人
+                message.addRecipients(RecipientType.BCC, bccAddresses);
             }
             // 设置主题
             message.setSubject(mailParam.getSubject(), Const.UTF8);

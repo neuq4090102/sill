@@ -88,6 +88,13 @@ public final class RandomCtrl {
             return this;
         }
 
+        public Builder onlyDigit() {
+            this.digit = true;
+            this.lowerCaseLetter = false;
+            this.upperCaseLetter = false;
+            return this;
+        }
+
         public RandomCtrl build() {
             RandomCtrl randomCtrl = new RandomCtrl();
             randomCtrl.setLength(length);
