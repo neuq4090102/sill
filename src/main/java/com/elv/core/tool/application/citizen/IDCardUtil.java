@@ -40,16 +40,22 @@ public class IDCardUtil {
         String id = "341221202101200288";
         parse(id);
         System.out.println(valid(id));
-
-        // for (int i = 0; i < 5; i++) {
-        //     System.out.println(generate());
-        // }
     }
 
+    /**
+     * 解析身份证号
+     *
+     * @param id
+     */
     public static void parse(String id) {
-        System.out.println(id.length());
     }
 
+    /**
+     * 验证身份证
+     *
+     * @param id
+     * @return boolean
+     */
     public static boolean valid(String id) {
         if (id == null || id.length() != ID_LENGTH) {
             return false;
@@ -57,12 +63,18 @@ public class IDCardUtil {
         return fetchCheckDigit(id.substring(0, ID_LENGTH - 1)).equals(id.substring(ID_LENGTH - 1));
     }
 
-    private static String fetchCheckDigit(String id) {
-        Assert.isTrue(!StrUtil.isDigit(id), "身份证入参异常：非数字");
-        Assert.isTrue(id.length() != ID_COEFFICIENTS.length, "身份证入参异常：长度不合法");
+    /**
+     * 获取身份证校验码（最后一位）
+     *
+     * @param idTop17 身份证前17位
+     * @return java.lang.String
+     */
+    private static String fetchCheckDigit(String idTop17) {
+        Assert.isTrue(!StrUtil.isDigit(idTop17), "身份证入参异常：非数字");
+        Assert.isTrue(idTop17.length() != ID_COEFFICIENTS.length, "身份证入参异常：长度不合法");
 
         int sum = 0;
-        char[] chars = id.toCharArray();
+        char[] chars = idTop17.toCharArray();
         for (int i = 0; i < chars.length; i++) {
             sum += (chars[i] - 48) * ID_COEFFICIENTS[i]; // 48表示'0'的ASCII码的十进制值
         }
