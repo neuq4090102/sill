@@ -1,9 +1,6 @@
 package com.elv.core.tool.application.citizen;
 
-import com.elv.core.model.util.RandomCtrl;
 import com.elv.core.util.Assert;
-import com.elv.core.util.Dater;
-import com.elv.core.util.RandomUtil;
 import com.elv.core.util.StrUtil;
 
 /**
@@ -44,22 +41,9 @@ public class IDCardUtil {
         parse(id);
         System.out.println(valid(id));
 
-        for (int i = 0; i < 5; i++) {
-            System.out.println(generate());
-
-        }
-
-
-    }
-
-    public static String generate() {
-        String addressNo = "341221";
-        StringBuilder sb = new StringBuilder();
-        sb.append(addressNo);
-        sb.append(Dater.now().offsetYears(-20).getDateStr().replaceAll("-", ""));
-        sb.append(RandomUtil.randomStr(RandomCtrl.builder().onlyDigit().length(3).build()));
-        sb.append(fetchCheckDigit(sb.toString()));
-        return sb.toString();
+        // for (int i = 0; i < 5; i++) {
+        //     System.out.println(generate());
+        // }
     }
 
     public static void parse(String id) {
