@@ -23,6 +23,7 @@ import com.elv.core.constant.SecurityEnum.Algorithm;
 import com.elv.core.constant.SortEnum;
 import com.elv.core.util.SecurityUtil;
 import com.elv.core.util.StrUtil;
+import com.elv.core.util.Utils;
 import com.elv.web.constant.RequestEnum.AgentEnum;
 import com.elv.web.model.SignParam;
 
@@ -127,6 +128,10 @@ public class RequestUtil {
 
     public static String getRemoteIP() {
         return Request.getRemoteIP(getRequest());
+    }
+
+    public static long getLongIP() {
+        return Utils.ipToLong(getRemoteIP());
     }
 
     public static String getAgent() {

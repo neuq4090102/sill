@@ -21,4 +21,9 @@ public interface Const {
      */
     String UTF8 = "UTF-8";
 
+    /**
+     * IP段最大值
+     */
+    int IP_SEGMENT_MAX = 255;
+
 }

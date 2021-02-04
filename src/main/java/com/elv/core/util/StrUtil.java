@@ -346,4 +346,12 @@ public class StrUtil {
         }
     }
 
+    public static String leftPad(final String str, final int size, final String padChar) {
+        return StringUtils.leftPad(str, size, padChar);
+    }
+
+    public static String rightPad(final String str, final int size, final String padChar) {
+        return StringUtils.rightPad(str, size, padChar);
+    }
+
 }

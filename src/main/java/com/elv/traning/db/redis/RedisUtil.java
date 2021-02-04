@@ -31,6 +31,8 @@ public class RedisUtil extends ContextLauncher {
 
     @Override
     protected void exec() {
+        testBitMap();
+
         // 得到类的实例
         // RedisCache redisCache = context.getBean(RedisCache.class);
         // System.out.println(redisCache.get("abcddd") == null);
@@ -59,12 +61,16 @@ public class RedisUtil extends ContextLauncher {
         // System.out.println(lock);
         // redisLock.unlock("aaaaaa", "aadd");
 
-        long orderId = 111L;
-        OrderLock orderLock = context.getBean(OrderLock.class);
-        T1 t1 = new T1(orderLock);
-        t1.exec(orderId);
-        T2 t2 = new T2(orderLock);
-        t2.exec(orderId);
+        // long orderId = 111L;
+        // OrderLock orderLock = context.getBean(OrderLock.class);
+        // T1 t1 = new T1(orderLock);
+        // t1.exec(orderId);
+        // T2 t2 = new T2(orderLock);
+        // t2.exec(orderId);
+    }
+
+    private void testBitMap() {
+        // jedis.setbi
     }
 
     class T1 extends Thread {
