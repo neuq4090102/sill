@@ -106,6 +106,8 @@ public class PhoneUtil {
         System.out.println(isPhone("01056673266")); // 北京座机
         System.out.println(isPhone("18584838281")); // 四川成都手机
         System.out.println(isPhone("17647461382")); // 内蒙古呼市手机
+        System.out.println(isPhone("14400000000")); // 非手机号/座机
+        System.out.println(isPhone("00000000")); // 非手机号/座机
 
         System.out.println(getCarrier("05586263084"));
         System.out.println(getCarrier("01056673266"));

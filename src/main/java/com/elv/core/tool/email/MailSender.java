@@ -205,7 +205,7 @@ public class MailSender {
                 message.addRecipients(RecipientType.CC, ccAddresses);
             }
             if (bccAddresses != null) {
-                // 设置抄送人
+                // 设置暗送人
                 message.addRecipients(RecipientType.BCC, bccAddresses);
             }
             // 设置主题

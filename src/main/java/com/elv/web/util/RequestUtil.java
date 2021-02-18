@@ -272,7 +272,7 @@ public class RequestUtil {
             }
 
             // 0:0:0:0:0:0:0:1 是IPv6的本地ip，相当于IPv4的127.0.0.1
-            return ip.equals("0:0:0:0:0:0:0:1") ? "127.0.0.1" : ip;
+            return "0:0:0:0:0:0:0:1".equals(ip) ? "127.0.0.1" : ip;
         }
 
         /**
