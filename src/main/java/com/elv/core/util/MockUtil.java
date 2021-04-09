@@ -18,6 +18,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.elv.core.model.util.RandomCtrl;
+import com.elv.traning.model.beanCopy.OrderEntity;
 
 /**
  * mock and init util - used by myself
@@ -302,14 +303,17 @@ public class MockUtil {
     }
 
     public static void main(String[] args) {
+        OrderEntity orderEntity = new OrderEntity();
+        orderEntity.setOrderNo("28343");
+        MockUtil.init(orderEntity);
         // OrderEntity orderEntity = MockUtil.mock(OrderEntity.class);
-        // System.out.println(JsonUtil.toJson(orderEntity));
+        System.out.println(JsonUtil.toJson(orderEntity));
 
-        MyTest myTest = new MyTest();
-        myTest.getAbc();
-
-        System.out.println(BeanUtil.isJavaBean(MyTest.class));
-        System.out.println(BeanUtil.isBean(MyTest.class));
+        // MyTest myTest = new MyTest();
+        // myTest.getAbc();
+        //
+        // System.out.println(BeanUtil.isJavaBean(MyTest.class));
+        // System.out.println(BeanUtil.isBean(MyTest.class));
     }
 
     public static class MyTest {

@@ -9,6 +9,8 @@ import java.util.stream.Stream;
 
 /**
  * 敏感词工具
+ * <p>
+ * TODO : 可以考虑引入NLP分词技术，即以【词】为单位代替以【字】为单位，eg:西藏独立，分解为：{西藏={独立={}}}，取代：{西={藏={独={立={}}}}
  *
  * @author lxh
  * @see "DFA算法"
@@ -148,7 +150,7 @@ public class SensitiveWordUtil {
 
     public static void main(String[] args) {
         Set<String> sensitiveWordSet = Stream.of( //
-                "中国人", "中产阶级", "韩国人", "绞肉机", "共产党", "sexy" //
+                "中国人", "中产阶级", "韩国人", "绞肉机", "共产党", "sexy", "西藏独立" //
         ).collect(Collectors.toSet());
 
         init(sensitiveWordSet);

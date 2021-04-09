@@ -50,17 +50,14 @@ public class Dater {
         } else if (dateTime.length() == 13 && StrUtil.isDigit(dateTime)) { // 时间戳：毫秒
             zonedDateTime = ZonedDateTime.ofInstant(Instant.ofEpochMilli(Long.parseLong(dateTime)), zone);
         } else if (dateTime.length() == 7 && DateUtil.isYearMonth(dateTime)) { // 格式:yyyy-MM
-            LocalDate localDate = LocalDate.parse(dateTime + "-01", DateUtil.DATE_FORMATTER);
-            zonedDateTime = ZonedDateTime.of(localDate, LocalTime.MIN, zone);
+            zonedDateTime = ZonedDateTime
+                    .of(LocalDate.parse(dateTime + "-01", DateUtil.DATE_FORMATTER), LocalTime.MIN, zone);
         } else if (dateTime.length() == 10 && DateUtil.isDate(dateTime)) { // 格式:yyyy-MM-dd
-            LocalDate localDate = LocalDate.parse(dateTime, DateUtil.DATE_FORMATTER);
-            zonedDateTime = ZonedDateTime.of(localDate, LocalTime.MIN, zone);
+            zonedDateTime = ZonedDateTime.of(LocalDate.parse(dateTime, DateUtil.DATE_FORMATTER), LocalTime.MIN, zone);
         } else if (dateTime.length() == 16 && DateUtil.isLongHourMinute(dateTime)) { // 格式:yyyy-MM-dd HH:mm
-            LocalDateTime localDateTime = LocalDateTime.parse(dateTime + ":00", DateUtil.DATETIME_FORMATTER);
-            zonedDateTime = ZonedDateTime.of(localDateTime, zone);
+            zonedDateTime = ZonedDateTime.of(LocalDateTime.parse(dateTime + ":00", DateUtil.DATETIME_FORMATTER), zone);
         } else if (dateTime.length() == 19 && DateUtil.isDateTime(dateTime)) { // 格式:yyyy-MM-dd HH:mm:ss
-            LocalDateTime localDateTime = LocalDateTime.parse(dateTime, DateUtil.DATETIME_FORMATTER);
-            zonedDateTime = ZonedDateTime.of(localDateTime, zone);
+            zonedDateTime = ZonedDateTime.of(LocalDateTime.parse(dateTime, DateUtil.DATETIME_FORMATTER), zone);
         }
 
         if (zonedDateTime != null) {
@@ -657,6 +654,9 @@ public class Dater {
         System.out.println(Dater.now().getDateTimeStr());
         System.out.println(Dater.now().getYearMonthStr());
         System.out.println(Dater.of("2020-11-12 15:33"));
+        System.out.println(Dater.now().getTimestamp());
+        System.out.println(Dater.of("1615185816945", 8));
+        System.out.println(Dater.of("1615185816945", 7));
 
     }
 
