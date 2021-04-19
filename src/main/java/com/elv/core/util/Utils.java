@@ -13,7 +13,7 @@ import com.elv.core.constant.Const;
  * @author lxh
  * @since 2020-03-23
  */
-public class Utils {
+public final class Utils {
 
     private Utils() {
     }

@@ -16,7 +16,7 @@ import com.elv.core.tool.security.impl.SEUtil;
  * @author lxh
  * @since 2020-06-16
  */
-public class SecurityUtil {
+public final class SecurityUtil {
 
     private static final SecureRandom RANDOM;
 

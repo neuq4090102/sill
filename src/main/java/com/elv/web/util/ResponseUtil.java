@@ -11,7 +11,7 @@ import org.springframework.web.servlet.view.json.MappingJackson2JsonView;
  * @author lxh
  * @since 2020-08-04
  */
-public class ResponseUtil {
+public final class ResponseUtil {
 
     private ResponseUtil() {
     }

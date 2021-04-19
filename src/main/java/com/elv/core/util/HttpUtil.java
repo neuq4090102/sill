@@ -30,7 +30,7 @@ import com.elv.core.model.util.HttpParam;
  * @author lxh
  * @since 2020-06-16
  */
-public class HttpUtil {
+public final class HttpUtil {
 
     private static final Logger logger = LoggerFactory.getLogger(HttpUtil.class);
 

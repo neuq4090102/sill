@@ -14,7 +14,7 @@ import com.elv.web.model.ValidationResult;
  * @see org.springframework.util.Assert
  * @since 2020-07-27
  */
-public abstract class Assert {
+public final class Assert {
 
     public static void notNull(Object object, String msg) {
         isTrue(object == null, msg);
