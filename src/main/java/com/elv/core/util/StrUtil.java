@@ -17,7 +17,7 @@ import com.elv.core.model.util.BlurCtrl;
  * @author lxh
  * @since 2020-06-09
  */
-public class StrUtil {
+public final class StrUtil {
 
     private static final Pattern digitPattern;
     private static final Pattern mailPattern;

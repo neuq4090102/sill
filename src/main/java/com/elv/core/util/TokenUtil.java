@@ -10,7 +10,7 @@ import com.elv.core.tool.unique.token.AbstractTokenUtil;
  * @author lxh
  * @since 2020-08-10
  */
-public class TokenUtil extends AbstractTokenUtil {
+public final class TokenUtil extends AbstractTokenUtil {
 
     @Override
     public String getSecretKey() {

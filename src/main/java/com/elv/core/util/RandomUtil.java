@@ -14,7 +14,7 @@ import com.elv.core.model.util.RandomCtrl;
  * @see org.apache.commons.lang3.RandomStringUtils
  * @since 2020-06-01
  */
-public class RandomUtil {
+public final class RandomUtil {
 
     private static final Random random;
     private static final List<String> digits;

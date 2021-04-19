@@ -14,7 +14,7 @@ import com.google.i18n.phonenumbers.geocoding.PhoneNumberOfflineGeocoder;
  * @author lxh
  * @since 2020-06-16
  */
-public class PhoneUtil {
+public final class PhoneUtil {
 
     private PhoneUtil() {
 

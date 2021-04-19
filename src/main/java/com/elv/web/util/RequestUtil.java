@@ -33,7 +33,7 @@ import com.elv.web.model.SignParam;
  * @author lxh
  * @since 2020-03-23
  */
-public class RequestUtil {
+public final class RequestUtil {
 
     private static final String SIGN; // 签名，注意：是消息摘要，而非数字签名
     private static final String SIGN_TYPE; // 签名算法，注意：是消息摘要算法，而非数字签名算法
