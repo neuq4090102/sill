@@ -123,13 +123,13 @@ public class BLogUtil {
     }
 
     private static BLogObjectVO initObjectVO(Object oldObject, Object newObject) {
-        BLogObjectVO parseVO = new BLogObjectVO();
-        parseVO.setOldObject(oldObject);
-        parseVO.setNewObject(newObject);
-        parseVO.setAllFields(BeanUtil.getAllFields(oldObject.getClass()));
-        parseVO.setOldGetterMap(BeanUtil.getGetterMap(oldObject.getClass()));
-        parseVO.setNewGetterMap(BeanUtil.getGetterMap(newObject.getClass()));
-        return parseVO;
+        BLogObjectVO objectVO = new BLogObjectVO();
+        objectVO.setOldObject(oldObject);
+        objectVO.setNewObject(newObject);
+        objectVO.setAllFields(BeanUtil.getAllFields(oldObject.getClass()));
+        objectVO.setOldGetterMap(BeanUtil.getGetterMap(oldObject.getClass()));
+        objectVO.setNewGetterMap(BeanUtil.getGetterMap(newObject.getClass()));
+        return objectVO;
     }
 
     private static List<BLogDetailVO> generateDetailVOs(BLogObjectVO objectVO) {
@@ -266,18 +266,18 @@ public class BLogUtil {
         }
     }
 
-    private static void resetMappingInfo(BLog bLog, BLogObjectVO parseVO, BLogDetailVO detailVO) {
+    private static void resetMappingInfo(BLog bLog, BLogObjectVO objectVO, BLogDetailVO detailVO) {
         String fieldName = bLog.mappingField();
         if (StringUtils.isBlank(fieldName)) {
             return;
         }
-        Field field = parseVO.getFieldMap().get(fieldName);
+        Field field = objectVO.getFieldMap().get(fieldName);
         if (field == null) {
             return;
         }
 
-        Map<String, Method> oldGetterMap = parseVO.getOldGetterMap();
-        Map<String, Method> newGetterMap = parseVO.getNewGetterMap();
+        Map<String, Method> oldGetterMap = objectVO.getOldGetterMap();
+        Map<String, Method> newGetterMap = objectVO.getNewGetterMap();
         if (oldGetterMap.size() == 0 || newGetterMap.size() == 0) {
             return;
         }
@@ -285,10 +285,10 @@ public class BLogUtil {
             Method oldMethod = oldGetterMap.get(fieldName);
             Method newMethod = newGetterMap.get(fieldName);
             if (oldMethod != null) {
-                detailVO.oldValueDesc(oldMethod.invoke(parseVO.getOldObject()));
+                detailVO.oldValueDesc(oldMethod.invoke(objectVO.getOldObject()));
             }
             if (newMethod != null) {
-                detailVO.newValueDesc(newMethod.invoke(parseVO.getNewObject()));
+                detailVO.newValueDesc(newMethod.invoke(objectVO.getNewObject()));
             }
         } catch (Exception e) {
 

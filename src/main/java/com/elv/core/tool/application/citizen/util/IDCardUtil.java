@@ -1,4 +1,4 @@
-package com.elv.core.tool.application.citizen;
+package com.elv.core.tool.application.citizen.util;
 
 import com.elv.core.model.util.RandomCtrl;
 import com.elv.core.util.Assert;
