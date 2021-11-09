@@ -164,11 +164,6 @@ public class BLogDetailVO {
         return new BLogDetailVO();
     }
 
-    // public CompareDetailVO groupCode(String groupCode) {
-    //     this.groupCode = groupCode;
-    //     return this;
-    // }
-
     public BLogDetailVO fieldName(String fieldName) {
         this.fieldName = fieldName;
         return this;

@@ -37,14 +37,14 @@ public class BLogVO {
     public BLogVO() {
     }
 
-    public BLogVO(int action, String key, Object content) {
-        this.action = action;
+    public BLogVO(ActionEnum action, String key, Object content) {
+        this.action = action.getAction();
         this.key = key;
         this.content = content;
     }
 
-    public BLogVO(int action, List<BLogVO> logVOs) {
-        this.action = action;
+    public BLogVO(ActionEnum action, List<BLogVO> logVOs) {
+        this.action = action.getAction();
         this.logVOs = logVOs;
     }
 

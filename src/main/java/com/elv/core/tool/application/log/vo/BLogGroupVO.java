@@ -14,9 +14,9 @@ import com.fasterxml.jackson.annotation.JsonInclude.Include;
 public class BLogGroupVO {
 
     /**
-     * 是否分组
+     * 是否自定义分组
      */
-    private boolean group;
+    private boolean customizeGroup;
 
     /**
      * 分组编码
@@ -53,12 +53,12 @@ public class BLogGroupVO {
      */
     private List<BLogDetailVO> detailVOs;
 
-    public boolean isGroup() {
-        return group;
+    public boolean isCustomizeGroup() {
+        return customizeGroup;
     }
 
-    public void setGroup(boolean group) {
-        this.group = group;
+    public void setCustomizeGroup(boolean customizeGroup) {
+        this.customizeGroup = customizeGroup;
     }
 
     public String getGroupCode() {
@@ -121,8 +121,8 @@ public class BLogGroupVO {
         return new BLogGroupVO();
     }
 
-    public BLogGroupVO group(boolean group) {
-        this.group = group;
+    public BLogGroupVO customizeGroup(boolean customizeGroup) {
+        this.setCustomizeGroup(customizeGroup);
         return this;
     }
 
@@ -159,7 +159,7 @@ public class BLogGroupVO {
     }
 
     public BLogGroupVO sort(int sort) {
-        this.sort = sort;
+        this.setSort(sort);
         return this;
     }
 

@@ -17,12 +17,10 @@ import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 
 import com.elv.core.tool.application.log.anno.BLog;
-import com.elv.core.tool.application.log.util.BLogEnum.ActionEnum;
 import com.elv.core.tool.application.log.vo.BLogCompareVO;
 import com.elv.core.tool.application.log.vo.BLogDetailVO;
 import com.elv.core.tool.application.log.vo.BLogGroupVO;
 import com.elv.core.tool.application.log.vo.BLogObjectVO;
-import com.elv.core.tool.application.log.vo.BLogVO;
 import com.elv.core.util.BeanUtil;
 import com.elv.core.util.JsonUtil;
 import com.elv.core.util.StrUtil;
@@ -107,7 +105,7 @@ public class BLogUtil {
                 if (groupVO != null) {
                     groupVO.groupDesc(bLog.groupDesc()).groupDelimiter(bLog.groupDelimiter()).addDetail(detailVO);
                 } else {
-                    groupVO = BLogGroupVO.of().group(true).groupCode(groupCode).groupDesc(bLog.groupDesc())
+                    groupVO = BLogGroupVO.of().customizeGroup(true).groupCode(groupCode).groupDesc(bLog.groupDesc())
                             .groupDelimiter(bLog.groupDelimiter()).addDetail(detailVO).sort(i);
                     groupMap.put(groupCode, groupVO);
                 }
@@ -306,7 +304,7 @@ public class BLogUtil {
             return Collections.emptyList();
         }
 
-        List<BLogGroupVO> customizedGroupVOs = groupMap.values().stream().filter(item -> item.isGroup())
+        List<BLogGroupVO> customizedGroupVOs = groupMap.values().stream().filter(item -> item.isCustomizeGroup())
                 .collect(Collectors.toList());
         // 自定义分组
         for (BLogGroupVO groupVO : customizedGroupVOs) {
@@ -328,7 +326,8 @@ public class BLogUtil {
         }
 
         List<BLogGroupVO> groupVOs = new ArrayList<>();
-        groupVOs.addAll(groupMap.values().stream().filter(item -> !item.isGroup()).collect(Collectors.toList()));
+        groupVOs.addAll(
+                groupMap.values().stream().filter(item -> !item.isCustomizeGroup()).collect(Collectors.toList()));
         groupVOs.addAll(customizedGroupVOs);
 
         Collections.sort(groupVOs, Comparator.comparing(item -> item.getSort()));
@@ -348,43 +347,4 @@ public class BLogUtil {
                 .findFirst().map(item -> item.getName()).orElse(null);
     }
 
-    /**
-     * 解析日志
-     *
-     * @param logVO   日志对象
-     * @param newline 换行符
-     * @return java.lang.String
-     */
-    public static String parseLogContent(BLogVO logVO, String newline) {
-        if (logVO == null) { // 变更在无数据变化的时候返回为null
-            return "";
-        }
-        ActionEnum actionEnum = ActionEnum.itemOf(logVO.getAction());
-        StringBuilder sb = new StringBuilder();
-        for (BLogVO subLogVO : logVO.getLogVOs()) {
-            BLogGroupVO groupVO = JsonUtil.toObject(subLogVO.getContent().toString(), BLogGroupVO.class);
-            if (groupVO == null) {
-                continue;
-            }
-            if (actionEnum == ActionEnum.ADD) {
-                sb.append(groupVO.getGroupDesc() + "：" + groupVO.getAfter()).append(newline);
-            } else if (actionEnum == ActionEnum.DELETE) {
-                sb.append(groupVO.getGroupDesc() + "：" + groupVO.getBefore()).append(newline);
-            } else if (actionEnum == ActionEnum.MODIFY) {
-                if (CollectionUtils.isNotEmpty(subLogVO.getLogVOs())) {
-                    // TODO:含有子对象内容的，根据需求请自行解析
-                } else {
-                    sb.append(groupVO.getGroupDesc() + "：" + groupVO.getBefore() + " -> " + groupVO.getAfter())
-                            .append(newline);
-                }
-            } else {
-                // TODO：其他动作请根据需求自行解析
-            }
-        }
-        if (sb.toString().isEmpty()) {
-            return "";
-        } else {
-            return sb.substring(0, sb.length() - 1);
-        }
-    }
 }

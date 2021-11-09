@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.elv.core.tool.application.log.AbstractParseBLog;
 import com.elv.core.tool.application.log.vo.BLogCompareVO;
+import com.elv.core.tool.application.log.vo.BLogVO;
 
 /**
  * @author lxh
@@ -26,6 +27,11 @@ public class DemoLog extends AbstractParseBLog {
     @Override
     public String newline() {
         return super.newline();
+    }
+
+    @Override
+    public String parseLogContent(BLogVO logVO) {
+        return super.defaultParseLogContent(logVO);
     }
 
     public static String addLog(Object newObject) {

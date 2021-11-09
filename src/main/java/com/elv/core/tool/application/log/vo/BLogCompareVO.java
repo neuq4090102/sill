@@ -10,7 +10,10 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import com.elv.core.util.CollectionUtil;
+import org.apache.commons.collections4.CollectionUtils;
+
+import com.elv.core.tool.application.log.util.BLogEnum.ActionEnum;
+import com.elv.core.util.JsonUtil;
 
 /**
  * @author lxh
@@ -45,77 +48,12 @@ public class BLogCompareVO {
     }
 
     /**
-     * 对比结果map
+     * 是否有变化
      *
-     * @return java.util.Map
+     * @return boolean
      */
-    public Map<String, BLogGroupVO> getCompareMap() {
-        if (CollectionUtil.isEmpty(this.getGroupVOs())) {
-            return Collections.emptyMap();
-        }
-
-        return this.getGroupVOs().stream().collect(
-                Collectors.toMap(key -> key.getGroupCode(), value -> value, (key1, key2) -> key2, LinkedHashMap::new));
-    }
-
-    /**
-     * 属性值已发生变化map
-     *
-     * @return java.util.Map
-     */
-    public Map<String, BLogGroupVO> getChangedMap() {
-        if (CollectionUtil.isEmpty(this.getGroupVOs())) {
-            return Collections.emptyMap();
-        }
-
-        return this.getGroupVOs().stream().filter(item -> item.changed()).collect(
-                Collectors.toMap(key -> key.getGroupCode(), value -> value, (key1, key2) -> key2, LinkedHashMap::new));
-    }
-
-    /**
-     * 关心的属性值map
-     *
-     * @return java.util.Map
-     */
-    public Map<String, BLogGroupVO> getCareMap() {
-        if (CollectionUtil.isEmpty(this.getGroupVOs())) {
-            return Collections.emptyMap();
-        }
-
-        return this.getGroupVOs().stream().filter(item -> item.changed() || item.isUptKeep()).collect(
-                Collectors.toMap(key -> key.getGroupCode(), value -> value, (key1, key2) -> key2, LinkedHashMap::new));
-    }
-
-    /**
-     * 属性值未发生变化map
-     *
-     * @return java.util.Map
-     */
-    public Map<String, BLogGroupVO> getUnChangedMap() {
-        if (CollectionUtil.isEmpty(this.getGroupVOs())) {
-            return Collections.emptyMap();
-        }
-
-        return this.getGroupVOs().stream().filter(item -> !item.changed()).collect(
-                Collectors.toMap(key -> key.getGroupCode(), value -> value, (key1, key2) -> key2, LinkedHashMap::new));
-    }
-
-    /**
-     * 发生变化的属性
-     *
-     * @return java.util.Set
-     */
-    public Set<String> getChangedFields() {
-        return getChangedMap().keySet();
-    }
-
-    /**
-     * 未发生变化的属性
-     *
-     * @return java.util.Set
-     */
-    public Set<String> getUnChangedFields() {
-        return getUnChangedMap().keySet();
+    public boolean changed() {
+        return this.getChangedMap().size() > 0;
     }
 
     /**
@@ -127,11 +65,11 @@ public class BLogCompareVO {
      * @return boolean
      */
     public boolean contains(Collection<String> fieldNames) {
-        if (CollectionUtil.isEmpty(fieldNames)) {
+        if (CollectionUtils.isEmpty(fieldNames)) {
             return false;
         }
 
-        Set<String> changedFields = getChangedFields();
+        Set<String> changedFields = this.getChangedFields();
         if (changedFields.size() == 0) {
             return false;
         }
@@ -158,7 +96,7 @@ public class BLogCompareVO {
             return false;
         }
 
-        Set<String> changedFields = getChangedFields();
+        Set<String> changedFields = this.getChangedFields();
         if (changedFields.size() == 0) {
             return false;
         }
@@ -172,12 +110,126 @@ public class BLogCompareVO {
         return false;
     }
 
-    public boolean changed() {
-        Map<String, BLogGroupVO> changedMap = this.getChangedMap();
-        if (changedMap != null && changedMap.size() > 0) {
-            return true;
+    /**
+     * 发生变化的属性
+     *
+     * @return java.util.Set
+     */
+    public Set<String> getChangedFields() {
+        return this.getChangedMap().keySet();
+    }
+
+    /**
+     * 未发生变化的属性
+     *
+     * @return java.util.Set
+     */
+    public Set<String> getUnChangedFields() {
+        return this.getUnChangedMap().keySet();
+    }
+
+    /**
+     * 获取变化的BLogVO
+     *
+     * @param action
+     * @return java.util.List
+     */
+    public List<BLogVO> getChangedBLogVOs(ActionEnum action) {
+        List<BLogVO> logVOs = new ArrayList<>();
+        this.getChangedMap().forEach((key, val) -> logVOs.add(new BLogVO(action, key, JsonUtil.toJson(val))));
+        return logVOs;
+    }
+
+    /**
+     * 获取关心的BLogVO
+     *
+     * @param action
+     * @return java.util.List
+     */
+    public List<BLogVO> getCareBLogVOs(ActionEnum action) {
+        List<BLogVO> logVOs = new ArrayList<>();
+        this.getCareMap().forEach((key, val) -> logVOs.add(new BLogVO(action, key, JsonUtil.toJson(val))));
+        return logVOs;
+    }
+
+    /**
+     * 获取未改变的BLogVO
+     *
+     * @param action
+     * @return java.util.List
+     */
+    public List<BLogVO> getUnChangedBLogVOs(ActionEnum action) {
+        List<BLogVO> logVOs = new ArrayList<>();
+        this.getUnChangedMap().forEach((key, val) -> logVOs.add(new BLogVO(action, key, JsonUtil.toJson(val))));
+        return logVOs;
+    }
+
+    /**
+     * 获取对比的BLogVO
+     *
+     * @param action
+     * @return java.util.List
+     */
+    public List<BLogVO> getCompareBLogVOs(ActionEnum action) {
+        List<BLogVO> logVOs = new ArrayList<>();
+        this.getCompareMap().forEach((key, val) -> logVOs.add(new BLogVO(action, key, JsonUtil.toJson(val))));
+        return logVOs;
+    }
+
+    /**
+     * 对比结果map
+     *
+     * @return java.util.Map
+     */
+    public Map<String, BLogGroupVO> getCompareMap() {
+        if (CollectionUtils.isEmpty(this.getGroupVOs())) {
+            return Collections.emptyMap();
         }
-        return false;
+
+        return this.getGroupVOs().stream().collect(
+                Collectors.toMap(key -> key.getGroupCode(), value -> value, (key1, key2) -> key2, LinkedHashMap::new));
+    }
+
+    /**
+     * 属性值已发生变化map
+     *
+     * @return java.util.Map
+     */
+    public Map<String, BLogGroupVO> getChangedMap() {
+        if (CollectionUtils.isEmpty(this.getGroupVOs())) {
+            return Collections.emptyMap();
+        }
+
+        return this.getGroupVOs().stream().filter(item -> item.changed()).collect(
+                Collectors.toMap(key -> key.getGroupCode(), value -> value, (key1, key2) -> key2, LinkedHashMap::new));
+    }
+
+    /**
+     * 关心的属性值map
+     *
+     * @return java.util.Map
+     */
+    public Map<String, BLogGroupVO> getCareMap() {
+        if (CollectionUtils.isEmpty(this.getGroupVOs())) {
+            return Collections.emptyMap();
+        }
+
+        return this.getGroupVOs().stream().filter(item -> item.changed() || item.isUptKeep()).collect(
+                Collectors.toMap(key -> key.getGroupCode(), value -> value, (key1, key2) -> key2, LinkedHashMap::new));
+    }
+
+    /**
+     * 属性值未发生变化map
+     *
+     * @return java.util.Map
+     */
+    public Map<String, BLogGroupVO> getUnChangedMap() {
+        if (CollectionUtils.isEmpty(this.getGroupVOs())) {
+            return Collections.emptyMap();
+        }
+
+        return this.getGroupVOs().stream().filter(item -> !item.changed()).collect(
+                Collectors.toMap(key -> key.getGroupCode(), value -> value, (key1, key2) -> key2, LinkedHashMap::new));
     }
 
 }

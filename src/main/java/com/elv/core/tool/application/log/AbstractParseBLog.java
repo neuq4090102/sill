@@ -1,8 +1,6 @@
 package com.elv.core.tool.application.log;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map.Entry;
+import org.apache.commons.collections4.CollectionUtils;
 
 import com.elv.core.tool.application.log.util.BLogEnum.ActionEnum;
 import com.elv.core.tool.application.log.util.BLogUtil;
@@ -27,20 +25,25 @@ public abstract class AbstractParseBLog extends AbstractBLog {
     }
 
     /**
+     * 解析日志内容
+     * <p>
+     * 解析请参考{@link #defaultParseLogContent(BLogVO)}
+     *
+     * @param logVO
+     * @return java.lang.String
+     */
+    public abstract String parseLogContent(BLogVO logVO);
+
+    /**
      * 解析添加日志
      *
      * @param newObject 新对象
      * @return java.lang.String 日志内容
      */
     public String parseAddLog(Object newObject) {
+        ActionEnum action = ActionEnum.ADD;
         BLogCompareVO compareVO = BLogUtil.compare(null, newObject, this.careFields());
-        int action = ActionEnum.ADD.getAction();
-        List<BLogVO> logVOs = new ArrayList<>();
-        for (Entry<String, BLogGroupVO> entry : compareVO.getChangedMap().entrySet()) {
-            logVOs.add(new BLogVO(action, entry.getKey(), JsonUtil.toJson(entry.getValue())));
-        }
-
-        return BLogUtil.parseLogContent(new BLogVO(action, logVOs), this.newline());
+        return parseLogContent(new BLogVO(action, compareVO.getChangedBLogVOs(action)));
     }
 
     /**
@@ -50,14 +53,9 @@ public abstract class AbstractParseBLog extends AbstractBLog {
      * @return java.lang.String 日志内容
      */
     public String parseDeleteLog(Object oldObject) {
+        ActionEnum action = ActionEnum.DELETE;
         BLogCompareVO compareVO = BLogUtil.compare(oldObject, null, this.careFields());
-        int action = ActionEnum.DELETE.getAction();
-        List<BLogVO> logVOs = new ArrayList<>();
-        for (Entry<String, BLogGroupVO> entry : compareVO.getChangedMap().entrySet()) {
-            logVOs.add(new BLogVO(action, entry.getKey(), JsonUtil.toJson(entry.getValue())));
-        }
-
-        return BLogUtil.parseLogContent(new BLogVO(action, logVOs), this.newline());
+        return parseLogContent(new BLogVO(action, compareVO.getChangedBLogVOs(action)));
     }
 
     /**
@@ -69,20 +67,50 @@ public abstract class AbstractParseBLog extends AbstractBLog {
      */
     public String parseUpdateLog(Object oldObject, Object newObject) {
         BLogCompareVO compareVO = BLogUtil.compare(oldObject, newObject, this.careFields());
-        if (compareVO.getChangedMap().size() == 0) {
-            // 无变化，即使关心的属性也不解析
-            return null;
+        if (!compareVO.changed()) { // 无变化，即使关心的属性也不解析
+            return "";
         }
+        ActionEnum action = ActionEnum.MODIFY;
+        return parseLogContent(new BLogVO(action, compareVO.getCareBLogVOs(action)));
+    }
 
-        int action = ActionEnum.MODIFY.getAction();
-        List<BLogVO> logVOs = new ArrayList<>();
-        for (Entry<String, BLogGroupVO> entry : compareVO.getCareMap().entrySet()) { // 注意：是careMap
-            logVOs.add(new BLogVO(action, entry.getKey(), JsonUtil.toJson(entry.getValue())));
+    /**
+     * 默认解析日志内容
+     *
+     * @param logVO
+     * @return java.lang.String
+     */
+    public String defaultParseLogContent(BLogVO logVO) {
+        if (logVO == null) { // 变更在无数据变化的时候返回为null
+            return "";
         }
-        if (logVOs.size() == 0) {
-            return null;
+        String newline = newline();
+        ActionEnum actionEnum = ActionEnum.itemOf(logVO.getAction());
+        StringBuilder sb = new StringBuilder();
+        for (BLogVO subLogVO : logVO.getLogVOs()) {
+            BLogGroupVO groupVO = JsonUtil.toObject(subLogVO.getContent().toString(), BLogGroupVO.class);
+            if (groupVO == null) {
+                continue;
+            }
+            if (actionEnum == ActionEnum.ADD) {
+                sb.append(groupVO.getGroupDesc() + "：" + groupVO.getAfter()).append(newline);
+            } else if (actionEnum == ActionEnum.DELETE) {
+                sb.append(groupVO.getGroupDesc() + "：" + groupVO.getBefore()).append(newline);
+            } else if (actionEnum == ActionEnum.MODIFY) {
+                if (CollectionUtils.isNotEmpty(subLogVO.getLogVOs())) {
+                    // TODO:含有子对象内容的，根据需求请自行解析
+                } else {
+                    sb.append(groupVO.getGroupDesc() + "：" + groupVO.getBefore() + " -> " + groupVO.getAfter())
+                            .append(newline);
+                }
+            } else {
+                // TODO：其他请根据需求自行解析
+            }
         }
-
-        return BLogUtil.parseLogContent(new BLogVO(action, logVOs), this.newline());
+        if (sb.toString().isEmpty()) {
+            return "";
+        } else {
+            return sb.substring(0, sb.length() - 1);
+        }
     }
 }
