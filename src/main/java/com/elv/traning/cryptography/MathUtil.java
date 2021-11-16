@@ -35,7 +35,7 @@ public class MathUtil {
         int result = context.gcd(a, b);
         Dater endDater = Dater.now();
         System.out.print("divide's result = " + result + ", cost:");
-        System.out.println((endDater.getInstant().toEpochMilli() - beginDate.getInstant().toEpochMilli()) + "ms");
+        System.out.println((endDater.instant().toEpochMilli() - beginDate.instant().toEpochMilli()) + "ms");
     }
 
     private static void testSubtract(int a, int b) {
@@ -45,7 +45,7 @@ public class MathUtil {
         int result = context.gcd(a, b);
         Dater endDater = Dater.now();
         System.out.print("subtract's result = " + result + ", cost:");
-        System.out.println((endDater.getInstant().toEpochMilli() - beginDate.getInstant().toEpochMilli()) + "ms");
+        System.out.println((endDater.instant().toEpochMilli() - beginDate.instant().toEpochMilli()) + "ms");
     }
 
     private static void testSubtractPlus(int a, int b) {
@@ -57,7 +57,7 @@ public class MathUtil {
 
         Dater endDater = Dater.now();
         System.out.print("subtractPlus's result = " + result + ", cost:");
-        System.out.println((endDater.getInstant().toEpochMilli() - beginDate.getInstant().toEpochMilli()) + "ms");
+        System.out.println((endDater.instant().toEpochMilli() - beginDate.instant().toEpochMilli()) + "ms");
     }
 
     /**

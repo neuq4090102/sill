@@ -35,7 +35,7 @@ public abstract class AbstractDistributedLock {
         if (lock) {
             lockResult.setKey(lockParam.getKey());
             lockResult.setValue(lockParam.getValue());
-            lockResult.setTimestamp(Dater.now().getTimestamp());
+            lockResult.setTimestamp(Dater.now().ts());
             lockResult.setMilliseconds(lockParam.getMilliseconds());
             lockResult.setDistributedLockProxy(this.distributedLockProxy);
         }

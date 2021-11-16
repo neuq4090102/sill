@@ -3,9 +3,9 @@ package com.elv.traning.security;
 import java.nio.charset.Charset;
 
 import com.elv.core.constant.SecurityEnum.Algorithm;
-import com.elv.core.util.Dater;
 import com.elv.core.tool.security.impl.DSUtil;
 import com.elv.core.tool.security.impl.MDUtil;
+import com.elv.core.util.Dater;
 
 /**
  * 混合密码系统（Hybrid Crypto System）
@@ -32,9 +32,9 @@ public class HCSUtil {
      */
     public static String signByRSAWithMD(String msg, Algorithm mdAlgorithm, Algorithm signAlgorithm, String privateKey,
             Charset cs) {
-        long t1 = Dater.now().getTimestamp();
+        long t1 = Dater.now().ts();
         String md = MDUtil.of().algorithm(mdAlgorithm).cs(cs).md(msg);
-        System.out.println("time1:" + (Dater.now().getTimestamp() - t1));
+        System.out.println("time1:" + (Dater.now().ts() - t1));
         return DSUtil.of().signAlgorithm(signAlgorithm).keyAlgorithm(Algorithm.RSA).privateKey(privateKey).cs(cs)
                 .sign(md);
     }
@@ -62,9 +62,9 @@ public class HCSUtil {
         // System.out.println(privateKey);
         // System.out.println(privateKey.length());
 
-        long t1 = Dater.now().getTimestamp();
+        long t1 = Dater.now().ts();
         String signByRSAWithMD = signByRSAWithMD(msg, mdAlgorithm, signAlgorithm, privateKey, null);
-        System.out.println("time:" + (Dater.now().getTimestamp() - t1));
+        System.out.println("time:" + (Dater.now().ts() - t1));
         System.out.println(signByRSAWithMD);
         System.out.println(signByRSAWithMD.length());
     }

@@ -26,4 +26,14 @@ public interface Const {
      */
     int IP_SEGMENT_MAX = 255;
 
+    /**
+     * 邮箱默认端口
+     */
+    int MAIL_PORT = 25;
+
+    /**
+     * FPT默认端口
+     */
+    int FTP_PORT = 21;
+
 }

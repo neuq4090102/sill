@@ -178,7 +178,7 @@ public final class RandomUtil {
             // System.out.println(randomStr(16));
         }
         Dater endDater = Dater.now();
-        System.out.println(endDater.getInstant().toEpochMilli() - beginDate.getInstant().toEpochMilli());
+        System.out.println(endDater.instant().toEpochMilli() - beginDate.instant().toEpochMilli());
 
         System.out.println(randomMobile());
     }

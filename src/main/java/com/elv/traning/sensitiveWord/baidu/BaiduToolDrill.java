@@ -30,7 +30,7 @@ public class BaiduToolDrill {
         paramMap.put("content", "百度是傻逼");
         paramMap.put("type", "textcensor");
         paramMap.put("apiType", "censor");
-        paramMap.put("requestTime", Dater.now().getInstant().toEpochMilli() + "");
+        paramMap.put("requestTime", Dater.now().instant().toEpochMilli() + "");
         paramMap.put("access_token", "24.840a425cb9ea294e38febc0bc646c5e5.2592000.1598605225.282335-21672001");
 
         HttpParam httpParam = new HttpParam();

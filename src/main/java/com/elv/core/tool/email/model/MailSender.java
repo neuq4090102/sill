@@ -1,4 +1,4 @@
-package com.elv.core.tool.email;
+package com.elv.core.tool.email.model;
 
 import java.util.Date;
 import java.util.List;
@@ -25,11 +25,13 @@ import javax.mail.internet.MimeMultipart;
 import javax.mail.internet.MimeUtility;
 
 import com.elv.core.constant.Const;
-import com.elv.core.tool.email.model.MailParam;
 import com.elv.core.util.Assert;
 import com.elv.core.util.StrUtil;
 import com.sun.mail.smtp.SMTPAddressFailedException;
 
+/**
+ * 邮件发件人
+ */
 public class MailSender {
 
     private String mimeType = "text/html;charset=utf-8";
@@ -127,7 +129,7 @@ public class MailSender {
     /**
      * 邮箱初始化
      *
-     * @return com.elv.core.tool.email.MailSender
+     * @return com.elv.core.tool.email.model.MailSender
      */
     public MailSender init() {
         Assert.notBlank(this.getUserName(), "MailSender#init userName not blank.");
@@ -157,7 +159,7 @@ public class MailSender {
             Address address = new InternetAddress(this.getUserName());
 
             // 收件人
-            Address[] toAddresses = this.fetchAddress(mailParam.getRecipients());
+            Address[] toAddresses = this.fetchAddress(mailParam.getTos());
 
             // 抄送人
             Address[] ccAddresses = this.fetchAddress(mailParam.getCcs());

@@ -13,9 +13,9 @@ public class JsonUtilTest {
     @Test
     public void testToJson() {
         Dater dater = Mockito.mock(Dater.class); // mock
-        Mockito.when(dater.getDateStr()).thenReturn("2020-06-02"); // stub
-        System.out.println(dater.getDateStr()); // verify
-        Assert.assertEquals("2020-06-02", dater.getDateStr()); // test
+        Mockito.when(dater.dateStr()).thenReturn("2020-06-02"); // stub
+        System.out.println(dater.dateStr()); // verify
+        Assert.assertEquals("2020-06-02", dater.dateStr()); // test
     }
 
     @Test

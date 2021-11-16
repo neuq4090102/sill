@@ -44,7 +44,7 @@ public final class TokenUtil extends AbstractTokenUtil {
         sb.append("|");
         sb.append("1");
         sb.append("|");
-        sb.append(Dater.now().getTimestamp());
+        sb.append(Dater.now().ts());
         sb.append("|");
         sb.append("other");
 

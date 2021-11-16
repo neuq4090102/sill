@@ -103,9 +103,9 @@ public class MockUtil {
                         } else if (lowerCaseFieldName.endsWith("no")) {
                             newValue = RandomUtil.randomStr(16);
                         } else if (lowerCaseFieldName.endsWith("time")) {
-                            newValue = Dater.now().offsetDays(idx).getDateTimeStr();
+                            newValue = Dater.now().offsetDays(idx).dateTimeStr();
                         } else if (lowerCaseFieldName.endsWith("date")) {
-                            newValue = Dater.now().offsetDays(idx).getDateStr();
+                            newValue = Dater.now().offsetDays(idx).dateStr();
                         } else if (lowerCaseFieldName.endsWith("mobile") || lowerCaseFieldName.endsWith("phone")) {
                             newValue = RandomUtil.randomMobile();
                         } else if (lowerCaseFieldName.endsWith("lang")) {
@@ -144,7 +144,7 @@ public class MockUtil {
                     }
                 } else if (Date.class.isAssignableFrom(fieldType)) {
                     if (fieldValue == null) {
-                        newValue = Dater.now().getDate();
+                        newValue = Dater.now().date();
                     }
                 } else if (Collection.class.isAssignableFrom(fieldType)) {
                     Type genericType = field.getGenericType();

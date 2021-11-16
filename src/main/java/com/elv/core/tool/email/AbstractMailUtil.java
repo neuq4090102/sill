@@ -1,6 +1,8 @@
 package com.elv.core.tool.email;
 
+import com.elv.core.constant.Const;
 import com.elv.core.tool.email.model.MailParam;
+import com.elv.core.tool.email.model.MailSender;
 import com.elv.core.util.StrUtil;
 
 /**
@@ -18,10 +20,11 @@ public abstract class AbstractMailUtil {
      * @return java.lang.String
      */
     public String getHost() {
-        if (this.getUserName() == null) {
+        String userName = this.getUserName();
+        if (userName == null) {
             return "";
         }
-        return "smtp." + this.getUserName().substring(this.getUserName().lastIndexOf("@") + 1);
+        return "smtp." + userName.substring(userName.lastIndexOf("@") + 1);
     }
 
     /**
@@ -30,7 +33,7 @@ public abstract class AbstractMailUtil {
      * @return int
      */
     public int getPort() {
-        return 25;
+        return Const.MAIL_PORT;
     }
 
     /**
@@ -62,7 +65,7 @@ public abstract class AbstractMailUtil {
      * @param mailParam 邮件参数
      */
     public void defaultSend(MailParam mailParam) {
-        if (mailParam.getRecipients() == null || mailParam.getRecipients().size() == 0) {
+        if (mailParam.getTos() == null || mailParam.getTos().size() == 0) {
             return;
         } else if (StrUtil.isBlank(mailParam.getSubject())) {
             return;

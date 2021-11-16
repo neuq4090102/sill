@@ -4,12 +4,17 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 import java.util.Comparator;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import org.apache.commons.lang3.StringUtils;
+
+import com.elv.core.constant.Const;
 import com.elv.core.constant.FormEnum.DateForm;
 import com.elv.core.constant.SortEnum;
 
@@ -236,8 +241,8 @@ public class DateUtil {
             return Dater.now();
         }
         Dater dater = Dater.of(date);
-        LocalDate localDate = LocalDate.of(Dater.now().getYear(), dater.getMonth(), dater.getDayOfMonth());
-        return Dater.of(localDate, dater.getZoneId());
+        LocalDate localDate = LocalDate.of(Dater.now().year(), dater.month(), dater.dayOfMonth());
+        return Dater.of(localDate, dater.zoneId());
     }
 
     public static String max(String... dateTimes) {
@@ -261,17 +266,14 @@ public class DateUtil {
 
         if (allIsDateTime(dateTimes)) {
             return Arrays.stream(dateTimes).map(item -> Dater.of(item))
-                    .sorted(Comparator.comparing(item -> item.getTimestamp(), comparator)).findFirst().get()
-                    .getDateTimeStr();
+                    .sorted(Comparator.comparing(item -> item.ts(), comparator)).findFirst().get().dateTimeStr();
         } else if (allIsDate(dateTimes)) {
             return Arrays.stream(dateTimes).map(item -> Dater.of(item))
-                    .sorted(Comparator.comparing(item -> item.getTimestamp(), comparator)).findFirst().get()
-                    .getDateStr();
+                    .sorted(Comparator.comparing(item -> item.ts(), comparator)).findFirst().get().dateStr();
         } else if (allIsTime(dateTimes)) {
             Dater now = Dater.now();
-            return Arrays.stream(dateTimes).map(item -> Dater.of(now.getDateStr() + " " + item))
-                    .sorted(Comparator.comparing(item -> item.getTimestamp(), comparator)).findFirst().get()
-                    .getTimeStr();
+            return Arrays.stream(dateTimes).map(item -> Dater.of(now.dateStr() + " " + item))
+                    .sorted(Comparator.comparing(item -> item.ts(), comparator)).findFirst().get().timeStr();
         }
 
         Comparator<String> keyComparator = (sort == SortEnum.DESC) ?
@@ -292,8 +294,114 @@ public class DateUtil {
         Comparator<? super Long> comparator = (sort == SortEnum.DESC) ?
                 Comparator.reverseOrder() :
                 Comparator.naturalOrder();
-        return Arrays.stream(dateTimes).sorted(Comparator.comparing(item -> item.getTimestamp(), comparator))
-                .findFirst().get();
+        return Arrays.stream(dateTimes).sorted(Comparator.comparing(item -> item.ts(), comparator)).findFirst().get();
+    }
+
+    /**
+     * 获取开始日期
+     * <p>
+     * 1.默认都是以【当年的一月一日】为参考开始日期，eg:2021-01-01
+     * 2.dateUnit为天，并无意义；dateUnit为周，参数refStartDate失效
+     *
+     * <pre>
+     *  fetchStartDater("2021-11-28", null, month)             -> 2021-11-01
+     *  fetchStartDater("2021-11-27", "2021-10-28", month)     -> 2021-10-28
+     *  fetchStartDater("2021-11-28", "2021-10-28", month)     -> 2021-11-28
+     *
+     *  fetchStartDater("2021-01-28", null, quarter)           -> 2021-01-01
+     *  fetchStartDater("2021-01-28", "2021-01-25", quarter)   -> 2021-01-25
+     *  fetchStartDater("2021-04-24", "2021-01-25", quarter)   -> 2021-01-25
+     *  fetchStartDater("2021-04-25", "2021-01-25", quarter)   -> 2021-04-25
+     *
+     *  fetchStartDater("2021-05-03", null, year)              -> 2021-01-01
+     *  fetchStartDater("2021-05-03", "2021-06-01", year)      -> 2020-06-01
+     *  fetchStartDater("2022-05-03", "2021-06-01", year)      -> 2021-06-01
+     *  fetchStartDater("2022-08-03", "2021-06-01", year)      -> 2022-06-01
+     *  fetchStartDater("2023-05-22", "2021-06-01", year)      -> 2022-06-01
+     * </pre>
+     *
+     * @param businessDate 营业日
+     * @param refStartDate 指定开始日期
+     * @param dateUnit     日期单位
+     * @return com.navimind.utils.DateFormater
+     */
+    public static Dater fetchStartDater(String businessDate, String refStartDate, DateUnitEnum dateUnit) {
+        Dater bdf = Dater.of(businessDate, Const.TIME_ZONE);
+        String dfStr = refStartDate;
+        if (StringUtils.isBlank(refStartDate)) {
+            dfStr = bdf.year() + "-01-01";
+        }
+        Dater df = Dater.of(dfStr, Const.TIME_ZONE);
+        while (true) {
+            if (dateUnit == DateUnitEnum.WEEK) {
+                return bdf.offsetDays(-bdf.dayOfWeek() + 1);
+            } else if (DateUnitEnum.belongMonthlyPeriod(dateUnit)) {
+                int period = dateUnit.getPeriod();
+                df = df.offsetMonths(period);
+                if (df.after(bdf)) {
+                    while (true) {
+                        if (!df.after(bdf)) {
+                            return df;
+                        } else {
+                            df = df.offsetMonths(-period);
+                        }
+                    }
+                }
+            } else {
+                return bdf;
+            }
+        }
+    }
+
+    /**
+     * 日期单位
+     */
+    public enum DateUnitEnum {
+        DAY(1, "天", 1), // 1天
+        WEEK(2, "周", 7), // 7天
+        MONTH(3, "月", 1), // 1个月
+        QUARTER(4, "季度", 3), // 3个月
+        YEAR(5, "年", 12), // 12个月
+        ;
+
+        final private int key;
+        final private String desc;
+        final private int period; // 周期
+
+        private static Map<Integer, DateUnitEnum> map = new HashMap<>();
+
+        static {
+            for (DateUnitEnum item : DateUnitEnum.values()) {
+                map.put(item.getKey(), item);
+            }
+        }
+
+        DateUnitEnum(int key, String desc, int period) {
+            this.key = key;
+            this.desc = desc;
+            this.period = period;
+        }
+
+        public int getKey() {
+            return key;
+        }
+
+        public String getDesc() {
+            return desc;
+        }
+
+        public int getPeriod() {
+            return period;
+        }
+
+        public static DateUnitEnum itemOf(int key) {
+            return map.get(key);
+        }
+
+        public static boolean belongMonthlyPeriod(DateUnitEnum dateUnit) {
+            return dateUnit == MONTH || dateUnit == QUARTER || dateUnit == YEAR;
+        }
+
     }
 
     public static void main(String[] args) {
@@ -306,9 +414,9 @@ public class DateUtil {
         // System.out.println(isDateTime("2019-09-30 15:59:59"));
         // System.out.println(isYearMonth("2019-04"));
         //
-        // System.out.println(Dater.now().getFormatterStr(DateTimeFormatter.ISO_LOCAL_DATE_TIME));
-        // System.out.println(Dater.now().getFormatterStr(DateTimeFormatter.ISO_ZONED_DATE_TIME));
-        // System.out.println(Dater.now().getFormatterStr(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss'+0700'")));
+        // System.out.println(Dater.now().formatOf(DateTimeFormatter.ISO_LOCAL_DATE_TIME));
+        // System.out.println(Dater.now().formatOf(DateTimeFormatter.ISO_ZONED_DATE_TIME));
+        // System.out.println(Dater.now().formatOf(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss'+0700'")));
         //
         // System.out.println(min("00:00:00", "24:00:00"));
         // System.out.println(max("00:00:00", "24:00:00"));
@@ -316,6 +424,59 @@ public class DateUtil {
         // System.out.println(max("2020-10-11", "2020-11-11", "2020-11-15"));
         // System.out.println(max("2020-11-10 12:11:11", "2020-10-11"));
 
-        System.out.println(birthday("1990-11-19 11:12").getDateStr());
+        // System.out.println(birthday("1990-11-19 11:12").dateStr());
+
+        String nowStr = Dater.now().dateStr();
+        String refDate = "2021-10-28";
+
+        DateUnitEnum day = DateUnitEnum.DAY;
+        DateUnitEnum week = DateUnitEnum.WEEK;
+        DateUnitEnum month = DateUnitEnum.MONTH;
+        DateUnitEnum quarter = DateUnitEnum.QUARTER;
+        DateUnitEnum year = DateUnitEnum.YEAR;
+
+        System.out.println(day.getDesc() + ":" + fetchStartDater(null, null, null));
+        System.out.println(day.getDesc() + ":" + fetchStartDater(nowStr, null, null));
+        System.out.println(day.getDesc() + ":" + fetchStartDater(nowStr, "2021-09-28", null));
+        System.out.println(day.getDesc() + ":" + fetchStartDater(nowStr, "2021-09-28", day));
+        System.out.println(day.getDesc() + ":" + fetchStartDater("2021-09-28", refDate, day));
+        System.out.println(day.getDesc() + ":" + fetchStartDater("2021-09-28", refDate, day));
+        System.out.println();
+
+        System.out.println(week.getDesc() + ":" + fetchStartDater(nowStr, null, week));
+        System.out.println(week.getDesc() + ":" + fetchStartDater(nowStr, refDate, week));
+        System.out.println();
+        System.out.println(month.getDesc() + ":" + fetchStartDater(nowStr, refDate, month));
+        System.out.println(month.getDesc() + ":" + fetchStartDater("2021-11-28", null, month));
+        System.out.println(month.getDesc() + ":" + fetchStartDater("2021-11-27", "2021-10-28", month));
+        System.out.println(month.getDesc() + ":" + fetchStartDater("2021-11-28", "2021-10-28", month));
+        System.out.println(month.getDesc() + ":" + fetchStartDater("2020-02-27", "", month));
+
+        System.out.println();
+        System.out.println(quarter.getDesc() + ":" + fetchStartDater(nowStr, null, quarter));
+        System.out.println(quarter.getDesc() + ":" + fetchStartDater("2021-01-28", null, quarter));
+        System.out.println(quarter.getDesc() + ":" + fetchStartDater("2021-01-28", "2021-01-25", quarter));
+        System.out.println(quarter.getDesc() + ":" + fetchStartDater("2021-04-24", "2021-01-25", quarter));
+        System.out.println(quarter.getDesc() + ":" + fetchStartDater("2021-04-25", "2021-01-25", quarter));
+        System.out.println(quarter.getDesc() + ":" + fetchStartDater("2021-02-28", null, quarter));
+        System.out.println(quarter.getDesc() + ":" + fetchStartDater("2021-03-28", null, quarter));
+        System.out.println(quarter.getDesc() + ":" + fetchStartDater("2021-06-28", null, quarter));
+        System.out.println(quarter.getDesc() + ":" + fetchStartDater("2021-12-28", null, quarter));
+        System.out.println(quarter.getDesc() + ":" + fetchStartDater("2022-12-28", "2021-01-02", quarter));
+        System.out.println(quarter.getDesc() + ":" + fetchStartDater("2021-12-28", "2022-01-02", quarter));
+        System.out.println(quarter.getDesc() + ":" + fetchStartDater("2022-01-01", "", quarter));
+        System.out.println(quarter.getDesc() + ":" + fetchStartDater(nowStr, refDate, quarter));
+        System.out.println();
+        System.out.println(year.getDesc() + ":" + fetchStartDater(nowStr, null, year));
+        System.out.println(year.getDesc() + ":" + fetchStartDater(nowStr, refDate, year));
+        System.out.println(year.getDesc() + ":" + fetchStartDater(nowStr, "2021-06-01", year));
+
+        System.out.println(year.getDesc() + ":" + fetchStartDater("2021-05-03", null, year));
+        System.out.println(year.getDesc() + ":" + fetchStartDater("2020-05-03", "2021-06-03", year));
+        System.out.println(year.getDesc() + ":" + fetchStartDater("2022-05-03", "2021-06-03", year));
+        System.out.println(year.getDesc() + ":" + fetchStartDater("2022-06-03", "2021-06-03", year));
+        System.out.println(year.getDesc() + ":" + fetchStartDater("2022-08-03", "2021-06-03", year));
+        System.out.println(year.getDesc() + ":" + fetchStartDater("2023-05-22", "2021-06-03", year));
+        System.out.println(year.getDesc() + ":" + fetchStartDater("2023-06-02", "2021-06-03", year));
     }
 }

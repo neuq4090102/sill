@@ -13,9 +13,9 @@ public class LockResult extends LockParam {
     public void unlock() {
         if (locked && distributedLockProxy != null) {
             distributedLockProxy.unlock(getKey(), getValue());
-            // System.out.println("释放了锁，" + gextKey() + "_" + Dater.of(getTimestamp() + "").getDateTimeStr());
+            // System.out.println("释放了锁，" + gextKey() + "_" + Dater.of(timestamp() + "").dateTimeStr());
         } else {
-            // System.out.println("未释放锁，" + getKey() + "_" + Dater.of(getTimestamp() + "").getDateTimeStr());
+            // System.out.println("未释放锁，" + getKey() + "_" + Dater.of(timestamp() + "").dateTimeStr());
         }
     }
 

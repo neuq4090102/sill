@@ -89,7 +89,7 @@ public class IDCardUtil {
         String addressNo = "341221";
         StringBuilder sb = new StringBuilder();
         sb.append(addressNo);
-        sb.append(Dater.now().offsetYears(-20).getDateStr().replaceAll("-", ""));
+        sb.append(Dater.now().offsetYears(-20).dateStr().replaceAll("-", ""));
         sb.append(RandomUtil.randomStr(RandomCtrl.builder().onlyDigit().length(3).build()));
         sb.append(fetchCheckDigit(sb.toString()));
         return sb.toString();

@@ -6,13 +6,15 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
 /**
+ * 发邮件参数
+ *
  * @author lxh
  * @since 2020-05-31
  */
 public class MailParam {
 
     @NotNull(message = "收件人不能为空")
-    private List<String> recipients; // 收件人
+    private List<String> tos; // 收件人
     private List<String> ccs; // 抄送人
     private List<String> bccs; // 暗送人
     @NotBlank(message = "邮件主题必传")
@@ -23,19 +25,19 @@ public class MailParam {
     public MailParam() {
     }
 
-    public MailParam(List<String> recipients, String subject) {
-        this.recipients = recipients;
+    public MailParam(List<String> tos, String subject) {
+        this.tos = tos;
         this.subject = subject;
     }
 
-    public MailParam(List<String> recipients, String subject, Object content) {
-        this.recipients = recipients;
+    public MailParam(List<String> tos, String subject, Object content) {
+        this.tos = tos;
         this.subject = subject;
         this.content = content;
     }
 
     private MailParam(Builder builder) {
-        this.setRecipients(builder.getRecipients());
+        this.setTos(builder.getRecipients());
         this.setCcs(builder.getCcs());
         this.setBccs(builder.getBccs());
         this.setSubject(builder.getSubject());
@@ -43,12 +45,12 @@ public class MailParam {
         this.setFilePaths(builder.getFilePaths());
     }
 
-    public List<String> getRecipients() {
-        return recipients;
+    public List<String> getTos() {
+        return tos;
     }
 
-    public void setRecipients(List<String> recipients) {
-        this.recipients = recipients;
+    public void setTos(List<String> tos) {
+        this.tos = tos;
     }
 
     public List<String> getCcs() {

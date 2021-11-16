@@ -15,7 +15,7 @@ public class DistributedLock extends RedisCache implements IDistributedLock {
     // @Override
     // public boolean lock(String key, long milliseconds) {
     //     return success(jedis.set(key,
-    //             JsonUtil.toJson(LockValue.of().timestamp(Dater.now().getTimestamp()).milliseconds(milliseconds)),
+    //             JsonUtil.toJson(LockValue.of().timestamp(Dater.now().timestamp()).milliseconds(milliseconds)),
     //             SetParams.setParams().nx().px(milliseconds)));
     // }
     //
@@ -33,10 +33,10 @@ public class DistributedLock extends RedisCache implements IDistributedLock {
     //         return;
     //     }
     //
-    //     System.out.println("timestamp=" + lockValue.getTimestamp());
+    //     System.out.println("timestamp=" + lockValue.timestamp());
     //     System.out.println("milliseconds=" + lockValue.getMilliseconds());
     //
-    //     long millis = Duration.between(Dater.of(lockValue.getTimestamp() + "").getInstant(), Instant.now()).toMillis();
+    //     long millis = Duration.between(Dater.of(lockValue.timestamp() + "").instant(), Instant.now()).toMillis();
     //     System.out.println("millis=" + millis);
     //     if (millis > lockValue.getMilliseconds()) { // 防止先锁释放后锁
     //         return;

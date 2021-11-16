@@ -19,7 +19,7 @@ public class ShouJiStrategy implements IStrategy {
 
     private String URI =
             "https://v.showji.com/Locating/showji.com20180331.aspx?m=%s&output=json&callback=querycallback&timestamp="
-                    + Dater.now().getDate().getTime();
+                    + Dater.now().date().getTime();
 
     private Pattern pattern = Pattern.compile("querycallback\\((.*)\\);");
 

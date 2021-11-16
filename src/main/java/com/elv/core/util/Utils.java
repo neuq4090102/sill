@@ -22,8 +22,8 @@ public final class Utils {
         List<Date> dates = new ArrayList<>();
 
         Dater initDater = startDater.start();
-        while (!initDater.isAfter(endDater.start())) {
-            dates.add(initDater.getDate());
+        while (!initDater.after(endDater.start())) {
+            dates.add(initDater.date());
             initDater = initDater.offsetDays(1);
         }
         return dates;
@@ -47,7 +47,7 @@ public final class Utils {
         System.out.println(Integer.parseInt("0101", 2));
         System.out.println(ipToLong("208.34.33.33"));
         // daters(Dater.now().offsetDays(-31), Dater.now()).stream()
-        //         .forEach(date -> System.out.println(Dater.of(date).getDateStr()));
+        //         .forEach(date -> System.out.println(Dater.of(date).dateStr()));
 
     }
 }

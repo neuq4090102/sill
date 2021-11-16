@@ -6,11 +6,11 @@ import java.util.Map;
 
 import com.elv.core.constant.SecurityEnum.AbsAlgo;
 import com.elv.core.constant.SecurityEnum.Algorithm;
-import com.elv.core.util.Assert;
-import com.elv.core.util.Dater;
 import com.elv.core.tool.security.AbstractDSUtil;
 import com.elv.core.tool.security.Base64Util;
 import com.elv.core.tool.security.KeyUtil;
+import com.elv.core.util.Assert;
+import com.elv.core.util.Dater;
 
 /**
  * 数字签名
@@ -147,10 +147,10 @@ public class DSUtil extends AbstractDSUtil {
         System.out.println(privateKey);
         System.out.println(privateKey.length());
 
-        long t1 = Dater.now().getTimestamp();
+        long t1 = Dater.now().ts();
         String signBy = DSUtil.of().signAlgorithm(signAlgorithm).keyAlgorithm(keyAlgorithm).privateKey(privateKey)
                 .sign(msgStr);
-        System.out.println("time:" + (Dater.now().getTimestamp() - t1));
+        System.out.println("time:" + (Dater.now().ts() - t1));
         System.out.println(signBy);
         System.out.println(signBy.length());
         System.out.println(
