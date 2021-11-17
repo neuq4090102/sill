@@ -43,9 +43,11 @@ public class BLogUtil {
      * @param oldObject  旧实例对象
      * @param newObject  新实例对象
      * @param careFields 需要对比的属性，可空，为空时对比全部属性，也影响日志输出的展示顺序
+     * @param refLangMap 多语言信息
      * @return com.elv.core.tool.application.log.vo.CompareVO
      */
-    public static BLogCompareVO compare(Object oldObject, Object newObject, List<String> careFields) {
+    public static BLogCompareVO compare(Object oldObject, Object newObject, List<String> careFields,
+            Map<String, String> refLangMap) {
         try {
             if (oldObject == null && newObject == null) {
                 return BLogCompareVO.of();
@@ -75,6 +77,7 @@ public class BLogUtil {
         Map<String, Field> fieldMap = objectVO.getFieldMap();
         Map<String, BLogDetailVO> detailVOMap = detailVOs.stream()
                 .collect(Collectors.toMap(key -> key.getFieldName(), val -> val));
+        Map<String, String> langMap = Optional.ofNullable(refLangMap).orElse(new HashMap<>());
 
         Map<String, BLogGroupVO> groupMap = new HashMap<>();
         for (int i = 0; i < targetFields.size(); i++) { // i决定了排序
@@ -95,18 +98,21 @@ public class BLogUtil {
             }
 
             // 业务日志-明细
-            resetDetailVO(field, bLog, objectVO, detailVO);
+            resetDetailVO(field, bLog, objectVO, detailVO, langMap);
 
             // 业务日志-分组
             BLogGroupVO groupVO;
             String groupCode = bLog.groupCode();
             if (StringUtils.isNotBlank(groupCode)) {
+                String groupDesc = Optional.ofNullable(langMap.get(bLog.groupDesc())).orElse(bLog.groupDesc());
+                String groupDelimiter = Optional.ofNullable(langMap.get(bLog.groupDelimiter()))
+                        .orElse(bLog.groupDelimiter());
                 groupVO = groupMap.get(groupCode);
                 if (groupVO != null) {
-                    groupVO.groupDesc(bLog.groupDesc()).groupDelimiter(bLog.groupDelimiter()).addDetail(detailVO);
+                    groupVO.groupDesc(groupDesc).groupDelimiter(groupDelimiter).addDetail(detailVO);
                 } else {
-                    groupVO = BLogGroupVO.of().customizeGroup(true).groupCode(groupCode).groupDesc(bLog.groupDesc())
-                            .groupDelimiter(bLog.groupDelimiter()).addDetail(detailVO).sort(i);
+                    groupVO = BLogGroupVO.of().customizeGroup(true).groupCode(groupCode).groupDesc(groupDesc)
+                            .groupDelimiter(groupDelimiter).addDetail(detailVO).sort(i);
                     groupMap.put(groupCode, groupVO);
                 }
             } else {
@@ -118,6 +124,7 @@ public class BLogUtil {
         }
 
         return BLogCompareVO.of().detailVOs(fetchGroupVOs(groupMap));
+
     }
 
     private static BLogObjectVO initObjectVO(Object oldObject, Object newObject) {
@@ -167,10 +174,14 @@ public class BLogUtil {
         return detailVOs;
     }
 
-    private static void resetDetailVO(Field field, BLog bLog, BLogObjectVO objectVO, BLogDetailVO detailVO) {
+    private static void resetDetailVO(Field field, BLog bLog, BLogObjectVO objectVO, BLogDetailVO detailVO,
+            Map<String, String> langMap) {
         // 业务日志-其他属性
-        detailVO.fieldDesc(bLog.desc()).prefix(bLog.prefix()).suffix(bLog.suffix()).uptKeep(bLog.uptKeep())
-                .sort(bLog.groupSort());
+        String desc = Optional.ofNullable(langMap.get(bLog.desc())).orElse(bLog.desc());
+        String prefix = Optional.ofNullable(langMap.get(bLog.prefix())).orElse(bLog.prefix());
+        String suffix = Optional.ofNullable(langMap.get(bLog.suffix())).orElse(bLog.suffix());
+
+        detailVO.fieldDesc(desc).prefix(prefix).suffix(suffix).uptKeep(bLog.uptKeep()).sort(bLog.groupSort());
 
         // 业务日志-枚举属性
         resetEnumInfo(field, bLog, detailVO);

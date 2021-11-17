@@ -38,13 +38,13 @@ public class BLogVO {
     }
 
     public BLogVO(ActionEnum action, String key, Object content) {
-        this.action = action.getAction();
+        this.action = action.getValue();
         this.key = key;
         this.content = content;
     }
 
     public BLogVO(ActionEnum action, List<BLogVO> logVOs) {
-        this.action = action.getAction();
+        this.action = action.getValue();
         this.logVOs = logVOs;
     }
 
@@ -85,7 +85,7 @@ public class BLogVO {
     }
 
     public BLogVO action(ActionEnum action) {
-        this.action = action.getAction();
+        this.action = action.getValue();
         return this;
     }
 

@@ -42,7 +42,7 @@ public abstract class AbstractParseBLog extends AbstractBLog {
      */
     public String parseAddLog(Object newObject) {
         ActionEnum action = ActionEnum.ADD;
-        BLogCompareVO compareVO = BLogUtil.compare(null, newObject, this.careFields());
+        BLogCompareVO compareVO = BLogUtil.compare(null, newObject, this.careFields(), this.lang());
         return parseLogContent(new BLogVO(action, compareVO.getChangedBLogVOs(action)));
     }
 
@@ -54,7 +54,7 @@ public abstract class AbstractParseBLog extends AbstractBLog {
      */
     public String parseDeleteLog(Object oldObject) {
         ActionEnum action = ActionEnum.DELETE;
-        BLogCompareVO compareVO = BLogUtil.compare(oldObject, null, this.careFields());
+        BLogCompareVO compareVO = BLogUtil.compare(oldObject, null, this.careFields(), this.lang());
         return parseLogContent(new BLogVO(action, compareVO.getChangedBLogVOs(action)));
     }
 
@@ -66,7 +66,7 @@ public abstract class AbstractParseBLog extends AbstractBLog {
      * @return java.lang.String 日志内容
      */
     public String parseUpdateLog(Object oldObject, Object newObject) {
-        BLogCompareVO compareVO = BLogUtil.compare(oldObject, newObject, this.careFields());
+        BLogCompareVO compareVO = BLogUtil.compare(oldObject, newObject, this.careFields(), this.lang());
         if (!compareVO.changed()) { // 无变化，即使关心的属性也不解析
             return "";
         }

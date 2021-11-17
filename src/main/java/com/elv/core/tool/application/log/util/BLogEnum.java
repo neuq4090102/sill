@@ -20,19 +20,19 @@ public class BLogEnum {
         private static Map<Integer, ActionEnum> map;
 
         static {
-            map = Arrays.stream(ActionEnum.values()).collect(Collectors.toMap(key -> key.getAction(), val -> val));
+            map = Arrays.stream(ActionEnum.values()).collect(Collectors.toMap(key -> key.getValue(), val -> val));
         }
 
-        private final int action;
+        private final int value;
         private final String desc;
 
-        ActionEnum(int action, String desc) {
-            this.action = action;
+        ActionEnum(int value, String desc) {
+            this.value = value;
             this.desc = desc;
         }
 
-        public int getAction() {
-            return action;
+        public int getValue() {
+            return value;
         }
 
         public String getDesc() {

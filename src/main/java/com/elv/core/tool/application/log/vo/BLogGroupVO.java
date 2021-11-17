@@ -132,18 +132,22 @@ public class BLogGroupVO {
     }
 
     public BLogGroupVO groupDesc(String groupDesc) {
-        if (groupDesc == null || groupDesc.length() == 0) {
-            if (this.getGroupDesc() == null || this.getGroupDesc().length() == 0) {
-                groupDesc = this.getGroupCode();
-            } else {
-                groupDesc = this.getGroupDesc();
-            }
+        if (this.getGroupDesc() != null && this.getGroupDesc().length() >= 0 && !this.getGroupDesc()
+                .equals(this.getGroupCode())) {
+            return this;
         }
+        if (groupDesc == null || groupDesc.length() == 0) {
+            groupDesc = this.getGroupCode();
+        }
+
         this.setGroupDesc(groupDesc);
         return this;
     }
 
     public BLogGroupVO groupDelimiter(String groupDelimiter) {
+        if (this.getGroupDelimiter() != null && this.getGroupDelimiter().length() > 0) {
+            return this;
+        }
         this.setGroupDelimiter(groupDelimiter);
         return this;
     }

@@ -26,7 +26,8 @@ public class DemoEntity {
     /**
      * 有效开始日期
      */
-    @BLog(desc = "有效开始日期", groupCode = "validity")
+    @Deprecated
+    @BLog(desc = "有效开始日期", groupCode = "validity", groupDelimiter = " ~ ")
     private String startValidity;
     /**
      * 有效结束日期
@@ -38,6 +39,7 @@ public class DemoEntity {
      */
     @BLog(desc = "类型", enumClass = TypeEnum.class, prefix = "【", suffix = "】")
     private int type;
+    
     /**
      * 方式
      */

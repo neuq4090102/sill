@@ -107,7 +107,7 @@ public @interface BLog {
      *
      * @return java.lang.String
      */
-    String groupDelimiter() default " ~ ";
+    String groupDelimiter() default "";
 
     /**
      * 分组排序（从小到大）

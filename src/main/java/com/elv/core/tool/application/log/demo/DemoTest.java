@@ -20,44 +20,44 @@ public class DemoTest {
         DemoEntity newEntity = createNewEntity();
 
         testAdd(newEntity);
-        testDelete(oldEntity);
-        testUpdate(oldEntity, newEntity);
-        testAddLog(newEntity);
-        testDeleteLog(oldEntity);
-        testUpdateLog(oldEntity, newEntity);
+        // testDelete(oldEntity);
+        // testUpdate(oldEntity, newEntity);
+        // testAddLog(newEntity);
+        // testDeleteLog(oldEntity);
+        // testUpdateLog(oldEntity, newEntity);
     }
 
     private static void testAdd(DemoEntity newEntity) {
         System.out.println(">>>>>>>自定义-添加日志>>>>>>>>>>>>");
-        BLogCompareVO compareVO = DemoLog.add(newEntity);
+        BLogCompareVO compareVO = DemoBLog.add(newEntity);
         echo(ActionEnum.ADD, compareVO);
     }
 
     private static void testAddLog(DemoEntity newEntity) {
         System.out.println(">>>>>>>添加日志>>>>>>>>>>>>");
-        System.out.println(DemoLog.addLog(newEntity));
+        System.out.println(DemoBLog.addLog(newEntity));
     }
 
     private static void testDelete(DemoEntity oldEntity) {
         System.out.println(">>>>>>>自定义-删除日志>>>>>>>>>>>>");
-        BLogCompareVO compareVO = DemoLog.delete(oldEntity);
+        BLogCompareVO compareVO = DemoBLog.delete(oldEntity);
         echo(ActionEnum.DELETE, compareVO);
     }
 
     private static void testDeleteLog(DemoEntity oldEntity) {
         System.out.println(">>>>>>>删除日志>>>>>>>>>>>>");
-        System.out.println(DemoLog.deleteLog(oldEntity));
+        System.out.println(DemoBLog.deleteLog(oldEntity));
     }
 
     private static void testUpdate(DemoEntity oldEntity, DemoEntity newEntity) {
         System.out.println(">>>>>>>自定义-修改日志>>>>>>>>>>>>");
-        BLogCompareVO compareVO = DemoLog.update(oldEntity, newEntity);
+        BLogCompareVO compareVO = DemoBLog.update(oldEntity, newEntity);
         echo(ActionEnum.MODIFY, compareVO);
     }
 
     private static void testUpdateLog(DemoEntity oldEntity, DemoEntity newEntity) {
         System.out.println(">>>>>>>修改日志>>>>>>>>>>>>");
-        System.out.println(DemoLog.updateLog(oldEntity, newEntity));
+        System.out.println(DemoBLog.updateLog(oldEntity, newEntity));
     }
 
     private static DemoEntity createOldEntity() {
