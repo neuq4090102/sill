@@ -26,6 +26,8 @@ public @interface BLog {
 
     /**
      * 映射要展示的属性
+     * <p>
+     * 当前属性值如果未变化，即使mappingField对应的属性值发生变化也不展示
      *
      * @return java.lang.String
      */

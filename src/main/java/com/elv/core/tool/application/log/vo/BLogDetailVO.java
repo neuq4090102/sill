@@ -214,6 +214,14 @@ public class BLogDetailVO {
         return this;
     }
 
+    public Object getBefore() {
+        return Optional.ofNullable(this.getOldValue()).orElse("");
+    }
+
+    public Object getAfter() {
+        return Optional.ofNullable(this.getNewValue()).orElse("");
+    }
+
     public Object getBeforeDesc() {
         return this.getPrefix() + Optional.ofNullable(this.getOldValueDesc()).orElse("") + this.getSuffix();
     }

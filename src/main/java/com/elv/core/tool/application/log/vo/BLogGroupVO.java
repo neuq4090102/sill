@@ -39,9 +39,19 @@ public class BLogGroupVO {
     private Object before;
 
     /**
+     * 旧值描述
+     */
+    private Object beforeDesc;
+
+    /**
      * 新值
      */
     private Object after;
+
+    /**
+     * 旧值描述
+     */
+    private Object afterDesc;
 
     /**
      * 显示顺序
@@ -93,12 +103,28 @@ public class BLogGroupVO {
         this.before = before;
     }
 
+    public Object getBeforeDesc() {
+        return beforeDesc;
+    }
+
+    public void setBeforeDesc(Object beforeDesc) {
+        this.beforeDesc = beforeDesc;
+    }
+
     public Object getAfter() {
         return after;
     }
 
     public void setAfter(Object after) {
         this.after = after;
+    }
+
+    public Object getAfterDesc() {
+        return afterDesc;
+    }
+
+    public void setAfterDesc(Object afterDesc) {
+        this.afterDesc = afterDesc;
     }
 
     public int getSort() {
@@ -157,8 +183,18 @@ public class BLogGroupVO {
         return this;
     }
 
+    public BLogGroupVO beforeDesc(Object beforeDesc) {
+        this.setBeforeDesc(beforeDesc);
+        return this;
+    }
+
     public BLogGroupVO after(Object after) {
         this.setAfter(after);
+        return this;
+    }
+
+    public BLogGroupVO afterDesc(Object afterDesc) {
+        this.setAfterDesc(afterDesc);
         return this;
     }
 

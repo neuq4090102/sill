@@ -4,8 +4,8 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import com.elv.core.tool.application.log.util.BLogEnum.ActionEnum;
-import com.elv.core.tool.application.log.vo.BLogGroupVO;
 import com.elv.core.tool.application.log.vo.BLogCompareVO;
+import com.elv.core.tool.application.log.vo.BLogGroupVO;
 import com.google.common.collect.Lists;
 
 /**
@@ -19,12 +19,12 @@ public class DemoTest {
         DemoEntity oldEntity = createOldEntity();
         DemoEntity newEntity = createNewEntity();
 
-        testAdd(newEntity);
+        // testAdd(newEntity);
         // testDelete(oldEntity);
         // testUpdate(oldEntity, newEntity);
         // testAddLog(newEntity);
         // testDeleteLog(oldEntity);
-        // testUpdateLog(oldEntity, newEntity);
+        testUpdateLog(oldEntity, newEntity);
     }
 
     private static void testAdd(DemoEntity newEntity) {
@@ -71,6 +71,8 @@ public class DemoTest {
         oldEntity.setGuaranteeWay(1);
         oldEntity.setDailyRooms(7);
         oldEntity.setFloatingWeek("1,2");
+        oldEntity.setLevelId(1L);
+        oldEntity.setVipLevelAlias("LV1");
         return oldEntity;
     }
 
@@ -87,6 +89,8 @@ public class DemoTest {
         newEntity.setDailyRooms(10);
         newEntity.setFloatingWeek("4,5");
         newEntity.setSubEntities(Lists.newArrayList(subEntity));
+        newEntity.setLevelId(3L);
+        newEntity.setVipLevelAlias("LV3");
         return newEntity;
     }
 
@@ -97,14 +101,15 @@ public class DemoTest {
         for (Entry<String, BLogGroupVO> entry : changedMap.entrySet()) {
             BLogGroupVO value = entry.getValue();
             if (actionEnum == ActionEnum.ADD) {
-                sb.append(value.getGroupDesc() + "：" + value.getAfter()).append("\n");
+                sb.append(value.getGroupDesc() + "：" + value.getAfterDesc()).append("\n");
             } else if (actionEnum == ActionEnum.DELETE) {
-                sb.append(value.getGroupDesc() + "：" + value.getBefore()).append("\n");
+                sb.append(value.getGroupDesc() + "：" + value.getBeforeDesc()).append("\n");
             } else {
-                if (value.getBefore() != null && value.getBefore().equals(value.getAfter())) {
-                    sb.append(value.getGroupDesc() + "：" + value.getBefore()).append("\n");
+                if (value.getBeforeDesc() != null && value.getBeforeDesc().equals(value.getAfterDesc())) {
+                    sb.append(value.getGroupDesc() + "：" + value.getBeforeDesc()).append("\n");
                 } else {
-                    sb.append(value.getGroupDesc() + "：" + value.getBefore() + " -> " + value.getAfter()).append("\n");
+                    sb.append(value.getGroupDesc() + "：" + value.getBeforeDesc() + " -> " + value.getAfterDesc())
+                            .append("\n");
                 }
             }
         }

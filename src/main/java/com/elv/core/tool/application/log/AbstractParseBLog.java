@@ -93,14 +93,14 @@ public abstract class AbstractParseBLog extends AbstractBLog {
                 continue;
             }
             if (actionEnum == ActionEnum.ADD) {
-                sb.append(groupVO.getGroupDesc() + "：" + groupVO.getAfter()).append(newline);
+                sb.append(groupVO.getGroupDesc() + "：" + groupVO.getAfterDesc()).append(newline);
             } else if (actionEnum == ActionEnum.DELETE) {
-                sb.append(groupVO.getGroupDesc() + "：" + groupVO.getBefore()).append(newline);
+                sb.append(groupVO.getGroupDesc() + "：" + groupVO.getBeforeDesc()).append(newline);
             } else if (actionEnum == ActionEnum.MODIFY) {
                 if (CollectionUtils.isNotEmpty(subLogVO.getLogVOs())) {
                     // TODO:含有子对象内容的，根据需求请自行解析
                 } else {
-                    sb.append(groupVO.getGroupDesc() + "：" + groupVO.getBefore() + " -> " + groupVO.getAfter())
+                    sb.append(groupVO.getGroupDesc() + "：" + groupVO.getBeforeDesc() + " -> " + groupVO.getAfterDesc())
                             .append(newline);
                 }
             } else {

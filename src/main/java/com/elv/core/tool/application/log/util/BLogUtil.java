@@ -117,8 +117,8 @@ public class BLogUtil {
                 }
             } else {
                 groupVO = BLogGroupVO.of().groupCode(fieldName).groupDesc(detailVO.getFieldDesc())
-                        .before(detailVO.getBeforeDesc()).after(detailVO.getAfterDesc())
-                        .detailVOs(Lists.newArrayList(detailVO)).sort(i);
+                        .before(detailVO.getBefore()).beforeDesc(detailVO.getBeforeDesc()).after(detailVO.getAfter())
+                        .afterDesc(detailVO.getAfterDesc()).detailVOs(Lists.newArrayList(detailVO)).sort(i);
                 groupMap.put(fieldName, groupVO);
             }
         }
@@ -259,14 +259,14 @@ public class BLogUtil {
                 enumMap.put(enumKeyMethod.invoke(enumItem).toString(), descMethod.invoke(enumItem));
             }
 
-            if (detailVO.getOldValueDesc() != null) {
-                detailVO.oldValueDesc(Arrays.stream(detailVO.getOldValueDesc().toString().split(ENUM_DELIMITER))
+            if (detailVO.getOldValue() != null) {
+                detailVO.oldValueDesc(Arrays.stream(detailVO.getOldValue().toString().split(ENUM_DELIMITER))
                         .map(item -> Optional.ofNullable(enumMap.get(item)).orElse("").toString())
                         .collect(Collectors.joining(bLog.enumDelimiter())));
             }
 
-            if (detailVO.getNewValueDesc() != null) {
-                detailVO.newValueDesc(Arrays.stream(detailVO.getNewValueDesc().toString().split(ENUM_DELIMITER))
+            if (detailVO.getNewValue() != null) {
+                detailVO.newValueDesc(Arrays.stream(detailVO.getNewValue().toString().split(ENUM_DELIMITER))
                         .map(item -> Optional.ofNullable(enumMap.get(item)).orElse("").toString())
                         .collect(Collectors.joining(bLog.enumDelimiter())));
             }
@@ -328,12 +328,14 @@ public class BLogUtil {
             } else {
                 Collections.sort(detailVOs, Comparator.comparing(item -> item.getSort()));
             }
-            groupVO.setBefore(
-                    detailVOs.stream().map(item -> Optional.ofNullable(item.getBeforeDesc()).orElse("").toString())
-                            .collect(Collectors.joining(groupVO.getGroupDelimiter())));
-            groupVO.setAfter(
-                    detailVOs.stream().map(item -> Optional.ofNullable(item.getAfterDesc()).orElse("").toString())
-                            .collect(Collectors.joining(groupVO.getGroupDelimiter())));
+            groupVO.setBefore(detailVOs.stream().map(item -> item.getBefore().toString())
+                    .collect(Collectors.joining(groupVO.getGroupDelimiter())));
+            groupVO.setBeforeDesc(detailVOs.stream().map(item -> item.getBeforeDesc().toString())
+                    .collect(Collectors.joining(groupVO.getGroupDelimiter())));
+            groupVO.setAfter(detailVOs.stream().map(item -> item.getAfterDesc().toString())
+                    .collect(Collectors.joining(groupVO.getGroupDelimiter())));
+            groupVO.setAfterDesc(detailVOs.stream().map(item -> item.getAfterDesc().toString())
+                    .collect(Collectors.joining(groupVO.getGroupDelimiter())));
         }
 
         List<BLogGroupVO> groupVOs = new ArrayList<>();

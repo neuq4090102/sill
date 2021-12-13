@@ -39,7 +39,7 @@ public class DemoEntity {
      */
     @BLog(desc = "类型", enumClass = TypeEnum.class, prefix = "【", suffix = "】")
     private int type;
-    
+
     /**
      * 方式
      */
@@ -57,6 +57,16 @@ public class DemoEntity {
      */
     @BLog(desc = "浮动星期", enumClass = WeekDay.class, complexEnum = true)
     private String floatingWeek;
+
+    /**
+     * 会员等级ID
+     */
+    @BLog(desc = "会员等级", mappingField = "vipLevelAlias")
+    private long levelId;
+    /**
+     * 等级别名
+     */
+    private String vipLevelAlias;
 
     /**
      * 子对象信息
@@ -126,6 +136,22 @@ public class DemoEntity {
 
     public void setFloatingWeek(String floatingWeek) {
         this.floatingWeek = floatingWeek;
+    }
+
+    public long getLevelId() {
+        return levelId;
+    }
+
+    public void setLevelId(long levelId) {
+        this.levelId = levelId;
+    }
+
+    public String getVipLevelAlias() {
+        return vipLevelAlias;
+    }
+
+    public void setVipLevelAlias(String vipLevelAlias) {
+        this.vipLevelAlias = vipLevelAlias;
     }
 
     public List<DemoSubEntity> getSubEntities() {
