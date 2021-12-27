@@ -159,8 +159,18 @@ public abstract class AbstractParseBLog extends AbstractBLog {
     /**
      * 默认解析日志内容
      *
-     * @param logVO
-     * @param appendNewLine
+     * @param logVO 日志对象
+     * @return java.lang.String
+     */
+    public String defaultParseLogContent(BLogVO logVO) {
+        return defaultParseLogContent(logVO, true);
+    }
+
+    /**
+     * 默认解析日志内容
+     *
+     * @param logVO         日志对象
+     * @param appendNewLine 是否追加换行符
      * @return java.lang.String
      */
     public String defaultParseLogContent(BLogVO logVO, boolean appendNewLine) {
