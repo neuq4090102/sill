@@ -74,6 +74,12 @@ public class DemoEntity {
     @BLog(desc = "子对象信息")
     private List<DemoSubEntity> subEntities;
 
+    /**
+     * 子对象信息
+     */
+    @BLog(desc = "子对象信息2")
+    private List<DemoSubEntity> subs;
+
     public String getContactNumber() {
         return contactNumber;
     }
@@ -160,5 +166,13 @@ public class DemoEntity {
 
     public void setSubEntities(List<DemoSubEntity> subEntities) {
         this.subEntities = subEntities;
+    }
+
+    public List<DemoSubEntity> getSubs() {
+        return subs;
+    }
+
+    public void setSubs(List<DemoSubEntity> subs) {
+        this.subs = subs;
     }
 }

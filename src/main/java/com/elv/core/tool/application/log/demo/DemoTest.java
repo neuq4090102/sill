@@ -23,7 +23,7 @@ public class DemoTest {
         // testDelete(oldEntity);
         // testUpdate(oldEntity, newEntity);
         // testAddLog(newEntity);
-        // testDeleteLog(oldEntity);
+        // testDeleteLog(newEntity);
         testUpdateLog(oldEntity, newEntity);
     }
 
@@ -61,6 +61,9 @@ public class DemoTest {
     }
 
     private static DemoEntity createOldEntity() {
+        DemoSubEntity subEntity2 = new DemoSubEntity(1l, "大床房");
+        DemoSubEntity subEntity = new DemoSubEntity(2l, "双床房");
+
         DemoEntity oldEntity = new DemoEntity();
         oldEntity.setContactNumber("1lkkjkd");
         oldEntity.setContactEmail("aba@qq.com");
@@ -71,6 +74,9 @@ public class DemoTest {
         oldEntity.setGuaranteeWay(1);
         oldEntity.setDailyRooms(7);
         oldEntity.setFloatingWeek("1,2");
+        oldEntity.setSubEntities(Lists.newArrayList(subEntity, subEntity2));
+        oldEntity.setSubs(Lists.newArrayList(subEntity, subEntity2));
+        // oldEntity.setSubs(Lists.newArrayList(subEntity2));
         oldEntity.setLevelId(1L);
         oldEntity.setVipLevelAlias("LV1");
         return oldEntity;
@@ -78,6 +84,7 @@ public class DemoTest {
 
     private static DemoEntity createNewEntity() {
         DemoSubEntity subEntity = new DemoSubEntity(1l, "大床房");
+        DemoSubEntity subEntity2 = new DemoSubEntity(2l, "双床房");
 
         DemoEntity newEntity = new DemoEntity();
         newEntity.setContactNumber("aaaa");
@@ -88,7 +95,9 @@ public class DemoTest {
         newEntity.setGuaranteeWay(2);
         newEntity.setDailyRooms(10);
         newEntity.setFloatingWeek("4,5");
+        // newEntity.setSubEntities(Lists.newArrayList(subEntity, subEntity2));
         newEntity.setSubEntities(Lists.newArrayList(subEntity));
+        newEntity.setSubs(Lists.newArrayList(subEntity2, subEntity));
         newEntity.setLevelId(3L);
         newEntity.setVipLevelAlias("LV3");
         return newEntity;

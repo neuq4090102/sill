@@ -19,7 +19,7 @@ public class DemoSubEntity {
     /**
      * 房型ID
      */
-    @BLog(desc = "房型ID")
+    @BLog(desc = "房型ID", uptKeep = true)
     private long layoutId;
     /**
      * 房型名称

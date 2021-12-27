@@ -12,9 +12,6 @@ import java.util.stream.Collectors;
 
 import org.apache.commons.collections4.CollectionUtils;
 
-import com.elv.core.tool.application.log.util.BLogEnum.ActionEnum;
-import com.elv.core.util.JsonUtil;
-
 /**
  * @author lxh
  * @since 2020-08-27
@@ -126,54 +123,6 @@ public class BLogCompareVO {
      */
     public Set<String> getUnChangedFields() {
         return this.getUnChangedMap().keySet();
-    }
-
-    /**
-     * 获取变化的BLogVO
-     *
-     * @param action
-     * @return java.util.List
-     */
-    public List<BLogVO> getChangedBLogVOs(ActionEnum action) {
-        List<BLogVO> logVOs = new ArrayList<>();
-        this.getChangedMap().forEach((key, val) -> logVOs.add(new BLogVO(action, key, JsonUtil.toJson(val))));
-        return logVOs;
-    }
-
-    /**
-     * 获取关心的BLogVO
-     *
-     * @param action
-     * @return java.util.List
-     */
-    public List<BLogVO> getCareBLogVOs(ActionEnum action) {
-        List<BLogVO> logVOs = new ArrayList<>();
-        this.getCareMap().forEach((key, val) -> logVOs.add(new BLogVO(action, key, JsonUtil.toJson(val))));
-        return logVOs;
-    }
-
-    /**
-     * 获取未改变的BLogVO
-     *
-     * @param action
-     * @return java.util.List
-     */
-    public List<BLogVO> getUnChangedBLogVOs(ActionEnum action) {
-        List<BLogVO> logVOs = new ArrayList<>();
-        this.getUnChangedMap().forEach((key, val) -> logVOs.add(new BLogVO(action, key, JsonUtil.toJson(val))));
-        return logVOs;
-    }
-
-    /**
-     * 获取对比的BLogVO
-     *
-     * @param action
-     * @return java.util.List
-     */
-    public List<BLogVO> getCompareBLogVOs(ActionEnum action) {
-        List<BLogVO> logVOs = new ArrayList<>();
-        this.getCompareMap().forEach((key, val) -> logVOs.add(new BLogVO(action, key, JsonUtil.toJson(val))));
-        return logVOs;
     }
 
     /**

@@ -70,7 +70,7 @@ public class DemoBLog extends AbstractParseBLog {
 
     @Override
     public String parseLogContent(BLogVO logVO) {
-        return super.defaultParseLogContent(logVO);
+        return super.defaultParseLogContent(logVO, true);
     }
 
     public static String addLog(Object newObject) {
