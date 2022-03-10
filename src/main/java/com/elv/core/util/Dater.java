@@ -4,10 +4,10 @@ import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.time.Period;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
 import java.time.temporal.TemporalAdjusters;
 import java.util.Date;
 import java.util.Optional;
@@ -18,7 +18,7 @@ import java.util.Optional;
  * @author lxh
  * @since 2020-03-23
  */
-public class Dater {
+public final class Dater {
 
     private ZonedDateTime zonedDateTime;
 
@@ -29,21 +29,34 @@ public class Dater {
         return new Dater();
     }
 
+    // *********************************** creator **************************************
+    public static Dater now() {
+        return Dater.of().zonedDateTime(ZonedDateTime.now());
+    }
+
+    public static Dater now(int timeZone) {
+        return Dater.of().zonedDateTime(ZonedDateTime.now(zoneId(timeZone)));
+    }
+
+    public static Dater now(ZoneId zoneId) {
+        return Dater.of().zonedDateTime(ZonedDateTime.now(zoneId));
+    }
+
     public static Dater of(Date date) {
-        return of(date.getTime() + "", now().zoneId());
+        return Dater.of(date.getTime() + "", Dater.now().zoneId());
     }
 
     public static Dater of(String dateStr) {
-        return of(dateStr, now().zoneId());
+        return Dater.of(dateStr, Dater.now().zoneId());
     }
 
     public static Dater of(String dateStr, int timeZone) {
-        return of(dateStr, zoneId(timeZone));
+        return Dater.of(dateStr, zoneId(timeZone));
     }
 
     private static Dater of(String dateTimeStr, ZoneId zoneId) {
         String dateTime = Optional.ofNullable(dateTimeStr).orElse("");
-        ZoneId zone = Optional.ofNullable(zoneId).orElse(now().zoneId());
+        ZoneId zone = Optional.ofNullable(zoneId).orElse(Dater.now().zoneId());
         ZonedDateTime zonedDateTime = null;
         if (dateTime.length() == 0) { // 空对象：当前时间
             zonedDateTime = ZonedDateTime.now();
@@ -70,11 +83,11 @@ public class Dater {
     }
 
     public static Dater of(LocalDate localDate) {
-        return Dater.of(localDate, now().zoneId());
+        return Dater.of(localDate, Dater.now().zoneId());
     }
 
     public static Dater of(LocalDate localDate, ZoneId zoneId) {
-        return now().zonedDateTime(ZonedDateTime.of(localDate, LocalTime.MIN, zoneId));
+        return Dater.of().zonedDateTime(ZonedDateTime.of(localDate, LocalTime.MIN, zoneId));
     }
 
     public static Dater of(LocalDateTime localDateTime) {
@@ -82,19 +95,24 @@ public class Dater {
     }
 
     public static Dater of(LocalDateTime localDateTime, ZoneId zoneId) {
-        return Dater.now().zonedDateTime(ZonedDateTime.of(localDateTime, zoneId));
+        return Dater.of().zonedDateTime(ZonedDateTime.of(localDateTime, zoneId));
     }
 
-    public static Dater now() {
-        return Dater.of().zonedDateTime(ZonedDateTime.now());
+    public static Dater of(ZonedDateTime zonedDateTime) {
+        return Dater.of().zonedDateTime(zonedDateTime);
     }
 
-    public static Dater now(int timeZone) {
-        return Dater.of().zonedDateTime(ZonedDateTime.now(zoneId(timeZone)));
+    public ZonedDateTime getZonedDateTime() {
+        return zonedDateTime;
     }
 
-    public static Dater now(ZoneId timeZone) {
-        return Dater.of().zonedDateTime(ZonedDateTime.now(timeZone));
+    public void setZonedDateTime(ZonedDateTime zonedDateTime) {
+        this.zonedDateTime = zonedDateTime;
+    }
+
+    public Dater zonedDateTime(ZonedDateTime zonedDateTime) {
+        this.setZonedDateTime(zonedDateTime);
+        return this;
     }
 
     /**
@@ -118,84 +136,36 @@ public class Dater {
         }
     }
 
-    public Dater zonedDateTime(ZonedDateTime zonedDateTime) {
-        this.setZonedDateTime(zonedDateTime);
-        return this;
-    }
-
-    public ZonedDateTime getZonedDateTime() {
-        return zonedDateTime;
-    }
-
-    public void setZonedDateTime(ZonedDateTime zonedDateTime) {
-        this.zonedDateTime = zonedDateTime;
-    }
-
-    // ***********************************Dater application.**************************************
-
+    // *********************************** reset **************************************
     public Dater year(int year) {
-        return this.zonedDateTime(this.getZonedDateTime().withYear(year));
+        return Dater.of(this.getZonedDateTime().withYear(year));
     }
 
     public Dater month(int month) {
-        return this.zonedDateTime(this.getZonedDateTime().withMonth(month));
+        return Dater.of(this.getZonedDateTime().withMonth(month));
     }
 
     public Dater dayOfMonth(int dayOfMonth) {
-        return this.zonedDateTime(this.getZonedDateTime().withDayOfMonth(dayOfMonth));
+        return Dater.of(this.getZonedDateTime().withDayOfMonth(dayOfMonth));
     }
 
     public Dater dayOfYear(int dayOfYear) {
-        return this.zonedDateTime(this.getZonedDateTime().withDayOfYear(dayOfYear));
+        return Dater.of(this.getZonedDateTime().withDayOfYear(dayOfYear));
     }
 
     public Dater hour(int hour) {
-        return this.zonedDateTime(this.getZonedDateTime().withHour(hour));
+        return Dater.of(this.getZonedDateTime().withHour(hour));
     }
 
     public Dater minute(int minute) {
-        return this.zonedDateTime(this.getZonedDateTime().withMinute(minute));
+        return Dater.of(this.getZonedDateTime().withMinute(minute));
     }
 
     public Dater second(int second) {
-        return this.zonedDateTime(this.getZonedDateTime().withSecond(second));
+        return Dater.of(this.getZonedDateTime().withSecond(second));
     }
 
-    public int year() {
-        return this.getZonedDateTime().getYear();
-    }
-
-    public int month() {
-        return this.getZonedDateTime().getMonthValue();
-    }
-
-    public int day() {
-        return this.dayOfYear();
-    }
-
-    public int dayOfYear() {
-        return this.getZonedDateTime().getDayOfYear();
-    }
-
-    public int dayOfMonth() {
-        return this.getZonedDateTime().getDayOfMonth();
-    }
-
-    public int dayOfWeek() {
-        return this.getZonedDateTime().getDayOfWeek().getValue();
-    }
-
-    public int hour() {
-        return this.getZonedDateTime().getHour();
-    }
-
-    public int minute() {
-        return this.getZonedDateTime().getMinute();
-    }
-
-    public int second() {
-        return this.getZonedDateTime().getSecond();
-    }
+    // *********************************** offset **************************************
 
     /**
      * 当前日期按年数偏移
@@ -204,7 +174,7 @@ public class Dater {
      * @return com.elv.core.util.Dater
      */
     public Dater offsetYears(long years) {
-        return this.zonedDateTime(this.getZonedDateTime().plusYears(years));
+        return Dater.of(this.getZonedDateTime().plusYears(years));
     }
 
     /**
@@ -214,7 +184,7 @@ public class Dater {
      * @return com.elv.core.util.Dater
      */
     public Dater offsetMonths(long months) {
-        return this.zonedDateTime(this.getZonedDateTime().plusMonths(months));
+        return Dater.of(this.getZonedDateTime().plusMonths(months));
     }
 
     /**
@@ -224,7 +194,7 @@ public class Dater {
      * @return com.elv.core.util.Dater
      */
     public Dater offsetDays(long days) {
-        return this.zonedDateTime(this.getZonedDateTime().plusDays(days));
+        return Dater.of(this.getZonedDateTime().plusDays(days));
     }
 
     /**
@@ -234,7 +204,7 @@ public class Dater {
      * @return com.elv.core.util.Dater
      */
     public Dater offsetWeeks(long weeks) {
-        return this.zonedDateTime(this.getZonedDateTime().plusWeeks(weeks));
+        return Dater.of(this.getZonedDateTime().plusWeeks(weeks));
     }
 
     /**
@@ -244,7 +214,7 @@ public class Dater {
      * @return com.elv.core.util.Dater
      */
     public Dater offsetHours(long hours) {
-        return this.zonedDateTime(this.getZonedDateTime().plusHours(hours));
+        return Dater.of(this.getZonedDateTime().plusHours(hours));
     }
 
     /**
@@ -254,7 +224,7 @@ public class Dater {
      * @return com.elv.core.util.Dater
      */
     public Dater offsetMinutes(long minutes) {
-        return this.zonedDateTime(this.getZonedDateTime().plusMinutes(minutes));
+        return Dater.of(this.getZonedDateTime().plusMinutes(minutes));
     }
 
     /**
@@ -264,41 +234,10 @@ public class Dater {
      * @return com.elv.core.util.Dater
      */
     public Dater offsetSeconds(long seconds) {
-        return this.zonedDateTime(this.getZonedDateTime().plusSeconds(seconds));
+        return Dater.of(this.getZonedDateTime().plusSeconds(seconds));
     }
 
-    /**
-     * 年份间隔
-     *
-     * @param dater 日期对象
-     * @return int
-     */
-    public int yearsBetween(Dater dater) {
-        return Math.abs(Period.between(this.getZonedDateTime().toLocalDate(), dater.getZonedDateTime().toLocalDate())
-                .getYears());
-    }
-
-    /**
-     * 月份间隔
-     *
-     * @param dater 日期对象
-     * @return int
-     */
-    public int monthsBetween(Dater dater) {
-        return Math.abs(Period.between(this.getZonedDateTime().toLocalDate(), dater.getZonedDateTime().toLocalDate())
-                .getMonths());
-    }
-
-    /**
-     * 天数间隔
-     *
-     * @param dater 日期对象
-     * @return int
-     */
-    public int daysBetween(Dater dater) {
-        return Math.abs(Period.between(this.getZonedDateTime().toLocalDate(), dater.getZonedDateTime().toLocalDate())
-                .getDays());
-    }
+    // *********************************** application **************************************
 
     /**
      * 当前日期开始时间
@@ -306,7 +245,7 @@ public class Dater {
      * @return Dater
      */
     public Dater start() {
-        return this.zonedDateTime(ZonedDateTime.of(this.localDate(), LocalTime.MIN, this.zoneId()));
+        return Dater.of(ZonedDateTime.of(this.localDate(), LocalTime.MIN, this.zoneId()));
     }
 
     /**
@@ -315,7 +254,7 @@ public class Dater {
      * @return Dater
      */
     public Dater end() {
-        return this.zonedDateTime(ZonedDateTime.of(this.localDate(), LocalTime.MAX, this.zoneId()));
+        return Dater.of(ZonedDateTime.of(this.localDate(), LocalTime.MAX, this.zoneId()));
     }
 
     /**
@@ -324,7 +263,7 @@ public class Dater {
      * @return Dater
      */
     public Dater noon() {
-        return this.zonedDateTime(ZonedDateTime.of(this.localDate(), LocalTime.NOON, this.zoneId()));
+        return Dater.of(ZonedDateTime.of(this.localDate(), LocalTime.NOON, this.zoneId()));
     }
 
     /**
@@ -340,7 +279,7 @@ public class Dater {
         if (hour < 0 || hour > 23) {
             hour = 0;
         }
-        return this.zonedDateTime(ZonedDateTime.of(this.localDate(), LocalTime.of(hour, 0), this.zoneId()));
+        return Dater.of(ZonedDateTime.of(this.localDate(), LocalTime.of(hour, 0), this.zoneId()));
     }
 
     /**
@@ -362,7 +301,7 @@ public class Dater {
             hour = 24;
         }
 
-        return this.zonedDateTime(ZonedDateTime
+        return Dater.of(ZonedDateTime
                 .of(this.offsetDays(dayOffset).localDate(), LocalTime.of(hour - 1, 0, 0).plusHours(1).minusNanos(1L),
                         this.zoneId()));
     }
@@ -373,7 +312,7 @@ public class Dater {
      * @return com.elv.core.util.Dater
      */
     public Dater firstDayOfYear() {
-        return this.zonedDateTime(this.getZonedDateTime().with(TemporalAdjusters.firstDayOfYear()));
+        return Dater.of(this.getZonedDateTime().with(TemporalAdjusters.firstDayOfYear()));
     }
 
     /**
@@ -382,7 +321,7 @@ public class Dater {
      * @return com.elv.core.util.Dater
      */
     public Dater lastDayOfYear() {
-        return this.zonedDateTime(this.getZonedDateTime().with(TemporalAdjusters.lastDayOfYear()));
+        return Dater.of(this.getZonedDateTime().with(TemporalAdjusters.lastDayOfYear()));
     }
 
     /**
@@ -391,7 +330,7 @@ public class Dater {
      * @return com.elv.core.util.Dater
      */
     public Dater firstDayOfMonth() {
-        return this.zonedDateTime(this.getZonedDateTime().with(TemporalAdjusters.firstDayOfMonth()));
+        return Dater.of(this.getZonedDateTime().with(TemporalAdjusters.firstDayOfMonth()));
     }
 
     /**
@@ -400,8 +339,54 @@ public class Dater {
      * @return com.elv.core.util.Dater
      */
     public Dater lastDayOfMonth() {
-        return this.zonedDateTime(this.getZonedDateTime().with(TemporalAdjusters.lastDayOfMonth()));
+        return Dater.of(this.getZonedDateTime().with(TemporalAdjusters.lastDayOfMonth()));
     }
+
+    // *********************************** duration **************************************
+
+    public long yearsDuration(Dater dater) {
+        return ChronoUnit.YEARS.between(this.localDate(), dater.localDate());
+    }
+
+    public long monthsDuration(Dater dater) {
+        return ChronoUnit.MONTHS.between(this.localDate(), dater.localDate());
+    }
+
+    public long daysDuration(Dater dater) {
+        // return Duration.between(this.instant(), dater.instant()).toDays();
+        return ChronoUnit.DAYS.between(this.localDate(), dater.localDate());
+    }
+
+    public long hoursDuration(Dater dater) {
+        // return Duration.between(this.instant(), dater.instant()).toHours();
+        return ChronoUnit.HOURS.between(this.instant(), dater.instant());
+    }
+
+    public long minutesDuration(Dater dater) {
+        // return Duration.between(this.instant(), dater.instant()).toMinutes();
+        return ChronoUnit.MINUTES.between(this.instant(), dater.instant());
+    }
+
+    public long secondsDuration(Dater dater) {
+        // return Duration.between(this.instant(), dater.instant()).getSeconds();
+        return ChronoUnit.SECONDS.between(this.instant(), dater.instant());
+    }
+
+    public long millisDuration(Dater dater) {
+        // return Duration.between(this.instant(), dater.instant()).toMillis();
+        return ChronoUnit.MILLIS.between(this.instant(), dater.instant());
+    }
+
+    public long microsDuration(Dater dater) {
+        return ChronoUnit.MICROS.between(this.instant(), dater.instant());
+    }
+
+    public long nanosDuration(Dater dater) {
+        // return Duration.between(this.instant(), dater.instant()).toNanos();
+        return ChronoUnit.NANOS.between(this.instant(), dater.instant());
+    }
+
+    // *********************************** boolean **************************************
 
     /**
      * 在之前(-∞,dater)
@@ -440,8 +425,10 @@ public class Dater {
      * @return boolean
      */
     public boolean isLeapYear() {
-        return this.getZonedDateTime().toLocalDate().isLeapYear();
+        return this.localDate().isLeapYear();
     }
+
+    // *********************************** out object **************************************
 
     /**
      * 获取日期+时间
@@ -476,7 +463,7 @@ public class Dater {
      * @return java.util.Date
      */
     public Date date() {
-        return Date.from(this.getZonedDateTime().toInstant());
+        return Date.from(this.instant());
     }
 
     /**
@@ -498,7 +485,7 @@ public class Dater {
     }
 
     public long timestamp() {
-        return this.getZonedDateTime().toInstant().toEpochMilli();
+        return this.instant().toEpochMilli();
     }
 
     /**
@@ -509,6 +496,8 @@ public class Dater {
     public ZoneId zoneId() {
         return this.getZonedDateTime().getZone();
     }
+
+    // *********************************** out string **************************************
 
     /**
      * 获取字符串日期+时间，格式：yyyy-MM-dd HH:mm:ss
@@ -574,98 +563,64 @@ public class Dater {
         return this.getZonedDateTime().getDayOfWeek().name();
     }
 
+    // *********************************** get **************************************
+    public int year() {
+        return this.getZonedDateTime().getYear();
+    }
+
+    public int month() {
+        return this.getZonedDateTime().getMonthValue();
+    }
+
+    public int day() {
+        return this.dayOfYear();
+    }
+
+    public int dayOfYear() {
+        return this.getZonedDateTime().getDayOfYear();
+    }
+
+    public int dayOfMonth() {
+        return this.getZonedDateTime().getDayOfMonth();
+    }
+
+    public int dayOfWeek() {
+        return this.getZonedDateTime().getDayOfWeek().getValue();
+    }
+
+    public int hour() {
+        return this.getZonedDateTime().getHour();
+    }
+
+    public int minute() {
+        return this.getZonedDateTime().getMinute();
+    }
+
+    public int second() {
+        return this.getZonedDateTime().getSecond();
+    }
+
     @Override
     public String toString() {
         return this.dateTimeStr();
     }
 
     public static void main(String[] args) {
+
         System.out.println(Dater.now().instant().toEpochMilli());
 
-        System.out.println(Dater.of("2019-12", 7).dateTimeStr());
-        System.out.println(Dater.of("2019-12-31", 7));
-        System.out.println(Dater.of("2019-12-31 12:23:24", 7));
-        System.out.println(Dater.of("1585651508506", 7));
-        System.out.println(Dater.of("1585651508", 7));
-
-        System.out.println("start>>>" + Dater.of("1585651508", 7).start());
-        System.out.println("startOf>>>" + Dater.of("2019-12-31 12:23:24", 7).startOf(4));
-        System.out.println("startOf>>>" + Dater.of("1585651508", 7).startOf(14));
-        System.out.println("startOf>>>" + Dater.of("1585651508", 7).startOf(25));
-        System.out.println("end>>>" + Dater.of("1585651508", 7).end());
-        System.out.println("endOf>>>" + Dater.of("1585651508", 7).endOf(4));
-        System.out.println("endOf>>>" + Dater.of("2019-12-31 12:23:24", 7).endOf(24));
-        System.out.println("endOf>>>" + Dater.of("2019-12-31 12:23:24", 7).endOf(0));
-        System.out.println("endOf>>>" + Dater.of("1585651508", 7).endOf(28));
-        System.out.println("endOf>>>" + Dater.of("1585651508", 7).endOf(8));
-        System.out.println("noon>>>" + Dater.of("1585651508", 7).noon());
-
-        System.out.println(Dater.now().isLeapYear());
-
-        System.out.println(Dater.now().offsetYears(2));
-        System.out.println(Dater.now().offsetYears(-2));
-        System.out.println(Dater.now().offsetMonths(2));
-        System.out.println(Dater.now().offsetMonths(-2));
-        System.out.println(Dater.now().offsetDays(2));
-        System.out.println(Dater.now().offsetDays(-2));
-        System.out.println(Dater.now().offsetWeeks(2));
-        System.out.println(Dater.now().offsetWeeks(-2));
-        System.out.println(Dater.now().offsetHours(2));
-        System.out.println(Dater.now().offsetHours(-2));
-        System.out.println(Dater.now().offsetMinutes(2));
-        System.out.println(Dater.now().offsetMinutes(-2));
-        System.out.println(Dater.now().offsetSeconds(2));
-        System.out.println(Dater.now().offsetSeconds(-2));
-
-        System.out.println("first&last>>>" + Dater.now().firstDayOfYear());
-        System.out.println("first&last>>>" + Dater.now().lastDayOfYear());
-        System.out.println("first&last>>>" + Dater.now().firstDayOfMonth());
-        System.out.println("first&last>>>" + Dater.now().lastDayOfMonth());
-
-        System.out.println(Dater.now().year());
-        System.out.println(Dater.now().month());
-        System.out.println(Dater.now().dayOfYear());
-        System.out.println(Dater.now().dayOfMonth());
-        System.out.println(Dater.now().dayOfWeek());
-        System.out.println(Dater.now().hour());
-        System.out.println(Dater.now().minute());
-        System.out.println(Dater.now().second());
-
-        System.out.println(Dater.now().monthName());
-        System.out.println(Dater.now().weekName());
-
-        System.out.println("between>>>" + Dater.now().yearsBetween(Dater.of("2021-04-01 00:23:22")));
-        System.out.println("between>>>" + Dater.now().monthsBetween(Dater.of("2020-03-01 00:23:22")));
-        System.out.println("between>>>" + Dater.now().daysBetween(Dater.of("2020-03-29 00:23:22")));
-
-        System.out.println(Dater.of("2020-01-01 12:23:24").endOf(24));
-        System.out.println(Dater.of("2020-01-01 12:23:24").endOf(0));
-
-        System.out.println(Dater.now(8));
-        System.out.println(Dater.now(7));
-
-        Dater ref = Dater.now();
-        Dater start = Dater.of(ref.instant().toEpochMilli() + "").offsetSeconds(1);
-        Dater end = Dater.of(ref.instant().toEpochMilli() + "").offsetHours(1);
-        System.out.println(ref.instant());
-        System.out.println(start.instant());
-        System.out.println(end.instant());
-        System.out.println(ref.between(start, end));
-        System.out.println(ref.between(ref, ref));
-
-        System.out.println(Dater.now().offsetDays(-1).end().ts());
-        System.out.println(Dater.now().endOf(-1).ts());
-
-        System.out.println(Dater.now().year(2021).month(2).dayOfMonth(28).hour(22).minute(33).second(33));
-
-        System.out.println(Dater.now().dateStr());
-        System.out.println(Dater.now().timeStr());
-        System.out.println(Dater.now().dateTimeStr());
-        System.out.println(Dater.now().yearMonthStr());
-        System.out.println(Dater.of("2020-11-12 15:33"));
-        System.out.println(Dater.now().ts());
-        System.out.println(Dater.of("1615185816945", 8));
-        System.out.println(Dater.of("1615185816945", 7));
+        // String dateStr = "2020-03-29 00:23:22";
+        String dateStr = "2022-04-02 20:23:22";
+        Dater now = Dater.of("2022-03-02 11:37:08");
+        System.out.println("year>>>" + now.yearsDuration(Dater.of(dateStr)));
+        System.out.println("month>>>" + now.monthsDuration(Dater.of(dateStr)));
+        System.out.println("day>>>" + now.daysDuration(Dater.of(dateStr)));
+        System.out.println("hour>>>" + now.hoursDuration(Dater.of(dateStr)));
+        System.out.println("minute>>>" + now.minutesDuration(Dater.of(dateStr)));
+        System.out.println("second>>>" + now.secondsDuration(Dater.of(dateStr)));
+        System.out.println("mills>>>" + now.millisDuration(Dater.of(dateStr)));
+        System.out.println("micro>>>" + now.microsDuration(Dater.of(dateStr)));
+        System.out.println("nano>>>" + now.nanosDuration(Dater.of(dateStr)));
 
     }
 
