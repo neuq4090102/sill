@@ -16,7 +16,7 @@
 
         <!--        <spring.version>4.3.11.RELEASE</spring.version>-->
         <!-- frame -->
-        <spring.version>4.3.29.RELEASE</spring.version>
+        <spring.version>5.3.19</spring.version>
 
         <!-- test -->
         <testng.version>7.1.0</testng.version>
