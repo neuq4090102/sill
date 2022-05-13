@@ -545,6 +545,10 @@ public final class Dater {
         return this.getZonedDateTime().format(formatter);
     }
 
+    public String patternOf(String pattern) {
+        return this.getZonedDateTime().format(DateTimeFormatter.ofPattern(pattern));
+    }
+
     /**
      * 获取月份枚举名称
      *
