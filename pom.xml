@@ -25,7 +25,7 @@
 
         <!-- log -->
         <slf4j.version>1.7.20</slf4j.version>
-        <logback.version>1.2.3</logback.version>
+        <logback.version>1.2.9</logback.version>
 
         <!-- db & orm -->
         <redis.version>3.3.0</redis.version>
